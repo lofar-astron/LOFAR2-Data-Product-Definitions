@@ -1,0 +1,38 @@
+\svnInfo $Id$
+
+%% ==============================================================================
+%%
+%% Table with the recognized values for the reference frame to specify a location
+%%
+%% ==============================================================================
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|p{3.5cm}p{6cm}p{5cm}|}
+    \hline
+    \textsc{Reference~Position} & \textsc{Description} & \textsc{Comments} \\
+    \hline \hline
+    \verb|GEOCENTER|    & Center of the Earth. & \\
+    \verb|BARYCENTER|   & Center of the solar system barycenter. &  \\
+    \verb|HELIOCENTER|  & Center of the Sun. &  \\
+    \verb|TOPOCENTER|   & ``Local''; in most cases this will mean:
+    the location of the telescope. &  \\
+    \verb|LSRK|         & Kinematic Local Standard of Rest: 20 km
+    s$^{-1}$ in the direction of \verb|GALACTIC_II| $(56,+23)$. & Only to be
+    used for redshifts and Doppler velocities, and spectral coordinate. \\
+    \verb|LSRD|         & Dynamic Local Standard of Rest: 16.6 km
+    s$^{-1}$ in the direction of \verb|GALACTIC_II| $(53,+25)$. &  \\
+    \verb|GALACTIC|     & Center of the Galaxy: 220 km s$^{-1}$ in
+    the direction of \verb|GALACTIC_II| $(90,0)$ w.r.t. \texttt{LSRD}. &  \\
+    \verb|LOCAL_GROUP|  & Center of the Local Group: 300 km s$^{-1}$ in
+    the direction of \verb|GALACTIC_II| $(90,0)$ w.r.t. \texttt{BARYCENTER}. &  \\
+    \verb|RELOCATABLE|  & Relocatable center; for simulations. & Only to be used
+    for spatial coordinates. \\
+    \hline
+  \end{tabular}
+  \caption[Recognized values for the coordiante reference frame]{Recognized values for the reference frame to specify a
+    location; values and descriptions have been adopted from the
+    ``Space-Time Coordinate Metadata for the Virtual Observatory''
+    \cite{ivoa.stc}, as produced by the IVOA Data Model Working Group.}
+  \label{tab:reference frames location}
+\end{table}

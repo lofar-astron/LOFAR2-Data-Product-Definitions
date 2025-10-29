@@ -1,0 +1,34 @@
+\svnInfo $Id$
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|lllp{6.5cm}|} 
+    \hline
+    \textsc{Field/Keyword} & \textsc{Type} & \textsc{Value} & \textsc{Description} \\
+    \hline \hline
+    \small\verb|GROUPTYPE| & \small\verb|string| & \verb|`TabularCoord'|&
+    Group type descriptor \\
+    \small\verb|COORDINATE_TYPE| & \small\verb|string| & \verb|`Tabular'| &
+    Coordinate Type descriptor \\
+    \small{\verb|STORAGE_TYPE|} & \small\verb|string| & \verb|`Tabular'|
+    & Descriptor for the underlying storage type for this coordinate \\
+    \small\verb|NOF_AXES| & \small\verb|int| & $N \equiv 1$ & Number
+    of coordinate axes \\
+    \small\verb|AXIS_NAMES| & \small\verb|array<string,1>| &
+    $[name_{0}]$ & World axis names \\
+    \small\verb|AXIS_UNITS| & \small\verb|array<string,1>| &
+    $[unit_{0}]$ & Physical units along each coordinate axis. \\
+   \small{\verb|AXIS_LENGTH|} & \verb|int| & $N_{\rm Length}$ &
+    Length of the axis, i.e. the number of elements stored in the
+    \verb|AXIS_VALUES_PIXEL| and \verb|AXIS_VALUES_WORLD| arrays. \\
+    \small{\verb|AXIS_VALUES_PIXEL|} & \verb|array<T,1>| &
+    $[p_{0},..,p_{N_{\rm Length}}]$ & Tabulated values along the pixel
+    axis; depending on the quantity represented \verb|T={double,int}|. \\
+    \small{\verb|AXIS_VALUES_WORLD|} & \verb|array<T,1>| &
+    $[w_{0},..,w_{N_{\rm Length}}]$ & Tabulated values along the world
+    axis; depending on the quantity represented \verb|T={double,string}|. \\
+    \hline
+  \end{tabular}
+  \caption{Keywords decribing a Tabular Coordinate.}
+  \label{tab:coord-tabular}
+\end{table}

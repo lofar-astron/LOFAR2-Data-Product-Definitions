@@ -1,0 +1,56 @@
+\svnInfo $Id$
+
+%% ==============================================================================
+%%
+%% Table with overview of the various image types and their coordinates
+%%
+%% ==============================================================================
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|lllll|}
+    \hline
+    \textsc{Image} & \textsc{ICD}
+                   & \textsc{Quantity}
+                   & \textsc{Axes}
+                   & \textsc{Units} \\
+    \hline \hline
+    TBB time-series & 001~/~\cite{lofar.icd.001}
+                & $I (t)$
+                & Time
+                & s  \\
+    BF data     & 003~/~\cite{lofar.icd.003}
+                & $I (p,\nu,\mathrm{Dec},\mathrm{RA})$
+                & Pol/Freq/Dir/Dir
+                & .. /Hz/deg/deg  \\
+   Sky image    & 004~/~\cite{lofar.icd.004}
+                & $I (p, \nu,\mathrm{Dec},\mathrm{RA})$
+                & Pol/Freq/Dir/Dir
+                & .. /Hz/deg/deg  \\
+   Dyn. Spectrum & 006~/~\cite{lofar.icd.006}
+                & $I (p, \nu, t)$
+                & Pol/Freq/Time
+                & .. /Hz/s \\
+    RMSC        & 008~/~\cite{lofar.icd.008}
+                & $DF (p, \mathrm{Dec},\mathrm{RA},\phi)$
+                & Pol/Dir./Dir./Faraday Depth
+                & .. /deg/deg/rad m$^{-2}$ \\
+    RM map      & ---
+                & $RM (\mathrm{Dec},\mathrm{RA})$
+                & Dir./Dir.
+                & /deg/deg \\
+    CR image    & ---
+                & $I(p, \nu,r,\mathrm{El}, \mathrm{Az})$
+                & Pol/Freq/Dist/Dir./Dir./
+                & .. /p/Hz/m/deg/deg \\
+    CR image    & ---
+                & $I(p, t, \nu, \xi_3, \xi_2, \xi_1)$
+                & Pol/Time/Freq/Pos/Pos/Pos
+                & .. /s/Hz/m/m/m \\
+    \hline
+  \end{tabular}
+  \caption[LOFAR data arrays types and associated coordinates]{Overview of the various data arrays types, associated coordinates
+    and dimensions. Where possible a reference for the data format
+    specification is provided.}
+  \label{tab:lofar_data_types}
+\end{table}

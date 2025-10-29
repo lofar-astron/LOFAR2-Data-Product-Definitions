@@ -1,0 +1,129 @@
+\svnInfo $Id$
+
+The following text and email exchange summarizes topic of the HBA\_JOINED antenna field discussion.  This issue will be picked up in 2012 for ICD003 and ICD006 for the possibility of adding additional information to the ICDs in order to calculate the beam model per observation.
+
+A2/JMG/AR discussed HBA\_JOINED as new Antenna field;  the Pulsar Working Group would like this info to create beam model in ICD003.  What is needed is:
+\begin{itemize}
+\item Health status of antennas during the observation, calibration, ...
+\item HBA\_JOINED: antenna subfields have different orientation with  
+respect to north! This breaks a number of assumptions on antennafield
+ homogeneity
+\end{itemize}
+
+A2 emailed Ger asking for details on where this information is  
+stored. (see thread below).
+
+The meeting notes are as follows:
+
+\begin{verbatim}
+
+-------------------------------------------------------------------------
+Data Formats Splinter Meeting (HBA joined), 2011-09-02
+-------------------------------------------------------------------------
+
+1 Setting of the meeting
+=========================
+
+Present via Skype: Anastasia Alexov (A2), Jean-Mathias Griessmeier (JMG),
+Adriaan Renting (AR)  
+
+Minutes: JMG
+
+2 Notes from the meeting
+=========================
+
+ICD-003 and ICD-006 have no detailed description of antenna field,
+whereas the MS description does.
+
+But calibration (esp. polarization calibration) requires the beamshape!
+However, the calibration may be done before the data are written to disk.
+
+For comparison, MS description has a 3 table: 
+- stations 	CS001
+- antennas 	CS001_HBA0, CS001_HBA1, CS001_HBA
+- antenna field CS001_HBA0, CS001_HBA1 (only of antenna is CS001_HBA)
+  incl. antenna field orientation per antenna field, ...
+
+See ms2_description_for_lofar_2.07.01.pdf for details.
+
+This is how the system works:
+BG outputs contains polarization, but not yet the polarization
+calibration. This is currently done offline, but it may be moved to BG.
+If this happens, beamshapes etc. are not required in ICD_003/006.
+Depending on whether this implementation changes, the tables from the MS
+description  will be added to ICD_003/006... or not.
+
+Health status will be added to SYS_LOG.
+
+TODO:
+- A2 - discuss this with Aris N.
+
+
+(email thread)
+
+Hi Ger,
+
+There are a couple of questions which have arisen in the ICD group, 
+which we're hoping you could shed some light on or point me to someone 
+who could answer these.  We want to know the source of some of the 
+MeasurementSet metadata information.  Some of the same information 
+will be needed in other LOFAR data products for non-interferometric 
+observations.
+
+1) Some of the ICDs will require tracking information of the 
+pointings, at some regular time internal, to be stored in tabular 
+form.  This is similar to the "field" and "pointing" table in the 
+MeasurementSet.  Where is the pointing information stored within the 
+system (say for cases when it's not written to a MS file)?  Is it 
+stored at a particular time interval already per OBSID?  How could one 
+best retrieve this information in order to pack it into the output 
+product other than a MeasurementSet?
+
+2) There are several Antenna field-related tables in the 
+MeasurementSet, such as the HBA_JOINED table.  These contain the 
+health and status of the antennas observation for calibration.  Some 
+of the other data formats (Dynamic Spectra and Beam-Formed) need 
+similar information about the health and status of the antennas per 
+OBSID.  Where can we pull this information from the LOFAR system?  Is 
+is available at certain time intervals or just start/end of 
+observations?
+
+Thanks much in advance.
+
+best,
+A2
+
+Hi Anastasia,
+
+The pointing table is not filled in for the LOFAR MS.
+The only pointing info filled is in the FIELD table which 
+contains (in J2000) the DELAY_DIR and PHASE_DIR, thus the 
+delay center and phase center. Usually they are the same, 
+but not necessarily. The info is coming from the parset 
+file and written by Chris' data writer.
+Calculations of AzEl or apparent coordinates are done on 
+the fly (using casacore's Measures classes). It is possible 
+to add a virtual column to the MS main table giving AzEL 
+or HA. There are also TaQL functions doing it.
+
+The info needed for the beam calibration is filled in by the 
+data writer using the BeamTables class (in LOFAR/LCS/MSLofar).
+It gets its info from several sources:
+- The station config files (text files) tell the layout of a 
+station (one file per station). Such a file is read by the 
+AntField class.
+- The iHBADeltas.conf text files tell the dipole 
+	layout of HBA tiles for each station.
+- The AntennaSets text file defines for each configuration 
+	(like LBA_INNER) which tiles/dipoles are used.
+- The SAS DB contains info about broken dipoles/tiles. Ruud 
+	has written a query to extract that info and Sven is working
+	on a program addbeaminfo to store that info in the MS.
+
+I hope this helps.
+I assume you can see our source files, but I can send some if you want to.
+
+Cheers,
+Ger
+
+\end{verbatim}

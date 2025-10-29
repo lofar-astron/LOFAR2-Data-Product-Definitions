@@ -1,0 +1,94 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%BoundingBox: 0 0 230 230
+%%Creator: Mark Calabretta
+%%CreationDate: Sun 1992/09/20
+%%Title: Gnomonic projection.
+%%Pages: 1 1
+%%DocumentFonts: Courier
+%%EndComments
+
+%%BeginProcSet: graphics.pro
+   /TextFont /Courier-Bold findfont 8 scalefont def
+
+   % Constants.
+   /ws 0.2 def
+
+   % Radius of the generating sphere and map boundary.
+   /r0 40 def
+   /Rlim 2.5 r0 mul def
+
+   /DrawMeridian {
+      ws mul setlinewidth
+      0 0 moveto
+      dup neg rotate
+      0 Rlim neg lineto
+      3 6 rmoveto -3 -6 rlineto -3 6 rlineto 3 -6 rmoveto
+      exch dup stringwidth
+      pop -2 div -10 rmoveto
+      show
+      rotate
+      stroke
+      } def
+
+   /DrawParallel {
+      ws mul setlinewidth
+      dup cos exch sin div
+      r0 mul dup
+      0 0
+      3 -1 roll
+      0 360 arc
+      0 exch neg moveto
+      2 -7 rmoveto
+      show
+      stroke
+      } def
+%%EndProcSet
+
+%%EndProlog
+
+userdict /start-hook known {start-hook} if
+
+
+/vmsave save def
+TextFont setfont
+2 setlinecap
+
+115 115 translate
+
+  (0)   0 4 DrawMeridian
+   ()  15 2 DrawMeridian
+ (30)  30 3 DrawMeridian
+   ()  45 2 DrawMeridian
+ (60)  60 3 DrawMeridian
+   ()  75 2 DrawMeridian
+ (90)  90 4 DrawMeridian
+   () 105 2 DrawMeridian
+(120) 120 3 DrawMeridian
+   () 135 2 DrawMeridian
+(150) 150 3 DrawMeridian
+   () 165 2 DrawMeridian
+(180) 180 4 DrawMeridian
+   () 195 2 DrawMeridian
+(210) 210 3 DrawMeridian
+   () 225 2 DrawMeridian
+(240) 240 3 DrawMeridian
+   () 255 2 DrawMeridian
+(270) 270 4 DrawMeridian
+   () 285 2 DrawMeridian
+(300) 300 3 DrawMeridian
+   () 315 2 DrawMeridian
+(330) 330 3 DrawMeridian
+   () 345 2 DrawMeridian
+
+   ()  75 2 DrawParallel
+ (60)  60 3 DrawParallel
+   ()  45 2 DrawParallel
+ (30)  30 3 DrawParallel
+
+vmsave restore
+showpage
+
+
+%%Trailer
+userdict /end-hook known {end-hook} if
+%%EOF

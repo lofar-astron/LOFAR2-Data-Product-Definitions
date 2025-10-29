@@ -1,0 +1,106 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%BoundingBox: 0 0 260 140
+%%Creator: Mark Calabretta
+%%CreationDate: Sun 1992/09/20
+%%Title: Plate carree projection.
+%%Pages: 1 1
+%%DocumentFonts: Courier
+%%EndComments
+
+%%BeginProcSet: graphics.pro
+   /TextFont /Courier-Bold findfont 8 scalefont def
+
+   % Constants.
+   /pi 3.1416 def
+   /ws 0.2 def
+
+   % Radius of the generating sphere and map boundary.
+   /r0 40 def
+   /xlim 3.1416 r0 mul def
+   /ylim 1.5708 r0 mul def
+
+   /DrawMeridian {
+      ws mul setlinewidth
+      pi mul 180 div
+      r0 mul
+      dup ylim neg moveto
+      dup ylim lineto
+      0 moveto
+      -1 1 rmoveto
+      90 rotate
+      show
+      -90 rotate
+      stroke
+      } def
+
+   /DrawParallel {
+      ws mul setlinewidth
+      pi mul 180 div
+      r0 mul
+      dup xlim neg exch moveto
+      dup xlim exch lineto
+      0 exch moveto
+      1 2 rmoveto
+      show
+      stroke
+      } def
+%%EndProcSet
+
+%%EndProlog
+
+userdict /start-hook known {start-hook} if
+
+
+/vmsave save def
+TextFont setfont
+2 setlinecap
+
+130 65 translate
+
+  (0)    0 4 DrawMeridian
+   ()  -15 2 DrawMeridian
+ (30)  -30 3 DrawMeridian
+   ()  -45 2 DrawMeridian
+ (60)  -60 3 DrawMeridian
+   ()  -75 2 DrawMeridian
+ (90)  -90 4 DrawMeridian
+   () -105 2 DrawMeridian
+(120) -120 3 DrawMeridian
+   () -135 2 DrawMeridian
+(150) -150 3 DrawMeridian
+   () -165 2 DrawMeridian
+   () -180 4 DrawMeridian
+(180)  180 4 DrawMeridian
+   ()  165 2 DrawMeridian
+(210)  150 3 DrawMeridian
+   ()  135 2 DrawMeridian
+(240)  120 3 DrawMeridian
+   ()  105 2 DrawMeridian
+(270)   90 4 DrawMeridian
+   ()   75 2 DrawMeridian
+(300)   60 3 DrawMeridian
+   ()   45 2 DrawMeridian
+(330)   30 3 DrawMeridian
+   ()   15 2 DrawMeridian
+
+ (90)   90 4 DrawParallel
+   ()   75 2 DrawParallel
+ (60)   60 3 DrawParallel
+   ()   45 2 DrawParallel
+ (30)   30 3 DrawParallel
+   ()   15 2 DrawParallel
+  (0)    0 4 DrawParallel
+   ()  -15 2 DrawParallel
+(-30)  -30 3 DrawParallel
+   ()  -45 2 DrawParallel
+(-60)  -60 3 DrawParallel
+   ()  -75 2 DrawParallel
+(-90)  -90 4 DrawParallel
+
+vmsave restore
+showpage
+
+
+%%Trailer
+userdict /end-hook known {end-hook} if
+%%EOF

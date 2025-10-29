@@ -1,0 +1,1351 @@
+
+\documentclass[a4paper,10pt,bibtotoc]{scrartcl}
+\usepackage{a4wide,usg}
+\usepackage{draftcopy}
+
+%% Do NOT remove: required to extract SVN information
+\svnInfo $Id$
+
+%% Adjust page footer
+\fancyfoot[LE,LO]{LOFAR-USG-ICD-006: Dynamic Spectrum Data}
+\fancyfoot[RE,RO]{\textsc{lofar} Project}
+
+\begin{document}
+
+%%_______________________________________________________________________________
+%% Titlepage
+
+\title{LOFAR Data Format ICD \\ Dynamic Spectrum Data \\
+{\normalsize Document ID: LOFAR-USG-ICD-006} \\ 
+{\normalsize Version 2.03.10} \\
+{\normalsize SVN Repository Revision: \svnInfoMaxRevision}}
+\author{J.-M. Grie{\ss}meier, A.~Alexov, K.~Anderson, L.~B\"ahren}
+\date{\small{SVN Date: \svnInfoMaxToday}}
+\maketitle
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\clearpage
+
+%%_______________________________________________________________________________
+%% Change record of the document
+
+\section*{Change record}
+\addcontentsline{toc}{section}{Change record}
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \sc Version & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{4}{r}{\small\sl continued from previous page} \\
+    \hline
+    \sc Version & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{4}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \begin{supertabular}{lllp{10cm}}
+    0.1  & 2009-09-28 & all & document creation. \\
+    0.2  & 2009-11-02 & all & update file names and format (dynspec). \\
+    0.3  & 2009-11-18 & all & adjusted document to standard structure. \\
+    0.4  & 2010-02-09 & all & rewrote document (not complete). \\
+    0.5  & 2010-02-12 & all & continued rewriting of document. \\
+    0.6  & 2010-02-19 & all & first complete version.\\
+    0.65 & 2010-03-08 & all & minor updates, different keywords. Repl. Figure 1, 2. \\
+    0.70 & 2010-04-19 &   4 & Refactor section 4.1 == 4.1.1, 4.1.2 \\
+    0.8  & 2010-06-04 & Appendix & Removed section ``Coordinate group examples''
+    from the appendix; detailed description and examples now can be found in
+    \texttt{LOFAR-USG-ICD-002} (``Representation of World Coordinates''). \\
+    0.9  & 2010-07-02 & all & many minor modification and corrections. \\
+    2.00.00  & 2010-07-08 & Cover & Changed `revision` to `version`;  updated 
+    this version number to 2.00.00 for LOFAR ICDs 1 through 7 to put them on the same
+    version numbering scheme.\\
+    2.00.02  & 2010-10-28 & all & minor modification and corrections; change of 
+    naming scheme to ``sub-array pointing'' and ``beam''. \\
+    2.00.03 & 2010-11-23 & all & replaced ``unit'' by ``value'' where appropriate. \\
+    2.01.00 & 2011-03-04 & all & Fixed nomenclature of ATTRIBUTES, GROUPS and
+    DATASETS. Expanded glossary.\\ 
+    2.01.01 & 2011-03-08 & all & Changed Figures 4 \& 3. Changed DynSpec to DYN\_SPEC.\\ 
+    2.01.02 & 2011-03-10 & all & Maintain list of references through Bib\LaTeX\ database. \\
+    2.02.00 & 2011-04-19 & \ref{sec:coordinates group} & renamed ``Frequency'' to ``Spectral''.
+    Reworked section 4.5 on coordinates.\\ 
+    2.03.00 & 2011-04-27 & \ref{sec:dynspec dataset} & Attributes
+    describing shape of data array; fixing section name. \\
+    2.03.01 & 2011-05-11 & \ref{sec:coordinates group} & Added
+    paragraph with notation conventions. \\
+    2.03.02 & 2011-05-23 & all & small changes in notation; moved section 6 to
+    appendix; inverted sections 3.2 and 3.3 \\
+    2.03.03 & 2011-06-29 & all & Matching up group type attributes and
+    notation.\\
+    2.03.04 & 2011-07-06 & all & Matching up group type attributes and
+    notation; consolidation of labels to refer to standard sections
+    and tables. \\
+    2.03.05 & 2011-10-25 & all & Changed all `float' types to `double';  
+    changed all `bool' types to `unsigned int';  changed all `integer' to
+    `int'.\\
+    2.03.06 & 2012-01-27 & all & Include standard data types decription. 
+    Added standard data types description. Reverted `unsigned int' back to
+    `bool'. Made optional keywords \textit{italic}. Incorporated a large number
+    of comments. Moved section on dataflow to the appendix.\\ 
+    2.03.07 & 2012-02-08 & all & Changed ``dyn\_spec'' to ``dynspec''.\\     
+    2.03.08 & 2012-03-06 & cover   & Added draftcopy package for background 'draft' text.\\
+    2.03.09 & 2012-05-24 & all   & minor changes.\\
+    2.03.10 & 2012-06-19 & \ref{sec:root group} & removed ``nof\_stations'' and ``station\_list''
+    from additional root attributes: Is already covered by CLA.\\
+    
+%    removed \texttt{NOF\_STATIONS} and 
+%    \texttt{STATIONS\_LIST} for \texttt{SUBARRAY\_POINTING} \\
+  \end{supertabular}
+\end{center}
+
+\input version_numbering
+\input types
+\input notation
+
+\section*{Acknowledgements}
+
+We would like to thank all those who contributed to this document by
+proof-reading, providing valuable suggestions, corrections, comments, and
+advice. In particular, we would like to thank Frank Breitling and Jochen Eisl\"{o}ffel.
+
+\clearpage
+
+%% _______________________________________________________________________________
+%% Introduction
+
+\section{Introduction}
+\label{sec:introduction}
+
+%% --------------------------
+\subsection{Purpose and Scope}
+\label{sec:purpose and scope}
+
+This interface control document (ICD) describes the data format for LOFAR dynamic
+spectrum data (in it's simplest version, a dynamic spectrum is 
+a two-dimensional time-frequency plot). 
+It was derived from the ICDs describing Beam-Formed
+Data \cite{lofar.icd.003} and Sky Images \cite{lofar.icd.004}.
+
+LOFAR beams can be formed where signals from antennae and/or stations are
+coherently added to form sets of smaller beams, each generating a time-series
+voltage sum \cite{vos.2004}.  Alternatively, beams can also be incoherently added to
+create total intensities. 
+
+In either case, the information found in each beam can
+be represented as Dynamic Spectrum.
+This document is intended to be the formal interface control agreement between
+the LOFAR project, observers/users of LOFAR data products, and the eventual LOFAR
+science archive facility. 
+
+%% --------------------------
+\subsection{Context and Motivation}
+\label{sec:context and motivation}
+
+A LOFAR Dynamic Spectrum Data file will be the data hosting structure for dynamic
+spectrum data produced by LOFAR, irrespective of their scientific purpose.
+It is one of the tasks of the LOFAR project to define and describe the
+structure of the LOFAR Dynamic Spectrum Data file format.
+
+Dynamic spectra will be useful e.g.~for storing and analyzing planetary data, flare stars,
+the Sun, terrestrial lightning, and pulsars. The typical application
+is to have one or several beams (for example `ON' and `OFF' beams, to compare 
+beams on the source and beams pointing just next to the source for comparison) 
+within one
+sub-array pointing. In this, the sub-array pointing corresponds to the beam formed by the sum of all of
+the elements of a station, whereas a beam is formed by combining all the
+SubArrayPointing, one for each station.
+
+Each of these beams produces a dataset accompanied
+by a number of by-products, such as flagging information, event
+tables, etc. In the more traditional approach, where all such products
+are stored and managed separately, a large amount of book-keeping is
+required to maintain consistency. For the LOFAR project, a Dynamic
+Spectrum Data file product will be defined within the context of the
+Hierarchical Data Format 5, or HDF5. HDF5 allows for  storage, not
+only of the data, but also for the associated and related meta-data
+describing the file contents, conditions of observations, etc. As an
+``all-in-one'' wrapper, the HDF5 format simplifies the management of
+what are expected to be very large datasets that formats such as FITS
+cannot pragmatically accommodate.
+
+% There has been much discussion of a putative need for LOFAR file
+% headers to adhere to FITS-like header keywords.  Though it is envisioned that the
+% LOFAR project will provide observers and other users with FITS format image files
+% upon request, it is not entirely necessary that HDF5 header keywords match FITS
+% keyword conventions in a LOFAR file itself.  A format conversion layer
+% can certainly be developed to provide rigorous transformation of LOFAR headers
+% into more restricted FITS header keyword sets.  However, development of such a
+% layer would be simplified in the event that LOFAR files make use of
+% \textit{de facto} FITS standard keywords as much as possible.
+
+
+For the purposes of further discussion regarding Dynamic Spectrum Data file 
+adherence to FITS
+keyword standards, the \textit{ESO Data Interface Control Document} (\textit{see
+\S\ References}), has been adopted as the FITS keyword model. 
+
+\input applicable_documents
+
+%% ______________________________________________________________________________
+%%                                                              Section: Overview
+
+\section{Overview}
+\label{sec:overview}
+
+LOFAR data will be presented in a number of LOFAR data formats, all of
+which will provide data arrays of differing dimensions, depending upon the
+respective observation.  Dynamic Spectra, Sky Image Cubes, Rotation Measure
+Cubes, Near-field cosmic ray images (``CR image'' in Table
+\ref{tab:lofar_data_types}), etc., all have different dimensions and coordinate
+types. Table  \ref{tab:lofar_data_types} illustrates the various data
+array dimensions that LOFAR may produce. 
+
+\input coordinates_image_table
+
+Each data type is described in detail by an appropriate interface control
+document.  This document pertains to, and describes only those data conforming
+to the LOFAR datatype ``Dynamic Spectrum''.  The dataset
+array in a Dynamic Spectrum will be an n-dimensional array. The Dynamic
+Spectrum is designed to store the polarized intensity data
+produced from the Dynamic Spectrum pipeline.  The nominal dimensionality of a
+Dynamic Spectrum \texttt{Data} group's dataset will be 3 (\texttt{N\_AXIS=3}),
+wherein the Dynamic Spectrum cube (or cubes) will be defined in (C-type order)
+\textit{Polarization}, \textit{time}, \textit{spectral}, as shown in Table
+\ref{tab:lofar_data_types}.
+
+This document is structured as follows: Section \ref{sec:organization of the data} will present
+a high-level view of the hierarchical  structure of LOFAR data files, file form,
+and semantic conventions the interface will adhere to, including a statement of
+the primary data product format, HDF5. These conventions will also include names,
+meaning, and physical units that may be used to generate and interpret the data
+files.  
+Section \ref{sec:detailed structure} will present the low-level
+specification for the data, including a description of the structure of LOFAR
+Dynamic Spectrum Data files, and the various group entities and sub-structures
+comprising these files, i.e. LOFAR group types, units, physical quantities.
+
+%% _______________________________________________________________________________
+%% Organization of the data
+
+\section{Organization of the data}
+\label{sec:organization of the data}
+
+%% --------------------------
+
+\subsection{High level LOFAR Dynamic Spectrum Data file structure}
+
+A LOFAR Dynamic Spectrum Data file will adhere to the following guidelines:\\
+A LOFAR Dynamic Spectrum Data file will be defined within the context of the HDF5
+file format.  In an effort to minimize the hierarchical depth of the file
+structure, a Dynamic Spectrum Data file is designed to be as ``flat'' as possible,
+providing access to the necessary data without undue hierarchical tree crawling. 
+
+Therefore, the HDF5 structure of a Dynamic Spectrum Data file will comprise a
+primary group, a 
+``ROOT group'' in HDF5 nomenclature, which may be considered equivalent to a
+primary header/data unit (HDU) of a standard multi-extension FITS file.  This
+primary group will consist only of header  keywords (``attributes'' in HDF5
+nomenclature) describing general properties of an observation, along with
+pointers to contained subgroups.  
+
+\begin{figure}[htbp]
+\begin{center}
+  \includegraphics[scale=0.55]{figures/DynSpec.eps}
+\end{center}
+\caption{Dynamic Spectrum Data file structure.}
+\label{fig:high-level structure}
+\end{figure}
+
+%% --------------------------
+
+\subsection{Overview of Dynamic Spectrum Groups}
+
+The layout of a LOFAR Dynamic Spectrum Data file is shown in Figure 
+\ref{fig:high-level structure}.
+A LOFAR Dynamic Spectrum Data file will comprise a \texttt{SYS\_LOG Group}, 
+just below the ROOT level, which contains logs and parameter files which are 
+relevant to the entire file.  Additionally, just below the ROOT level, the
+Dynamic Spectrum Data file will
+contain an arbitrary, observation-dependent number of \texttt{DYNSPEC Groups}
+containing a \texttt{COORDINATES Group}, a \texttt{DATA Group}, 
+an \texttt{EVENT Group}, and a
+\texttt{PROCESS\_HISTORY Group}. 
+
+The main building blocks of the Dynamic Spectrum Data HDF5 file are:
+
+\begin{enumerate} \parskip 0pt
+\item \textbf{File Root-level} (\verb|ROOT|). The ROOT level of the
+  file contains the majority of associated meta-data, describing the
+  circumstances of the observation. These data attributes include
+  observation time (start and end), frequency window (high band
+  vs. low band, filters) and other important characteristics of the
+  dataset. See Sections \ref{sec:lofar common attributes} and \ref{sec:additional root group attributes} for details.
+  
+\item \textbf{System Logs Group} (\verb|SYS_LOG|). This is a catch-all
+  envelop encapsulating information about all the system-wide steps of
+  processing which are relevant to the entire observation, such as
+  parameter sets and processing logs. See Sec.~\ref{sec:sylog group} for details.
+  
+\item \textbf{DYNSPEC Groups}. Each observation dynamic spectrum
+is stored as a
+separate group within the file, containing its own set of four sub-groups. 
+Characteristics about each dynamic spectrum are stored as Attributes in group
+headers. 
+A LOFAR Dynamic Spectrum Data file may contain numerous dynamic spectra groups.
+Possibilites include:
+\begin{itemize}
+\item one dynamic spectrum containing the data from all stations where different
+stations all observe at the same frequencies, 
+\item one dynamic spectrum per station when different stations observe at different 
+frequencies (in that case, the combined spectrum may be written to the
+\texttt{TILED\_DYNSPEC Group}, see below),  
+\item one dynamic spectrum per station where different stations observe at the 
+same frequencies (e.g.~to monitor RFI), 
+\item separate dynamic spectra for ON and OFF beams,
+\item dynamic spectra created from the same file, but with
+different frequency and time resolution.
+\end{itemize}
+Each \texttt{DYNSPEC Group} 
+will contain its own \texttt{COORDINATES Group} (see below) 
+plus one \texttt{Data} group, 
+which will in turn contain a dataset as an
+ndarray, along with associated attributes. 
+See Section \ref{sec:image group} for details.
+
+\item \textbf{EVENT Groups}. In some (if not all) cases, dynamic spectra will be
+monitored for events (flares, bursts of emission, ...) during file creation. In
+those cases, an \textbf{EVENT Group} will contain a table of events.
+See Section \ref{sec:event group} for details.
+
+\item \textbf{Coordinates Groups} (\verb|COORDINATES|). Each
+  \texttt{DYNSPEC Group} contains one \texttt{COORDINATES Group},
+  which usually contains 3 Coordinate sub-groups (the TIME, SPECTRAL and
+  POLARIZATION coordinates). See Section \ref{sec:coordinates group} for details.
+
+\item \textbf{Processing History Groups} (\verb|PROCESS_HISTORY|) can
+  be found on the \texttt{DYNSPEC Group} level. 
+  This group contains information about all the steps of
+  processing, such as parameter sets and processing logs. See
+  Section~\ref{sec:processing group} for details.
+
+\item \textbf{Dynamic Spectrum DATA arrays}. 
+For each \texttt{DYNSPEC Group}, the dynamic spectra are stored as ndarrays in 
+the respective DATA group - it is at this 
+4th hierarchical depth that the bulk of the data reside. The data storage options
+are still being investigated, in order to determine the maximum efficiency of
+data seeks and file I/O.  
+See Section \ref{sec:dynspec dataset} for details.
+
+\item \textbf{TILED\_DYNSPEC Group}. 
+In the case where different stations observe at different frequencies,
+a  \texttt{TILED\_DYNSPEC Group} can be used
+to accommodate a composite dynamic spectrum, combining the frequency information of
+different \texttt{DYNSPEC groups}.
+See Section \ref{sec:tiled dynspec group} for details.
+
+\end{enumerate}
+
+%% --------------------------
+
+\subsection{Hierarchical Structure of the HDF5 file}
+
+The Dynamic Spectrum Data are organized within a hierarchical structure, which
+reflects upon the structure in which data are grouped during processing.  This
+structure can be represented as an HDF5 hierarchy in the following way:
+
+\begin{lstlisting}
+OBS_NUMBER/
+OBS_NUMBER/SYS_LOG
+OBS_NUMBER/DYNSPEC_000/COORDINATES
+OBS_NUMBER/DYNSPEC_000/COORDINATES/TIME_COORD
+OBS_NUMBER/DYNSPEC_000/COORDINATES/SPECTRAL_COORD
+OBS_NUMBER/DYNSPEC_000/COORDINATES/POLARIZATION_COORD
+OBS_NUMBER/DYNSPEC_000/DATA
+OBS_NUMBER/DYNSPEC_000/EVENT
+OBS_NUMBER/DYNSPEC_000/PROCESS_HISTORY
+...
+OBS_NUMBER/DYNSPEC_NNN/...
+OBS_NUMBER/TILED_DYNSPEC/...
+...
+\end{lstlisting}
+
+An alternate way to display the above described HDF5 hierarchy is:
+
+\begin{lstlisting}
+OBS_NUMBER
+|-- SYS_LOG
+|-- DYNSPEC_000
+|   |-- COORDINATES
+|   |   |-- TIME_COORD
+|   |   |-- SPECTRAL_COORD
+|   |   `-- POLARIZATION_COORD
+|   |-- DATA
+|   |-- EVENT
+|   `-- PROCESS_HISTORY
+|
+|-- DYNSPEC_NNN
+|   |
+|   ...
+|
+`-- TILED_DYNSPEC
+|    |
+|    ...
+'
+\end{lstlisting}
+
+%% ------------------------------------------------------------------------------
+%% Section: Detailed Data Specification
+
+\section{Detailed Data Specification}
+\label{sec:detailed structure}
+
+\input metadata_intro   
+
+%% ------------------------------------------------------------------------------
+
+\subsection{The ROOT Group (\tt{ROOT})}
+\label{sec:root group}
+
+The LOFAR file hierarchy begins with the top level \textbf{File Root
+  Group} (\verb|ROOT|). This is the file entry point for the data, and
+the file node by which navigation of the data is provided.  The
+\textbf{File Root Group} will comprise a set of attributes that describe
+the underlying file structure, observational metadata, the LOFAR
+Dynamic Spectrum Data, as well as providing hooks to all groups attached to
+the \textbf{File Root Group}. 
+
+This section will specify two set of attributes that will appear in the \texttt{ROOT Group}: a set of Common LOFAR Attributes (CLA) that will be common to all LOFAR science data products, and a set of attributes that are specific to LOFAR dynamic spectra.  Though these attributes will all appear together in the \texttt{ROOT} attribute set, they are separated in this document in order to demarcate those general LOFAR attributes that are applicable across all data, and those attributes that are dynamic spectra-specific.
+
+In other words,
+\begin{verse}
+  \verb| ROOT Attributes = |\\
+  \verb| Common LOFAR Attributes (CLA) + Additional (dynamic spectrum specific) ROOT Attributes.|
+\end{verse}
+
+The Common LOFAR Attributes are the first attributes of any LOFAR \textbf{File Root Group}.
+
+Table \ref{tab:group types} lists the group types used for LOFAR Dynamic Spectrum
+Data.
+
+%% --------------------------
+ 
+\subsubsection{Common LOFAR Attributes}
+\label{sec:lofar common attributes}
+
+This section will specify a set of ROOT-level attributes that will be common to
+all LOFAR science data products.  These ``LOFAR common metadata'' will appear as attributes
+at the ROOT level of all LOFAR Dynamic Spectrum Data files, as well as 
+\textit{all} other LOFAR products.  These common LOFAR metadata are to
+be the first set of attributes of any LOFAR file ROOT group. 
+
+Table~\ref{tab:lofar common metadata} lists the {\cla} (CLA) which can be found 
+in LOFAR Dynamic Spectrum Data within the file's ROOT header. 
+These Attributes are required to be in the ROOT Group; if a
+value is not available for an Attribute, a \verb|`NULL'| maybe used in its place.
+
+For LOFAR Dynamic Spectrum Data, \verb|FILETYPE|=`dynspec'.
+
+\input lofar_common_metadata
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|lrp{6cm}|} 
+    \hline
+    \sc \textbf{General LOFAR Group} & \sc \textbf{Value} & \textbf{Description} \\
+    \hline
+    Root          & \verb|`Root'|    & Top-level LOFAR group type \\
+    System Log    & \verb|`SysLog'|  & System log files, parsets \\
+    Tiled Dynspec & \verb|`TiledDynspec'|& Tiled Dynamic Spectrum\\
+    Dynspec & \verb|`Dynspec'|   & Dynamic spectrum \\
+    \hline \hline
+    \sc \textbf{Dynspec Subgroups} & \textbf{Value} & \textbf{Description} \\
+    \hline
+    Data group  & \verb|`Data'| & This is a Data group of a Dynamic Spectrum
+    Data file \\
+    Event group & \verb|`Event'| & This is a Event List group \\
+    Processing History group &\verb|`ProcessHistory'| & This is a Processing History group \\
+    Coordinates Group & \verb|`Coordinates'| & This is a Coordinates group \\
+    \hline
+    \sc \textbf{Coordinates Group Subgroups} & \textbf{Value} & \textbf{Description} \\
+    \hline
+    Time coord group      &\verb|`TimeCoord'|      & This is a coord group describing the time axis\\
+    Spectral coord group    &\verb|`SpectralCoord'|    & This is a coord group describing the
+    frequency axis\\
+    Polarization coord group     &\verb|`PolarizationCoord'|  & This is a Stokes coordinate group \\
+    \hline
+  \end{tabular}
+  \caption{LOFAR Dynamic Spectrum Data Group Types.}
+  \label{tab:group types}
+\end{table}
+
+%% --------------------------
+
+\subsubsection{Additional dynamic spectrum ROOT Attributes}
+\label{sec:additional root group attributes}
+
+Table~\ref{tab:root attributes} contains the Dynamic Spectrum Data ROOT header
+Attributes.  The CLA Attributes have already been listed in
+Section~\ref{sec:lofar common attributes} above, therefore these are additional
+attributes in the ROOT header. 
+\vspace{20pt}
+
+%\begin{table}[htbp]
+%\centering
+\tablefirsthead{%
+	\hline
+	\sc Field/Keyword & \sc H5Type & \sc Type & \sc Unit & \sc Description
+  \\
+	\hline}
+\tablehead{%
+	\hline
+	\sc Field/Keyword & \sc H5Type & \sc Type & \sc Unit & \sc Description
+  \\
+	\hline}
+\tabletail{%
+	\hline
+	\multicolumn{5}{|r|}{\small\sl continued on next page}\\
+	\hline}
+\tablelasttail{\hline}
+\bottomcaption{Additional ROOT group attributes for LOFAR Dynamic Spectrum Data.
+\label{tab:root attributes}}
+\begin{supertabular}{|llllp{5cm}|}
+  \hline
+%  \sc Field/Keyword & \sc H5Type & \sc Type & \sc Unit & Description \\
+  \hline
+  \small{\verb|DYNSPEC_GROUPS|}        && bool   &---& 
+  	File has \texttt{DYNSPEC} subgroups (value is \verb|`true'|) \\
+  \small{\verb|NOF_DYNSPEC|}          && int      &             ---            &
+  	number of \texttt{DYNSPEC groups} in this file \\
+  \small{\verb|NOF_TILED_DYNSPEC|}          && int      &             ---            & 
+  	number of \texttt{TILED\_DYNSPEC groups} in this file (0 or 1)\\  \small{\verb|CREATE_OFFLINE_ONLINE|} & Attr. & \verb|string| & --- & Whether the file was created `Online' (stream to file) or
+  `Offline' (file to file). \\
+  \small{\verb|BF_FORMAT|} & Attr. & \verb|string| & --- & ``RAW'' if the file is BeamFormed RAW data; ``TAB'' if the
+ file is BeamFormed Processed data (will usually be ``TAB'').  \\
+  \small{\verb|BF_VERSION|} & Attr. & \verb|string| & --- & BeamFormed data format version number.\\  
+%  \small{\verb|NOF_STATIONS|} & Attr.  & \verb|int|& --- & Number of stations used
+%    within this Beam \\
+%  \small{\verb|STATIONS_LIST|}  & Attr. & \verb|array<string,1>| & --- & List of
+%    stations used for this Beam (e.g.~``CS002'', ``RS106'', ``DE603''); list must match the NOF\_STATIONS
+%    numerically \\
+  \small{\verb|PRIMARY_POINTING_|} &  &  & & \\
+  \small{\verb| DIAMETER|} & Attr. & \verb|double| & arcmin & FWHM of the
+  sub-array pointing at zenith at center frequency. \\
+  \small{\verb|POINT_RA|} & Attr. & \verb|double| & deg & J2000 right ascension of
+    sub-array pointing at start of observation, in degrees (at LOFAR core).\\
+  \small{\verb|POINT_DEC|} & Attr. & \verb|double| & deg & J2000 declination of station
+    beam at start of observation, in degrees (at LOFAR core).\\
+  \begin{scriptsize}\textit{POINT\_ALTITUDE}\end{scriptsize} & Attr. & \verb|array<string,1>| & deg & Altitude 
+    of the pointing
+    at start of observation, per stations list, in the same order. \\
+  \begin{scriptsize}\textit{POINT\_AZIMUTH}\end{scriptsize} & Attr. & \verb|array<string,1>| & deg & Azimuth 
+  	of the pointing
+    at start of observation, per stations list, in the same order. \\
+  \small{\verb|CLOCK_RATE|}   & Attr.   & \verb|double|& default: MHz & Clock rate, in units of CLOCK\_RATE\_UNIT (MHz) \\
+  \small{\verb|CLOCK_RATE_UNIT|}  & Attr.   & \verb|string| & --- & Clock rate units \\
+  \small{\verb|NOF_SAMPLES|} & Attr. & \verb|int| & --- & number of time samples. \\
+  \small{\verb|SAMPLING_RATE|}   & Attr.  & \verb|double|  & default: MHz & Sampling rate, in units of SAMPLING\_RATE\_UNIT \\
+  \small{\verb|SAMPLING_RATE_UNIT|}  & Attr.  & \verb|string| & --- & Sampling rate
+    units \\
+  \small{\verb|SAMPLING_TIME|}  & Attr.  & \verb|double|  & default: $\mu$s & Sampling time is
+    1/SAMPLING\_RATE, in units of SAMPLING\_TIME\_UNIT \\
+  \small{\verb|SAMPLING_TIME_UNIT|}  & Attr.  & \verb|string| & --- & Sampling time
+    units \\
+  \small{\verb|TOTAL_INTEGRATION_TIME|}  & Attr.  & \verb|double| & default: s & Total
+    integration time = SAMPLING\_TIME * NOF\_SAMPLES \\
+  \small{\verb|TOTAL_INTEGRATION_|} &  &  & & \\
+  \small{\verb| TIME_UNIT|}  & Attr.  & \verb|string| &--- & Total
+    integration time units \\
+  \small{\verb|CHANNELS_PER_SUBBAND|}  & Attr. & \verb|int|& --- & Number of
+    channels for each subband \\
+  \small{\verb|SUBBAND_WIDTH|}   & Attr.  & \verb|double|  &  default: MHz &
+  Subband width, usually
+    0.156250 or 0.1953125 \\
+  \small{\verb|SUBBAND_WIDTH_UNIT|}  & Attr.  & \verb|string| & --- & Subband width
+    units \\
+  \small{\verb|CHANNEL_WIDTH|}   & Attr.  & \verb|double|  &  default: MHz & Channel width is
+    equal to the SUBBAND\_WIDTH / CHANNELS\_PER\_SUBBAND \\
+  \small{\verb|CHANNEL_WIDTH_UNIT|}  & Attr.  & \verb|string| & --- & Channel
+    width units \\
+%  \small{\verb|TOTAL_INTEGRATION_TIME|} & Attr. & \verb|double| & s & Total integration time
+%  of the observation. \\
+  \small{\verb|TOTAL_BANDWIDTH|} & Attr. & \verb|double| & MHz & Total bandwidth (excluding gaps). \\
+  \begin{scriptsize}\textit{WEATHER\_STATIONS\_LIST*} \end{scriptsize}& Attr. & \verb|array<string,1>| & --- & List of stations with weather information. \\
+  \begin{scriptsize}\textit{WEATHER\_TEMPERATURE*}\end{scriptsize} & Attr. & \verb|array<double,1>| & $^\circ $C & Approximate
+  outside temperature;  order must match the listing in WEATHER\_STATIONS\_LIST attribute.  (* See note below) \\
+  \begin{scriptsize}\textit{WEATHER\_HUMIDITY*} \end{scriptsize}& Attr. & \verb|array<double,1>| & --- & Approximate humidity 
+  (\%);  order must match the listing in WEATHER\_STATIONS\_LIST attribute (* See note below) \\
+  \begin{scriptsize}\textit{SYSTEM\_TEMPERATURE*} \end{scriptsize}& Attr. &
+  \verb|array<double,1>| & K & System temperature for the various 
+  stations ;  order must match the listing in WEATHER\_STATIONS\_LIST attribute.  (* See note below) \\
+%  \verb|SysLog| & Group & \verb|---| & --- &  Container for system-wide log object \\
+  \hline
+  \small{\verb|SYS_LOG|} & Group & --- & --- &   Container for system-wide log object \\
+  \small{\verb|DYNSPEC_{NNN}|} & Group & --- & --- & Container for individual
+    Dynamic Spectrum objects \\
+  \small{\verb|TILED_DYNSPEC|} & Group & --- & --- & Container for tiled
+    Dynamic Spectrum \\
+  \hline
+\end{supertabular}
+\begin{small}
+\begin{flushleft}
+  *\textit{WEATHER\_TEMPERATURE, WEATHER\_HUMIDITY and SYSTEM\_TEMP are not available for all stations.}
+\end{flushleft}
+\end{small}
+%\caption{Additional Root group attributes for LOFAR Dynamic Spectrum Data.}
+%\label{tab:root attributes}
+%\end{table}
+
+Some of these keywords need further clarification:
+
+\begin{itemize}
+\item \verb|BF_FORMAT| \& \verb|BF_VERSION| -- These are required because the
+dynamic spectrum pipelines used part of the BeamFormed software.
+\end{itemize}
+  
+%%_______________________________________________________________________________
+%% Subsection: The System Logs Group (SYS_LOG)
+
+\input groups_sys_log
+
+%%_______________________________________________________________________________
+%%                                                             The DYNSPEC Group
+
+\subsection{The Dynamic Spectrum Group ({\tt DYNSPEC\_\{NNN\}})}
+\label{sec:image group}
+
+The \texttt{DYNSPEC} group will be an HDF5 group serving as a container for the
+four sub groups described below. A \texttt{DYNSPEC} group is designed to be as
+complete and self-contained as possible, and will contain relevant data and 
+metadata for a particular processed dynamic spectrum of a LOFAR observation. 
+However, any breakout protocol will be required to inherit some or all ROOT group
+attributes in order to function as a stand-alone dynamic spectrum.  
+The adopted form allows for relatively simple extraction and
+conversion in a FITS-compatible form.
+
+\begin{figure}[htbp] 
+  \begin{center}
+     \includegraphics[scale=0.65]{figures/DynspecGroup.eps}
+   \end{center}
+\caption{DYNSPEC group structure.\label{fig:dynspec_group}}
+\end{figure}
+
+A \texttt{DYNSPEC} group (Figure \ref{fig:dynspec_group}) will comprise four sub groups.  These
+four groups, two hierarchical levels below the ``ROOT group'' in a LOFAR Dynamic
+Spectrum Data file (Figure \ref{fig:high-level structure}), will be 
+
+\begin{itemize}
+\item A \verb|COORDINATES| group that will contain one subgroup of each of the
+	following kinds: 
+	\verb|TIME_COORD|, \verb|SPECTRAL_COORD|, \verb|POLARIZATION_COORD|, 
+	which describe various axes of the associated dataset.
+\item A \verb|DATA| group that will contain a dataset array.
+\item An \verb|EVENT| group that will be a tabular list of localized events
+	(flares, bursts, etc.).
+\item A \verb|PROCESS_HISTORY| group, which will be a meta-data container holding
+	various processing products such as log files, parameter sets, RFI
+	mitigation tables, etc.. 
+\end{itemize}
+
+%Figure XXX illustrates the form of an \texttt{DYNSPEC Group} in a 
+%LOFAR Dynamic Spectrum Data file. Most of the relevent \texttt{DYNSPEC Group}
+%metadata will be contained within the Coordinates groups (\textit{see
+%\ref{sec:coordinates group}, ``Coordinates group''}) 
+
+Table \ref{tab:Image group Attributes} 
+lists the metadata stored within the \texttt{DYNSPEC} Group.
+
+%\begin{table}[htbp]
+%\centering
+\tablefirsthead{%
+	\hline
+	\sc Field/Keyword & \sc H5Type & \sc Type & \sc Unit & \sc Description
+  \\
+	\hline \hline}
+\tablehead{%
+	\hline
+	\sc Field/Keyword & \sc H5Type & \sc Type & \sc Unit & \sc Description
+  \\
+	\hline \hline}
+\tabletail{%
+	\hline
+	\multicolumn{5}{|r|}{\small\sl continued on next page}\\
+	\hline}
+\tablelasttail{\hline}
+\bottomcaption{\texttt{DYNSPEC Group} Attributes.
+\label{tab:Image group Attributes}}
+\begin{supertabular}{|p{3.5cm}p{1cm}p{2.5cm}p{3.5cm}p{5cm}|}
+  %\hline
+  %\sc Field/Keyword & \sc H5Type & \sc Type & \sc Unit & \sc Description \\
+  %\hline \hline
+  \small{\verb|GROUPTYPE|}              & Attr. & string & \verb|`DYNSPEC'| & \small{\texttt{LOFAR}} group type \\
+    \hline
+  \small{\verb|DYNSPEC_START_UTC|} & Attr. & \verb|string| & hh:mm:ss.sssssssss & Start time of obs (UTC time, 24-h clock). \\
+  \scriptsize{\textit{DYNSPEC\_START\_MJD}} & Attr. & \verb|string| & \small{NNNNNN.NNNNNNN} & Start time of obs (MJD). \\
+  \scriptsize{\textit{DYNSPEC\_START\_TAI}} & Attr. & \verb|string| & hh:mm:ss.sssssssss & Start time of obs (International Atomic Time). \\
+  \small{\verb|DYNSPEC_STOP_UTC|} & Attr. & \verb|string| & hh:mm:ss.sssssssss & End time of obs (UTC time, 24-h clock). \\
+  \scriptsize{\textit{DYNSPEC\_STOP\_MJD}}  & Attr. & \verb|string| & \small{NNNNNN.NNNNNNN} & End time of obs (MJD).  \\
+  \scriptsize{\textit{DYNSPEC\_STOP\_TAI}} & Attr. & \verb|string| & hh:mm:ss.sssssssss & End time of obs (International Atomic Time). \\
+  \small{\verb|DYNSPEC_BANDWIDTH|} & Attr. & \verb|double| & MHz & Bandwidth (excluding gaps). \\
+  %\verb|TOTAL_INTEGRATION_TIME| & Attr. & \verb|double| & s & Total integration time of the observation. \\
+  \small{\verb|BEAM_DIAMETER|} & Attr. & \verb|double| & arcmin & FWHM of the beams at zenith at center frequency. \\
+  \small{\verb|TRACKING|} & Attr. & \verb|string| & -- & `J2000' = tracking ON; `LMN' = tracking OFF; TBD = tracking
+    of solar system object \\
+   % from "beam"
+  \small{\verb|TARGET|} & Attr.   & \verb|array<string,1>| & --- & targets/sources observed within this Beam \\
+  \small{\verb|ONOFF|} & Attr.   & \verb|string| & --- & e.g. `ON\_0' or `OFF\_0', `OFF\_1', ... \\
+  \small{\verb|POINT_RA|} & Attr. & \verb|double| & deg & J2000 right ascension of the center of
+  the beam at start of observation, in degrees (at LOFAR core). \\
+  \small{\verb|POINT_DEC|} & Attr. & \verb|double| & deg &  J2000 declination of the center of the
+  beam at start of observation, in degrees (at LOFAR core). \\
+  \small{\verb|POSITION_OFFSET_RA|} & Attr. & \verb|double| & deg & RA offset of beam from sub-array pointing at start of observation (degrees). \\
+  \small{\verb|POSITION_OFFSET_DEC|} & Attr. & \verb|double| & deg & Dec offset
+  of beam from sub-array pointing at start of observation (degrees). \\
+  \small{\verb|BEAM_DIAMETER_RA|} & Attr. & \verb|double| & arcmin & The diameter of the beam ellipse
+  in RA. \\
+  \small{\verb|BEAM_DIAMETER_DEC|} & Attr. & \verb|double| & arcmin & The diameter of the beam ellipse 
+  in Dec. \\
+   \small{\verb|BEAM_FREQUENCY_MAX|} & Attr. & \verb|double| & default: MHz & Beam maximum frequency \\
+   \small{\verb|BEAM_FREQUENCY_MIN|} & Attr. & \verb|double| & default: MHz & Beam minimum frequency \\
+
+  \small{\verb|BEAM_FREQUENCY_CENTER|} & Attr. & \verb|double| & default: MHz & Beam center
+  				frequency: $0.5\cdot \left( \mbox{max}+ \mbox{min}\right)$. \\
+  \small{\verb|BEAM_FREQUENCY_UNIT|} & Attr. & \verb|string| & --- & Units for \verb|BEAM_FREQUENCY_MAX|,
+  \verb|BEAM_FREQUENCY_MIN| and \verb|BEAM_FREQUENCY_CENTER|. \\ 
+  \small{\verb|BEAM_NOF_STATIONS|}    &    & \verb|int|& --- & N. of stations used for this beam \\
+  \small{\verb|BEAM_STATIONS_LIST|}   &    & \verb|array<string,1>|& --- & List of stations used for this beam\\
+  \small{\verb|DEDISPERSION|}   & Attr.   & \verb|string| & --- & Were the
+  data dedispersed incoherently (\verb|INCOHERENT|), dedispersed coherently
+  (\verb|COHERENT|), or (usually) not dedispersed (\verb|NONE|)? \\
+  \small{\verb|DISPERSION_MEASURE|}   & Attr.   & \verb|double| & default: pc/cm$^{3}$ &  The dispersion 
+  measure applied to the data, if data were de-dispersed \\
+  \small{\verb|DISPERSION_MEASURE_UNIT|}   & Attr.   & \verb|string| & --- &
+  The dispersion measure units. \\
+  \small{\verb|BARYCENTER|}   & Attr. & \verb|bool| & --- & Are the data barycentered?
+  (True/False)\\
+  \small{\verb|STOKES_COMPONENTS|} & Attr. & \verb|array<string,1>| & --- & Stokes
+  components for which data are attached to this group. \\
+  \small{\verb|COMPLEX_VOLTAGE|} & Attr. & \verb|bool| & --- & Is the data in Complex
+  Voltages (Xreal Ximg, Yreal, Yimg)? (True/False) \\
+  \small{\verb|SIGNAL_SUM|} & Attr. & \verb|string| & --- & Was the signal summed coherently
+  (\texttt{COHERENT}) or incoherently (\texttt{INCOHERENT\_SKY}, \texttt{INCOHERENT\_PRIMARY\_POINTING})? \\
+  \hline
+  \small{\verb|COORDINATES|} & Group & --- & --- &  container for Coordinates
+  Group for this Dynamic Spectrum \\
+  \small{\verb|DATA|} & Group & --- & --- &  container for dataset for this
+  Dynamic Spectrum \\
+  \small{\verb|EVENT|} & Group & --- & --- & Container for Event list for this
+  Dynamic Spectrum  \\
+  \small{\verb|PROCESS_HISTORY|} & Group & --- & --- & Container for Processing History for this
+  Dynamic Spectrum \\
+  \hline
+\end{supertabular}
+%\caption{\texttt{DynSpec Group} Attributes.}
+%\label{tab:Image group Attributes}
+%\end{table}
+
+Some of the keywords in Table \ref{tab:Image group Attributes} need further clarification:
+
+\begin{itemize}
+\item \verb|POINT_RA| \& \verb|POINT_DEC| -- J2000 right ascension and 
+  declination of the center of the beam at start of observation, in degrees (at the LOFAR core,
+  as the positions will be slightly different for solar system objects).
+\item \verb|STOKES_COMPONENTS| -- Providing both flexibility and readability,
+  the Stokes components for which data are attached to the Beam Group, 
+  are stored as \verb|array<string,1>|. 
+  The attribute has the flexibility to host different combinations and types of
+  Stokes data, such as e.g. 
+  \begin{verse}
+    \verb|STOKES_COMPONENTS| = [``I''] \\
+    \verb|STOKES_COMPONENTS| = [``I'',``Q'',``U'',``V''] \\
+    \verb|STOKES_COMPONENTS| = [``I'',``Q''] \\
+    \verb|STOKES_COMPONENTS| = [``L'',``R''] \\
+    \verb|STOKES_COMPONENTS| = [``XX'',``XY'',``YX'',``YY''].
+  \end{verse}
+\item \verb|ON_OFF|: Specify whether the beam was ``ON'' source, or ``OFF''
+   source. Also, specify the number of the beam (e.g. ``OFF\_0'', 
+   ``OFF\_1'', ...). Same for ``ON'' beams: In most cases, only one 
+   ``ON'' beam will be used (``ON\_0''), but for an extended source, multiple
+   ``ON'' beams are possible.  
+\end{itemize}
+
+%%____________________________________________________________________
+
+\subsection{The Tiled Dynamic Spectrum Group ({\tt TILED\_DYNSPEC})}
+\label{sec:tiled dynspec group}
+
+This group has the same structure as the \texttt{DYNSPEC groups}. In the case
+where different stations observe at different frequencies, this group can be used
+to accomodate a composite dynamic spectrum, combining the frequency information of
+different \texttt{DYNSPEC groups}. A LOFAR Dynamic Spectrum Data file has
+either zero or one \texttt{TILED\_DYNSPEC groups}.
+
+\begin{comment}
+  The final format is not yet defined. This group should include
+  information from which DynSpec groups the information as taken.
+\end{comment}
+
+%%_______________________________________________________________________________
+%%                                            The Coordinates Group (COORDINATES)
+
+\subsection{The Coordinates Group ({\tt COORDINATES})}
+\label{sec:coordinates group}
+
+The Coordinates Group acts as a container to take up a collection of coordinates,
+as described in the subsequent sections below. Besides this function as a
+container -- grouping together embedded coordinate objects -- the
+Coordinates Group also provides basic reference frame information,
+which is required for the proper transformation of quantities to other
+reference systems.
+
+%% ------
+\input coordinates_group_table
+
+The attributes, as presented in Table \ref{tab:coordinates-group},  summarize the
+overall characteristics of the set of coordinates collected within a
+\texttt{COORDINATES Group}. Specifially, for a LOFAR \texttt{DYNSPEC Group},
+the following values are used:
+\begin{itemize}
+\item \verb|NOF_COORDINATES| -- The number of coordinate objects/groups
+contained within the coordinates group. For Dynamic Spectrum Data, this is
+usually 3
+(\texttt{TIME\_COORD, SPECTRAL\_COORD, POLARIZATION\_COORD}).
+\item \verb|NOF_AXES| -- The number of coordinate axes associated with the 
+  coordinate objects. For Dynamic Spectrum Data, the number of axes will usually
+  be 3, i.e.~1 for each of the subgroups 	
+  \texttt{TIME\_COORD, SPECTRAL\_COORD, POLARIZATION\_COORD}.
+% 	\texttt{direction, linear, tabular, spectral, stokes}.
+\end{itemize}
+
+%% ------
+\input coordinates_frames_location
+  
+The different axes stored within this container are described in the remainder of this
+section. 
+More information on coordinates in LOFAR data files in general can be found 
+in ICD-002 \cite{lofar.icd.002}. 
+
+%%____________________________________________________________________
+%%                                                     Time coordinate
+
+\subsubsection{Time coordinate}
+\label{sec:coord-linear}
+
+This group describes the time coordinate of the associated 
+\texttt{DYNSPEC Group}. The associated metadata are given in Table
+\ref{tab:time coords attributes}.
+
+\begin{table}
+\begin{center}
+  \begin{tabular}{|lllrp{5cm}|}
+    \hline
+    \sc Field/Keyword & \sc H5Type & \sc Type & \sc Value & \sc Description \\
+    \hline \hline
+    \small{\verb|GROUPTYPE|} & Attr. & \verb|string| & \small{\texttt{`TimeCoord'}} & Group Type descriptor \\
+    \small{\verb|COORDINATE_TYPE|} & Attr. & \verb|string| & \small{\texttt{`Time'}} & Coordinate Type descriptor \\
+    \small{\verb|STORAGE_TYPE|} & Attr. & \small\verb|array<string,1>| & 
+    	\small \verb|`Linear'| $|$ \verb|`Tabular'| & coordinate storage type \\ 
+    \small{\verb|NOF_AXES|} & Attr. & \verb|int| & 1 & N of coordinate axes \\
+    \small{\verb|AXIS_NAMES|} & Attr. & \verb|array<string,1>| & [`Time'] & World axis names \\
+    \small{\verb|AXIS_UNITS|} & Attr. & \verb|array<string,1>| & [`s'] & World axis units \\
+    \small{\verb|REFERENCE_VALUE|} & Attr. & \verb|array<double,1>| & --- & Reference value \\
+    \small{\verb|REFERENCE_PIXEL|} & Attr. & \verb|array<double,1>| & --- & Reference pixel \\
+    \small{\verb|INCREMENT|} & Attr. & \verb|array<double,1>| & --- & Coordinate increment \\
+    \small{\verb|PC|} & Attr. & \verb|array<double,1>| & ---& The World Coordinate Reference scaling delta matrix \\
+    \small{\verb|AXIS_VALUES_PIXEL|} & Attr. & \verb|array<double,1>| & --- & Reference pixels \\
+    \small{\verb|AXIS_VALUES_WORLD|} & Attr. & \verb|array<double,1>| & --- & Reference values \\
+    \hline
+  \end{tabular}
+  \caption{Time Coordinate Attributes\label{tab:time coords attributes}}
+\end{center}
+\end{table}
+
+Specifially, for a LOFAR \texttt{DYNSPEC Group}, the following values are used:
+\begin{itemize}
+\item \verb|COORDINATE_TYPE| --- 
+	The coordinate type = `Time'.
+\item \verb|STORAGE_TYPE| ---
+  The storage type can be either `Linear' or `Tabular'. For dynamic spectra, 
+  it will be `Linear' in most cases.
+\item \verb|NOF_AXES| --- 
+	The number of coordinate axes =  1.
+\item \verb|AXIS_NAMES| --- 
+	The names of the axis = `Time'.
+\item \verb|AXIS_UNITS| --- 
+	The units of the coordinate axis, e.g. = `microseconds'.
+\item \verb|REFERENCE_VALUE| ---
+	The World Coordinate Reference value (CRVAL) will be the 0,0 location of the dataset (start time of each sample).
+\item \verb|REFERENCE_PIXEL| ---
+	The World Coordinate Reference pixel (CRPIX) will be the 0,0 location of the dataset.
+\item \verb|INCREMENT| ---
+	The World Coordinate increment (CDELT) is the time bin (SAMPLING\_TIME).
+\item \verb|PC| ---
+	The World Coordinate Reference scaling delta matrix is flat (1, 0) for Dynamic Spectrum data.
+
+\end{itemize}
+
+More detail on time coordinates for LOFAR data files can be found in 
+Section 4.3.1 of ICD-002 \cite{lofar.icd.002}. 
+
+%%____________________________________________________________________
+%%                                                 Spectral coordinate
+
+\subsubsection{Spectral coordinate}
+\label{sec:spectral coordinate}
+
+This group describes the spectral coordinate of the associated 
+\texttt{DYNSPEC Group}. The associated metadata are given in Table
+\ref{tab:spectral coords attributes}.
+
+\vspace{20pt}
+\begin{table}[htbp]
+\begin{small}
+\begin{center}
+  \begin{tabular}{|llllp{5cm}|}
+    \hline
+    \sc Field/Keyword & \sc H5Type & \sc Type & \sc Value & \sc Description \\
+    \hline \hline
+    \verb|GROUPTYPE|  & Attr.  & \verb|string| & `SpectralCoord' & Group type descriptor\\
+    \verb|COORDINATE_TYPE| & Attr. & \verb|string| & `Spectral' & Coordinate Type  descriptor \\
+    \verb|STORAGE_TYPE| & Attr. & \small\verb|array<string,1>| & \small
+    	\verb|`Linear'| $|$ \verb|`Tabular'| & coordinate storage type \\    
+    \verb|NOF_AXES|   & Attr. & \verb|int| & 1 & nof. coordinate axes \\
+    \verb|AXIS_NAMES| & Attr. & \verb|array<string,1>| & [`Frequency'] & World axis names \\
+    \verb|AXIS_UNITS| & Attr. & \verb|array<string,1>| & [`Hz'] & World axis units \\
+    \verb|REFERENCE_VALUE| & Attr. & \verb|array<double,1>| & --- & Reference value (CRVAL) \\
+    \verb|REFERENCE_PIXEL| & Attr. & \verb|array<double,1>| & --- & Reference pixel (CRPIX) \\
+    \verb|INCREMENT| & Attr. & \verb|array<double,1>| & --- & Coordinate increment (CDELT) \\
+    \verb|PC|    & Attr. & \verb|array<double,1>| & ---& The World Coordinate Reference scaling delta matrix \\
+    \verb|AXIS_VALUES_PIXEL| & Attr. & \verb|array<double,1>| & --- & Reference pixels \\
+    \verb|AXIS_VALUES_WORLD| & Attr. & \verb|array<double,1>| & --- & Reference values \\
+ \hline
+\end{tabular}
+\end{center}
+\end{small}
+\caption{Spectral Coordinate Attributes}
+\label{tab:spectral coords attributes}
+\end{table}
+
+Specifially, for a LOFAR \texttt{DYNSPEC Group}, the following values are used:
+
+\begin{itemize}
+  \item \verb|COORDINATE_TYPE| ---
+  The coordinate type = `Spectral'.
+  \item \verb|STORAGE_TYPE| ---
+  The storage type can be either `Linear' or `Tabular'. For dynamic spectra, 
+  it will be `Tabular' in most cases\footnote{ Given the flexibility concerning the arrangement of frequency 
+channels or subbands, the values along this coordinate axis might be linear, but do
+not necessarily have to be.}.
+  \item \verb|NOF_AXES| ---
+  The number of coordinate axes = 1.
+  \item \verb|AXIS_NAMES| ---
+  The names of the axis = `Frequency'.
+  \item \verb|AXIS_UNITS| ---
+  The units of the coordinate axis is = `MHz'.
+  \item \verb|REFERENCE_VALUE| ---
+  The World Coordinate Reference value (CRVAL) will be the 0,0 location of the dataset.
+  \item \verb|REFERENCE_PIXEL| ---
+  The World Coordinate Reference pixel (CRPIX) will be the 0,0 location of the dataset.
+  \item \verb|INCREMENT| ---
+  The World Coordinate increment (CDELT) is the frequency bin (CHANNEL\_WIDTH).
+  \item \verb|PC| ---
+  The World Coordinate Reference scaling delta matrix is flat (1, 0) for Dynamic Spectrum data.
+  \item \verb|AXIS_VALUES_PIXEL| ---
+  Reference pixels - List of the subbands. (See Sec.~\ref{sec:coordinate examples}).
+  \item \verb|AXIS_VALUES_WORLD| ---
+  Reference values -- List of the equivalent frequencies of the list
+  of subbands. (See Sec.~\ref{sec:coordinate examples})
+\end{itemize}
+
+More detail on spectral coordinates for LOFAR data files can be found in 
+Section 4.3.2 of ICD-002 \cite{lofar.icd.002}. 
+
+%%____________________________________________________________________
+%%                                             Polarization coordinate
+
+\subsubsection{Polarization coordinate}
+\label{sec:stokes coordinate}
+
+This group describes the polarization contents of the associated 
+\texttt{DYNSPEC Group}.
+For Dynamic Spectrum data, only one axis of this type will be used, i.e. 
+\verb|NOF_AXES|=1.
+
+Within each \texttt{DYNSPEC Group}, there are either one or four Stokes Groups.
+If the data are summed, then there is only the Stokes I information. If the data
+are not
+summed, then there are four Stokes tables (I, Q, U, V or XX, XY, YX, YY), one 
+per polarization.
+Table~\ref{tab:stokes attributes} lists the Attributes in the Stokes Groups. 
+
+\begin{center}
+\begin{table}
+  \begin{tabular}{|lllrp{5.5cm}|}
+    \hline
+    \sc Field/Keyword & \sc H5Type & \sc Type & \sc Value & \sc Description \\
+    \hline \hline
+   \small{\verb|GROUP_TYPE|} & Attr. & \verb|string| &
+   {\texttt{`PolarizationCoord'}} & Coordinate Type descriptor \\
+   \small{\verb|COORDINATE_TYPE|} & Attr. & \verb|string| & {\texttt{`Polarization'}} & Coordinate Type descriptor \\
+     \small{\verb|STORAGE_TYPE|} & Attr. & \small\verb|array<string,1>| & \small
+    	\verb|`Tabular'| & coordinate storage type \\    
+    \small{\verb|NOF_AXES|}              & Attr. & \verb|int| & 1 & N of coordinate axes \\
+    \small{\verb|AXIS_NAMES|}          & Attr. & \verb|array<string,1>| & `Polarization' & World axis names \\
+    \small{\verb|AXIS_UNITS|}          & Attr. & \verb|array<string,1>| & --- & World axis units \\
+    \hline
+  \end{tabular}
+  \caption{Stokes Groups Attributes}
+  \label{tab:stokes attributes}
+  \end{table}
+\end{center}
+
+Specifially, for a LOFAR \texttt{DYNSPEC Group}, the following values are used:
+
+\begin{itemize}
+  \item \verb|COORDINATE_TYPE| --- 
+  The coordinate type = `PolarizationCoord'.
+  \item \verb|STORAGE_TYPE| --- The descriptor for the underlying storage
+  type for this coordinate, of value \verb|`Tabular'|.
+  \item \verb|NOF_AXES| --- 
+  The number of coordinate axes = 1.
+  \item \verb|AXIS_NAMES| --- 
+  The names of the axis is = `Polarization'.
+  \item \verb|AXIS_UNITS| --- 
+  The units of the coordinate axis is = `NONE'.
+\end{itemize}
+
+More detail on polarization coordinates for LOFAR data files can be found in 
+Section 4.3.3 of ICD-002 \cite{lofar.icd.002}. 
+
+%%____________________________________________________________________
+%%                                        The Dynamic Spectrum Dataset
+
+\subsection{The Dynamic Spectrum Dataset}
+\label{sec:dynspec dataset}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|llrp{6cm}|}
+    \hline
+    \sc Field/Keyword & \sc Type & \sc Value & \sc Description \\
+    \hline \hline
+    \small\verb|GROUPTYPE| & \texttt{string} &\verb| `Data'|& Group type descriptor \\
+    \small\verb|WCSINFO| & \texttt{string} &\verb| `/Coordinates'| & Path to the coordinates group describing the transformation for array pixel axes to world coordinates. \\
+    \small{\verb|DATASET_NOF_AXES|} & \verb|int| & N & Number of array axes of the dataset \\
+    \small{\verb|DATASET_SHAPE|} & \verb|array<int,1>| & --- &
+    Shape of the dynamic spectrum data array. \\
+    \hline
+    \small{\verb|DATA|} & \verb|array<double,N>| &  & \\
+    \hline
+  \end{tabular}
+  \caption{Attributes attached to the dynamic spectrum dataset array.}
+  \label{tab:image dataset}
+\end{table}
+
+
+A dynamic spectrum \texttt{DATA} group will most often be a subgroup
+of a \texttt{DYNSPEC Group} container and consist of an HDF5
+``dataset,'' which, as defined in the HDF5 documentation
+\cite{hdf5,hdf5.ug}, is ``stored in two parts: a header and a data
+array.''  However, with the adoption of a so-called ``Coordinates
+group,'' which contains all the relevent information, scale and unit
+metadata, \texttt{Data} group attributes will be limited.
+
+The dataset array will (usually) be a 3-D data structure.
+The usual dimensionality of a
+\texttt{Data} group's dataset will be 3 (\texttt{N\_AXIS=3}), wherein the data
+cube (or cubes) will be defined in (C-type order) \textit{Polarization},
+\textit{Spectral}, \textit{Time}.
+
+LOFAR Dynamic Spectrum Data files will limit attributes to nominal keyword-value
+pairs as much as possible, with a thought toward potential future user requests
+for FITS format images (e.g.~one dynamic spectrum per FITS file).  
+See \S\ \ref{sec:coordinates group} ``The Coordinates
+group,'' for a detailed specification of \texttt{Data} group header attributes. 
+
+The Subband/Channel information will be stored as either 1-D or N-D tables or
+arrays.  This is where the bulk of the data reside.  The
+general structure is such that channels are columns and time bins are rows.  If
+using 1-D tables/arrays, then each subband will be in its own table/array.  If
+using N-D tables/arrays, then each subband will be a plane in a data cube.  
+Time increments are quantized and are filled (with NaN values)
+for gaps;  the time axis is usually linear.  For each subband, the channels are
+quantized and filled for gaps, so within each subband table/array, the frequency
+axis is linear.  However, since the subbands can have large gaps, the
+overall frequency axis is not linear.  The frequency coordinate axis information
+is stored in the Spectral Coordinate Group in the Dynamic Spectrum Data file.   
+
+For example, Subband 0 can start at 140 MHz, Subband 1 at 150 MHz and Subband 2 at
+165 MHz;  each Subband has the same number of channels (subdivisions), say 512,
+all with the same channel widths, and same number of time increments (rows), say
+2000000.  Therefore, there is a gap between Subbands 1 and 2 in this example.  One
+cannot assume that the last channel in Subband (N-1) is followed directly in
+frequency by the first channel in the next Subband N.  Gaps are accounted for in
+the Spectral Coordinate Group. 
+
+%% --------------------------
+
+There are several possibilities of sub-observing modes. Five
+sub-modes are listed below, but please note that this is not yet a full set of
+sub-modes. 
+
+\begin{enumerate}
+
+\item \textsl{Raw data}
+
+The default data stored in each subband table is full resolution, polarized voltages
+from the dipoles. These voltages are stored as 16-bit complex pairs for both X and
+Y. In other words, each sample is stored as (X-real, X-imaginary)(Y-real,
+Y-imaginary) for a total of 64-bits (2 32-bit complex numbers).  This is the format
+of the BF RAW data. 
+
+\item \textsl{Stokes I with IncoherentSum}
+
+  \begin{verse} \small
+    \verb|STOKES_COMPONENTS| = [``I''] \\
+    \verb|SIGNAL_SUM| = \verb|INCOHERENT|
+  \end{verse}
+
+  Data taken for \textbf{Stokes I} TiedArray observing mode with Incoherent
+  Summing. Data are being stored as one number, the total intensity per unit
+  time. Currently this number is being stored as a single float and will
+  eventually be stored as a 16-bit integer.
+
+\item{Stokes I with CoherentSum}
+  
+  \begin{verse} \small
+    \verb|STOKES_COMPONENTS| = [``I''] \\
+    \verb|SIGNAL_SUM| = \verb|COHERENT|
+  \end{verse}
+
+  Data taken for \textbf{Stokes I} TiedArray observing mode with Coherent
+  Summing. Data are being stored as one number, the total intensity per unit
+  time.  Currently this number is being stored as a single float and will
+  eventually be stored as a 16-bit integer.  
+  
+\item{Full Stokes with IncoherentSum}
+  
+  \begin{verse} \small
+    \verb|STOKES_COMPONENTS| = [``I'',``Q'',``U'',``V''] \\
+    \verb|SIGNAL_SUM| = \verb|INCOHERENT|
+  \end{verse}
+
+  Data taken for \textbf{Full Stokes} TiedArray observing mode with Incoherent
+  Summing. Data are being stored as 4 numbers, per unit time.  Currently these
+  4 numbers are being stored as 4 floats and will eventually be stored as 4
+  16-bit integers.
+  
+\item{Full Stokes with CoherentSum}
+  
+  \begin{verse} \small
+    \verb|STOKES_COMPONENTS| = [``I'',``Q'',``U'',``V''] \\
+    \verb|SIGNAL_SUM| = \verb|COHERENT|
+  \end{verse}
+
+  Data taken for \textbf{Full Stokes} TiedArray observing mode with Coherent
+  Summing. It is stored as 4 numbers, per unit time.  Currently these 4 numbers
+  are being stored as 4 floats and will eventually be stored as 4 16-bit
+  integers.  
+  
+\end{enumerate}
+
+%% --------------------------
+
+\subsection{The Event Group ({\tt EVENT})}
+\label{sec:event group}
+
+The \texttt{Event} group in a Dynamic Spectrum Data file will be a table of
+events detected within the dynamic spectrum, including their associated 
+parameters.
+The \texttt{Event} group header will
+specify the fields (columns) of the table, and the number of events in the table
+(rows). The attributes of this group are given in Table \ref{tab:attributes
+event group}. 
+
+\begin{comment}
+  The precise format is not yet defined.  This should also include
+  information on how the events were detected, i.e. the settings used
+  for event trigging.
+\end{comment}
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|lllrl|}
+    \hline
+    \sc Field/Keyword &  \sc H5Type   & \sc Type      & \sc Value & \sc Description\\
+    \hline \hline                    
+    \small{\verb| GROUPTYPE|} & Attr. & string & \verb|`Event'| & Dynamic Spectrum group type \\
+    \small{\verb| DATASET|}   & Attr. & string & \verb|`Event List'|   &  \\
+    %\small{\verb| N_AXIS|}    & Attr. & int    & \verb|2|        & Number of data axes \\
+    %\small{\verb| N_AXIS_1|}  & Attr. & string & \verb|`Fields'| & Axis of the data fields \\
+    %\small{\verb| N_AXIS_2|}  & Attr. & string & \verb|`Event'|  & Axis of the event rows. \\
+    \small{\verb| N_SOURCE|}  & Attr. & int    &                 & Number of data rows \\
+    \small{\verb| FIELD_1|}   & Attr. & \verb|array<double,1>| &               & time \\
+    \small{\verb| FIELD_2|}   & Attr. & \verb|array<double,1>| &               & frequency \\
+    \small{\verb| FIELD_3|}   & Attr. & \verb|array<double,1>| &               & Peak Flux \\
+    \small{\verb| FIELD_4|}   & Attr. & \verb|array<double,1>| &               & Integrated Flux \\
+    \small{\verb| FIELD_5|}   & Attr. & \verb|array<double,1>| &               & duration \\
+    \small{\verb| FIELD_6|}   & Attr. & \verb|array<double,1>| &               & $f_{max}-f_{min}$ \\
+%    \small{\verb| FIELD7|}   & Attr. & double &               & Position angle \\
+    \hline
+  \end{tabular}
+  \caption{Attributes of an Event group.}
+  \label{tab:attributes event group}
+\end{table}
+
+%%_______________________________________________________________________________
+%% Subsection: The Processing History Group (PROCESS_HIST)
+
+\subsection{The Processing History Group ({\tt PROCESS\_HIST})}
+\label{sec:processing group}
+
+The data definition for the \texttt{PROCESS\_HISTORY} group 
+is necessarily loose, and will accommodate a variety of ancillary
+meta-data related to or produced by the various LOFAR processing
+pipelines. Products such as DPPP log files, processing parameters
+sets, RFI mitigation tables, etc. In fact, and due to the wide-ranging data types
+and free-form ASCII format of many log files that the
+\texttt{PROCESS\_HISTORY} group may encompass, this group will be a
+catch-all envelop encapsulating information about all steps of
+processing should the user need such information. And it is because
+of this free-form nature of the meta-data that it is very difficult to
+define a header describing attached data when it is not yet known just
+what those data may include. An attempt has been made to provide by
+example how this will or should appear in the \texttt{PROCESS\_HISTORY}
+group header. The attributes of this group are given in Table
+\ref{tab:processing history 
+group}, and an example of the structure of this is group is shown in Figure \ref{fig:processing history group}.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|llrp{7cm}|}
+    \hline 
+    \sc Field/Keyword  & \sc Type     & \sc Value & \sc Description \\
+    \hline \hline 
+     \small\verb|GROUPTYPE|        & \verb|string| &
+     \small\verb|`ProcessHistory'| & \small{\verb|LOFAR|} group type \\
+     \small\verb|OBSERVATION_PARSET|        & \verb|bool| &  & Observing parset present? (True/False) \\
+     \begin{scriptsize}\textit{OBSERVATION\_LOG}\end{scriptsize}     & \verb|bool|      &            & Observing log present? (True/False) \\
+     \begin{scriptsize}\textit{DYNSPEC\_PARSET}\end{scriptsize}      & \verb|bool|  &  & Dynamic Spectrum parset present? 
+     									(True/False) \\
+     \begin{scriptsize}\textit{DYNSPEC\_LOG}\end{scriptsize} & \verb|bool|  &  & Dynamic Spectrum log present? 
+     									(True/False) \\
+    \hline
+  \end{tabular}
+  \caption{Attributes of a PROCESS\_HISTORY group.}
+  \label{tab:processing history group}
+\end{table}
+
+\begin{comment}
+  The Figure has to be adapted to DYNSPEC case.
+\end{comment}
+
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics{figures/ProcessingGroup2.eps}
+ \caption{The PROCESS\_HISTORY group, nested tabulation  \label{fig:processing history group}}
+ \end{center}
+
+\end{figure}
+
+As with all other Dynamic Spectrum Data file HDF5 groups and subgroups, the
+\texttt{PROCESS\_HISTORY} group will be an HDF5 group, as a subgroup of a
+\texttt{DYNSPEC Group}. 
+The attributes will contain a brief summary of the appended processing files
+contained therein, with pointers to tables containing the logging data, parameter
+sets, etc..
+
+\begin{comment}
+  Include information on rebinning, etc.
+\end{comment}
+
+%% ------------------------------------------------------------------------------
+%
+%\section{Interfaces}
+%\label{sec:interfaces}
+%
+%---/---
+%
+%\subsection{Interface requirements}
+%
+%---/---
+%
+%\subsection{Relation to other workpackages}
+%
+%---/---
+%
+%% ==============================================================================
+%%
+%%  Appendix
+%%
+%% ==============================================================================
+
+\clearpage
+\appendix
+
+%%_______________________________________________________________________________
+%% Discussion & open questions
+
+\section{Discussion \& open questions}
+\label{sec:discussion}
+
+%% -------------------------------------------------------------------------------
+\subsection{Dynamic Spectrum Data flow}
+
+The dynamic spectrum data flow is shown in Figure \ref{fig:dataflow}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.6,angle=90]{figures/HDF5-writer-DS-data-detail.ps}
+  \caption{Dynamic Spectrum Data Flow}
+  \label{fig:dataflow}
+\end{figure}
+
+%% -------------------------------------------------------------------------------
+
+\subsection{Summary of HBA JOINED Discussion}
+\label{sec:Summary of HBA JOINED Discussion}
+
+\input hba_joined_appendix
+%%_______________________________________________________________________________
+%% LOFAR Filename Convention
+
+\section{LOFAR Filename Convention}
+\label{sec:filenames}
+
+The LOFAR file naming convention is described in the document, \texttt{LOFAR-USG-ICD-005} \cite{lofar.icd.005}. Readers are encouraged to consult that document for specifics on LOFAR file naming conventions.
+
+%%_______________________________________________________________________________
+%% Coordinates group examples
+
+\section{Coordinates Group examples}
+\label{sec:coordinate examples}
+
+An in-depth description -- including a number of examples -- can be
+found in \texttt{LOFAR-USG-ICD-002} \cite{lofar.icd.002}. Readers are
+encouraged to consult that document for specifics on the storage of
+world coordinates information.
+
+\newpage
+
+\section*{\glossaryname}
+\label{sec:glossary}
+\addcontentsline{toc}{section}{\glossaryname}
+
+\input lofar_common_glossary
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+
+\end{document}

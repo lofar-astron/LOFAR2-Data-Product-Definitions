@@ -1,0 +1,42 @@
+\svnInfo $Id$
+
+%%
+%%  Section: Direction Coordinate
+%%
+
+The Direction Coordinate consists of a set of two coupled coordinate
+axes, describing a direction in space; it therefore includes
+information such as the equinox of the observation, the system of
+equatorial coordinates on the sphere of the sky, as well as parameters
+for the spherical map projection. The attributes storing the actual
+coordinate parameters are listed in Tab.~\ref{tab:coord-direction} below.
+
+\input coordinates_coord_direction_table
+
+Several systems of equatorial coordinates (right ascension and
+declination) are in common use. Apart from the International Celestial
+Reference System (ICRS, IAU, 1984), the axes of which are by
+definition fixed with respect to the celestial sphere, each system is
+parameterized by time. In particular, mean equatorial coordinates are
+defined in terms of the epoch (i.e.\ instant of time) of the mean
+equator and equinox (i.e.\ pole and origin of right ascension). The
+same applies for ecliptic coordinate systems. The keyword
+\verb|RADEC_SYS| is used to specify the particular system; recognized
+values are given in Tab. \ref{tab:radec-sys} below.
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{ll}
+    \hline
+    \verb|RADEC_SYS| & \textsc{Description} \\
+    \hline \hline
+    \verb|ICRS|     & International Celestial Reference System \\
+    \verb|FK5|      & mean place, new (IAU 1984) system \\
+    \verb|FK4|      & mean place, old (Bessell-Newcomb) system \\
+    \verb|FK4-NO-E| & meanplace, old system but without e-terms \\
+    \verb|GAPPT|    & Geocentric Apparent Place, IAU 1984 system \\
+    \hline
+  \end{tabular}
+  \caption{Allowed values of \texttt{RADEC$_-$SYS}}
+  \label{tab:radec-sys}
+\end{table}

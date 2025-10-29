@@ -1,0 +1,88 @@
+\svnInfo $Id$
+
+%%
+%%  Section: Polarization Coordinate
+%%
+
+\input coordinates_coord_polarization_table
+
+\begin{list}{\textbf{--}}{}
+\item \verb|GROUPTYPE| is the group type descriptor with the fixed
+  value \verb|`PolarizationCoord'|.
+\item \verb|COORDINATE_TYPE| is the is the descriptor for the
+  coordinate type, of value \verb|`Polarization'|.
+\item \verb|STORAGE_TYPE| is the descriptor for the underlying storage
+  type for this coordinate, of value \verb|`Tabular'|.
+\item \verb|NOF_AXES| is the number of coordinate axes represented by
+  this coordinate; as the Polarization coordinate consists of a single
+  tabulared axis, we have \verb|NOF_AXES = 1|.
+\item \verb|AXIS_NAMES| are the world axis names connected with the
+  coordinate axes; for a Polarization coordinate \verb|AXIS_NAMES = `Polarization'|.
+\item \verb|AXIS_UNITS| are the physical units along each coordinate axis
+  (corresponding to the FITS keyword \verb|CUNITi|, see \cite{fits.paper1}).
+  Restrictions on the nature and range of units, if any, will be determined by
+  agreements applying to the specific axis. If they are not so limited, units
+  should conform to the IAU Style Manual \cite{mcnally.1988}. \\ The
+  units of the Stokes parameters I, Q, U and V, of total polarization
+  (linear, elliptical or circular) and of separate circular
+  polarizations (L, R) are some form of flux density. 
+\item \verb|AXIS_VALUES_PIXEL| holds the tabulated values along the pixel axis
+\item \verb|AXIS_VALUES_WORLD| holds the tabulated values along the world
+  axis of the Polarization coordinate, i.e. the names of the Polarization
+  components. Commonly used values are:
+  \begin{center}
+    \begin{tabular}{lp{10cm}}
+      \verb|AXIS_VALUES_WORLD| & \textsc{Description} \\
+      \hline
+      \verb|[`I']| & Total flux density only data. \\
+      \verb|[`I',`Q',`U',`V']| & Full set of standard Stokes
+      parameters. \\
+      \verb|[`X',`Y']| & Raw time-series TBB data, originating
+      directly from the individual dipoles. \\
+      \verb|[`XX',`YY',`XY',`YX']| & Cross-correlation products from a
+      pair of $X$-linear and $Y$-linear receiver feeds. \\
+      \verb|[`R',`L',`X',`Y']| & $X$/$Y$ linear components, as well as
+      $R$/$L$ circular components. \\
+      \hline
+    \end{tabular}
+  \end{center}
+  
+ For a full list of recognized values and their description see
+  Tab. \ref{tab:polarization-values} below.
+  \begin{table}[ht]
+    \centering
+    \begin{tabular}{|llp{10cm}|}
+      \hline
+      \textsc{Term} & \textsc{Symbol} & \textsc{Description} \\
+      \hline \hline
+      Stokes Parameters & I & Standard Stokes total intensity,
+      i.e. total Poynting vector or flux density of the wave. \\
+      & Q  & Standard Stokes linear; degree of polarization, i.e. the
+      difference in intensities between horizontal and vertical
+      linearly polarized components. \\
+      & U  & Standard Stokes linear; plane of polarization, i.e. the
+      difference in intensities between linearly polarized components
+      oriented at $\pm \pi/4$ w.r.t. the components of $Q$ \\
+      & V  & Standard Stokes circular; ellipticity, i.e. the differences
+      in intensities between right and left circular polarized
+      components. \\
+      \hline
+      Circular feeds & R  & Right circular \\
+      & L  & Left circular \\
+      & RR & Right-right circular \\
+      & LL & Left-left circular \\
+      & RL & Right-left circular \\
+      & LR & Left-right circular \\
+      \hline
+      Linear feeds & X  & X linear \\
+      & Y  & Y linear \\
+      & XX & X parallel linear \\
+      & YY & Y parallel linear \\
+      & XY & XY cross linear \\
+      & YX & YX cross linear \\
+      \hline
+    \end{tabular}
+    \caption{Recognized values for the Polarization component parameter.}
+    \label{tab:polarization-values}
+  \end{table}
+\end{list}

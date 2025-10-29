@@ -1,0 +1,32 @@
+\svnInfo $Id$
+
+LOFAR metadata are stored via Attributes in the HDF5 file.  This section
+details the metadata within each HDF5 Group and Sub-Group.  Attribute names,
+data types, default values, units and descriptions are summarized for each
+Group, in a table. The following conventions are used when storing data and
+meta-data in HDF5:
+
+\begin{itemize}
+\item Fields in {\it italics} are optional. All other fields are mandatory.
+
+\item All HDF5 groups have a \verb|GROUPTYPE| attribute, that describes the type of the group. The ICD provides the mandatory value for this field for each group.
+
+\item \verb|boolean|s are stored as integers, with \verb|0 = false| and \verb|1 = true|. Implementations shall interpret any other value as \verb|true| as well.
+
+\item Several meta-data come in (value, unit) pairs, such as \verb|CLOCK_FREQUENCY| and \verb|CLOCK_FREQUENCY_UNIT|. The \verb|_UNIT| field describes the unit in which the meta-data is provided. Implementations shall:
+\begin{itemize}
+\item Use the unit that is dictated in this ICD, unless doing so leads to an unacceptable loss of precision.
+\item Use units that can be parsed by CasaCore.
+\end{itemize}
+
+\item The following date and time formats are used:
+\begin{itemize}
+\item \verb|yyyy-mm-ddThh:mm:ss.sssssssssZ| for UTC timestamps, providing nanosecond precision.
+\item \verb|yyyy-mm-ddThh:mm:ss.sZ| for timestamps that need little precision, such as a file creation date.
+\item \verb|hh:mm:ss.sssssssss|, using an 24-hour clock, for UTC times.
+\end{itemize}
+
+\item Missing data is represented by samples with a value of $0$.
+
+\end{itemize}
+

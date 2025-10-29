@@ -1,0 +1,535 @@
+
+% \bibitem{bunclark.1996}Precise re-definition of DATE-OBS Keyword ..., Bunclark, P., Rots, A., 19 Nov., 1996, \verb|ftp://legacy.gsfc.nasa.gov/fits_info/fits_office/year2000_agreement.txt|.
+
+% \bibitem{iau.1974} IAU (1974) Transactions of the IAU Vol. 15B (1973) 166.
+% \bibitem{ieee.1969} IEEE (1969) Standard Definitions of Terms for
+%   Radio Wave Propagation, IEEE Trans. AP-17, pp.~270--275.
+
+
+%% ==============================================================================
+%%
+%%  Articles
+%%  - Astronomy
+%%  - Computing
+%%  - Physics
+%%
+%% ==============================================================================
+
+%%__________________________________________________________
+%% Astronomy
+
+@Article {fits.paper2,
+  author       = {M.~R.~Calabretta and E.~W.~Greisen},
+  title        = "{Representations of celestial coordinates in FITS}",
+  journal = {A\&A},
+  year         = {2002},
+  volume       = {395},
+  pages        = {1077--1122},
+  abtract      = {Paper II applies the general rules of Paper I to the specific problem of specifying celestial coordinates in a two-dimensional projection of the sky. The coordinate system is specified with the new keyword RADESYS and a large number of "projections" are defined. Oblique projections are described and illustrated. Several examples of header interpretation and construction are given including one that specifies coordinates on a planetary body rather than the celestial sphere. The application to binary tables is described.}
+}
+
+@Article {fits.paper1,
+  author       = {E.~W.~Greisen and M.~R.~Calabretta},
+  title        = "{Representations of world coordinates in FITS}",
+  journal = {A\&A},
+  year         = {2002},
+  volume       = {395},
+  pages        = {1061--1075},
+  abstract     = {Paper I describes a very general method for specifying coordinates. A pixel-to-coordinate matrix PCj_i will replace CROTAj, units will be described with a new keyword CUNITj, and secondary sets of coordinate descriptions may be specified. A complete system of unit specification is described and is expected to supplement the IAU standard system of units. Methods for describing the coordinates of matrices in binary tables are also described.}
+}
+
+@Article {fits.paper3,
+  author       = {E.~W.~Greisen and M.~R.~Calabretta and F.~G.~Valdes and S.~L.~Allen},
+  title        = "{Representations of spectral coordinates in FITS}",
+  journal = {A\&A},
+  year         = {2006},
+  volume       = {446},
+  pages        = {747--771},
+  abstract     = {Paper III applies the general rules and practices developed in the first two papers to spectral coordinates, namely frequency, wavelength, velocity, and the radio and optical conventional "velocities". These are defined and methods of computing one type of coordinate from a spectral axis gridded in another are given. A projection representative of optical spectrometers is also defined. Coordinate reference frames may be specified.}
+}
+
+@Article {polarimetry.paper1,
+  author    = {J.~P.~Hamaker and R.~J.~Sault and J.~D.~Bregman},
+  title     = {Understanding radio polarimetry},
+  subtitle  = {Part I: Mathematical formalism},
+  journal   = {A\&A Suppl.},
+  year      = {1996},
+  volume    = {137},
+  pages     = {137--147}
+}
+
+@Article {polarimetry.paper3,
+  author   = {J.~P.~Hamaker and J.~D.~Bregman},
+  title    = {Understanding radio polarimetry},
+  subtitle = {Part III: Interpreting the IAU/IEEE definitions of the Stokes parameters},
+  journal  = {A\&A Suppl.},
+  year     = {1996},
+  volume   = {117},
+  pages    = {161--165}
+}
+
+@Article {hanisch.2001,
+  author   = {R.~J.~Hanisch and A.~Farris and E.~W.~Greisen and W.~D.~Pence and B.~M.~Schlesinger and P.~J.~Teuben and R.~W.~Thompson and W.~Warnock},
+  title    = "{Definition of the Flexible Image Transport System (FITS)}",
+  journal  = {A\&A},
+  year     = {2001},
+  volume   = {376},
+  pages    = {359--380}
+}
+
+@Article {polarimetry.paper2,
+  author       = {R.~J.~Sault and J.~P.~Hamaker and J.~D.~Bregman},
+  title        = {Understanding radio polarimetry},
+  subtitle     = {Part II: Instrumental calibration of an interferometer array},
+  journal = {A\&A Suppl.},
+  year         = {1996},
+  volume       = {117},
+  pages        = {149-159}
+}
+
+@ARTICLE{2011arXiv1104.1577S,
+   author = {{Stappers}, B.~W. and {Hessels}, J.~W.~T. and {Alexov}, A. and 
+	{Anderson}, K. and {Coenen}, T. and {Hassall}, T. and {Karastergiou}, A. and 
+	{Kondratiev}, V.~I. and {Kramer}, M. and {van Leeuwen}, J. and 
+	{Mol}, J.~D. and {Noutsos}, A. and {.~Romein}, J.~W and {Weltevrede}, P. and 
+	{Fender}, R. and {Wijers}, R.~A.~M.~J. and {B{\"a}hren}, L. and 
+	{Bell}, M.~E. and {Broderick}, J. and {Daw}, E.~J. and {Dhillon}, V.~S. and 
+	{Eisl{\"o}ffel}, J. and {Falcke}, H. and {Griessmeier}, J. and 
+	{Law}, C. and {Markoff}, S. and {Miller-Jones}, J.~C.~A. and 
+	{Scheers}, B. and {Spreeuw}, H. and {Swinbank}, J. and {ter Veen}, S. and 
+	{Wise}, M.~W. and {Wucknitz}, O. and {Zarka}, P. and {Anderson}, J. and 
+	{Asgekar}, A. and {Avruch}, I.~M. and {Beck}, R. and {Bennema}, P. and 
+	{Bentum}, M.~J. and {Best}, P. and {Bregman}, J. and {Brentjens}, M. and 
+	{van de Brink}, R.~H. and {Broekema}, P.~C. and {Brouw}, W.~N. and 
+	{Br{\"u}ggen}, M. and {de Bruyn}, A.~G. and {Butcher}, H.~R. and 
+	{Ciardi}, B. and {Conway}, J. and {Dettmar}, {R.~-.} and {van Duin}, A. and 
+	{van Enst}, J. and {Garrett}, M. and {Gerbers}, M. and {Grit}, T. and 
+	{Gunst}, A. and {van Haarlem}, M.~P. and {Hamaker}, J.~P. and 
+	{Heald}, G. and {Hoeft}, M. and {Holties}, H. and {Horneffer}, A. and 
+	{Koopmans}, L.~V.~E. and {Kuper}, G. and {Loose}, M. and {Maat}, P. and 
+	{McKay-Bukowski}, D. and {McKean}, J.~P. and {Miley}, G. and 
+	{Morganti}, R. and {Nijboer}, R. and {Noordam}, J.~E. and {Norden}, M. and 
+	{Olofsson}, H. and {Pandey-Pommier}, M. and {Polatidis}, A. and 
+	{Reich}, W. and {R{\"o}ttgering}, H. and {Schoenmakers}, A. and 
+	{Sluman}, J. and {Smirnov}, O. and {Steinmetz}, M. and {Sterks}, C.~G.~M. and 
+	{Tagger}, M. and {Tang}, Y. and {Vermeulen}, R. and {Vermaas}, N. and 
+	{Vogt}, C. and {de Vos}, M. and {Wijnholds}, S.~J. and {Yatawatta}, S. and 
+	{Zensus}, A.},
+    title = "{Observing pulsars and fast transients with LOFAR}",
+  journal = {ArXiv e-prints},
+archivePrefix = "arXiv",
+   eprint = {1104.1577},
+ primaryClass = "astro-ph.IM",
+ keywords = {Astrophysics - Instrumentation and Methods for Astrophysics, Astrophysics - Solar and Stellar Astrophysics},
+     year = 2011,
+    month = apr,
+   adsurl = {http://adsabs.harvard.edu/abs/2011arXiv1104.1577S},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@Article {straten.2009,
+  author       = {W.~van~Straten and R.~Manchester and S.~Johnston and J.~Reynolds},
+  title        = {\textsc{psarchive} and \textsc{psrfits}: Definition of the Stokes Parameters and Instrumental Basis Conventions},
+  series       = {astro-ph.IM},
+  year         = {2009},
+  month        = {December},
+  number       = {arXiv:0912.1662}
+}
+
+@Article {tol.2007,
+  author       = {Sebastiaan van der Tol and Brian D. Jeffs and Alle-Jan van der Veen},
+  title        = {Self-Calibration for the LOFAR Radio Astronomical Array},
+  journal = {IEEE Transactions on Signal Processing},
+  year         = {2007},
+  month        = {September},
+  volume       = {55},
+  number       = {9},
+  pages        = "4497--4510"
+}
+
+%%__________________________________________________________
+%% Computing
+
+@Article {miles.1993,
+  author       = "Douglas Miles",
+  title        = "Compute Intensity and the FFT",
+  journal = "ACM",
+  year         = "1993"
+}
+
+@Article{ieee.754-2008,
+  author={},
+  journal={IEEE Std 754-2008},
+  title={{IEEE Standard for Floating-Point Arithmetic}},
+  year={2008},
+  volume={},
+  number={},
+  pages={1--58},
+  doi={10.1109/IEEESTD.2008.4610935},
+  ISSN={},
+}
+
+%%__________________________________________________________
+%% Physics
+
+@Article {pdg.rpp,
+  author       = {K.~Nakamura et al. (Particle Data Group)},
+  title        = {Review of Particle Physics},
+  journal = {J. Phys.},
+  year         = {2010},
+  volume       = {G~37},
+  number       = {075021},
+  url          = {http://pdg.lbl.gov}
+}
+
+%% ==============================================================================
+%%
+%%  Books
+%%
+%% ==============================================================================
+
+@Book {bladel.2007,
+  author    = {Jean~G.~van~Bladel},
+  title     = {Electromagnetic Fields},
+  series    = {IEEE press series on Electromagnetic Wave Theory},
+  publisher = {Wiley~\&~Sons},
+  location  = {New Jersey},
+  year      = {2007}
+}
+
+@Book {bracewell.1999,
+  author    = {R.~Bracewell},
+  title     = {The Fourier Transform and Its Applications},
+  publisher = {McGraw-Hill},
+  location  = {New York},
+  year      = {1999},
+  edition   = {3}
+}
+
+@Book{collett.2005,
+  author    = {E.~Collett},
+  title     = {Field Guide to Polarization},
+  publisher = {SPIE Press},
+  location  = {Bellingham, WA},
+  year      = {2005},
+  url       = {http://spie.org/x32376.xml}
+}
+
+@Book{hockney.1986,
+  author    = {R.~W.~Hockney},
+  title     = {Parallel Computers},
+  publisher = {Johns Hopkins Press},
+  year      = {1986}
+}
+
+@Book {kraus.1966,
+  author    = {J.~D.~Kraus},
+  title     = {Radio Astronomy},
+  publisher = {McGraw-Hill},
+  location  = {New York},
+  year      = {1966}
+}
+
+@Book {papoulis.1962,
+  author    = {A.~Papoulis},
+  title     = {The Fourier Integral and Its Applications},
+  publisher = {McGraw-Hill},
+  location  = {New York},
+  year      = {1962}
+}
+
+%% ==============================================================================
+%%
+%%  Proceedings 
+%%
+%% ==============================================================================
+
+@Proceedings {mcnally.1988,
+  editor       = {D.~McNally},
+  title        = {Transactions of the IAU, Proceedings of the Twentieth General Assembly},
+  year         = {1988},
+  organization = {IAU}
+}
+
+%% ==============================================================================
+%%
+%%  Memos / Reports
+%%
+%% ==============================================================================
+
+@Report {evla.memo.132,
+  author      = "S.~Bhatnagar",
+  title       = "Report on the findings of the CASA Terabyte Initiative: Single-node tests",
+  subtitle    = "EVLA Memo",
+  type        = "Memo",
+  number      = "132",
+  institution = "NRAO",
+  location    = "Socorro",
+  year        = {2009},
+  month       = {May}
+}
+
+@Report {boonstra.2006,
+  author      = {A.~J.~Boonstra and M. Tanigawa},
+  title       = {LOFAR Interference Mitigation Approach and Measurement Results},
+  year        = {2006},
+  type        = {Report},
+  number      = {LOFAR-ASTRON-RPT-104},
+  institution = {ASTRON}
+}
+
+@Manual {dal-um,
+  author   = "{DAL development team}",
+  title    = "{DAL User Manual}",
+  year     = {2011},
+  url      = {https://github.com/nextgen-astrodata/DAL}
+}
+
+@Report {evenden.1991,
+  author      = {G.~I.~Evenden},
+  title       = {Cartgraphic Projection Procedures for the UNIX Environment -- A~User's Manual},
+  year        = {1991},
+  type        = {Open-File Report},
+  number      = {90-284},
+  institution = {United States Department of the Interior Geological Survey}
+}
+
+@Report {george.1995,
+  author      = {I.~M.~George and L.~Angelini},
+  title       = {Specification of Physical Units within OGIP FITS files},
+  year        = {1995},
+  type        = {OGIP Memo},
+  number      = {OGIP/91-001},
+  institution = {NASA Goddard Space Flight Center},
+  location    = {Greenbelt, Maryland}
+}
+
+@Report {aips.memo.27,
+  author      = "E.~W.~Greisen",
+  title       = "Non-linear coordinate systems in AIPS",
+  year        = "1993",
+  type        = "AIPS Memo",
+  number      = "27",
+  institution = "??"
+}
+
+@Report {gunst.cs1,
+  author      = {A.~Gunst and K.~van~der~Schaaf and M.~Bentum},
+  title       = {Core Station-1, The First Lofar Station},
+  year        = {????},
+  institution = {ASTRON}
+}
+
+@Manual {hdf5,
+  author   = "{The HDF Group}",
+  title    = "{Hierarchical data format version 5}",
+  year     = {2000-2010},
+  url      = {http://www.hdfgroup.org/HDF5}
+}
+
+@Manual {hdf5.ug,
+  author   = "{The HDF Group}",
+  title    = "{HDF5 User's Guide}",
+  subtitle = {Detailed guide covering critical HDF5 features},
+  year     = {2009},
+  month    = {November},
+  version  = {1.8.4},
+  url      = {http://hdfgroup.org/HDF5/doc/PSandPDF}
+}
+
+@Manual {hdf5.rm,
+  author   = "{The HDF Group}",
+  title    = "{HDF5 Reference Manual}",
+  subtitle = {Detailed C and Fortran90 interface descriptions},
+  year     = {2009},
+  month    = {November},
+  version  = {1.8.4},
+  url      = {http://hdfgroup.org/HDF5/doc/PSandPDF}
+}
+
+@Report {kaplan.2000,
+  author      = {G.~D.~Kaplan},
+  title       = {The IAU Resolutions on Astronomical Reference Systems, Time Scales, and Earth Rotation Models},
+  year        = {2000},
+  institution = {United States Naval Observatory},
+  type        = {Circular},
+  number      = {179}
+}
+
+@Report {ochsenbein.1996,
+  author      = {F.~Ochsenbein and N.~Paul and M.~Kuin},
+  title       = {Standards for Astronomical Catalogues},
+  year        = {1996},
+  version     = {1.5},
+  institution = {CDS}
+}
+
+@techreport {poiesz.2006,
+  author      = {W.~Poiesz},
+  title       = {TBB Design Document},
+  year        = {2006},
+  type        = {Software Design Document},
+  number      = {LOFAR-ASTRON-SDD-047},
+  institution = {ASTRON}
+}
+
+@Report {ivoa.stc,
+  author      = {A.~H.~Rots},
+  title       = {Space-Time Coordinate Metadata for the Virtual Observatory},
+  year        = {2007},
+  month       = {October},
+  version     = {1.33},
+  institution = {IVOA},
+  url         = {http://www.ivoa.net/Documents/latest/STC.html}
+}
+
+@Report {vos.2004,
+  author      = {M.~de~Vos},
+  title       = {LOFAR Phase I Baseline Specification},
+  year        = {2004},
+  institution = {ASTRON}
+}
+
+@techreport {aips++.note.191,
+  author   = {M.~H.~Wieringa and T.~J.~Cornwell},
+  title    = {Definition of MeasurementSet},
+  year     = {1996},
+  month    = {October},
+  type     = {AIPS++ Note},
+  number   = {191},
+  institution = {NRAO/ATNF},
+  abstract = {A MeasurementSet is an AIPS++  Table containing data from a telescope. Telescopes all record data in their own way, the MeasurementSet layout describes how these measurements are to be stored within the AIPS++  system. This document describes the predefined columns and keywords (including subtables) of the MeasurementSet (MS). The predefined items include required and optional ones. In addition to the predefined columns, MeasurementSets can contain instrument specific columns, keywords or subtables. These additional items would only be accessed from instrument specific code.}
+}
+
+@techreport {aips++.note.229,
+  author   = {A.~J.~Kemball and M.~H.~Wieringa},
+  title    = {MeasurementSet definition version 2.0},
+  year     = {2000},
+  month    = {January},
+  type     = {AIPS++ Note},
+  number   = {229},
+  institution = {NRAO/ATNF},
+  abstract = {This note describes a revised MeasurementSet definition which extends that previously given in AIPS++Note 191 (Wieringa and Cornwell 1996). The new definition is designed to support changes in the synthesis calibration system, provide support for VLBI processing, enhance single-dish capabilities and also incorporate more general modifications that have been suggested since the first definition was released. The motivation for the modifications is discussed, and a complete form of the revised definition is presented.}
+}
+
+@Report {wijnholds.2006,
+  author      = {S.~J.~Wijnholds},
+  title       = {Station calibration, Pitfalls and possibilities},
+  year        = {2006},
+  type        = {Memo},
+  number      = {LOFAR-ASTRON-MEM-217},
+  institution = {ASTRON}
+}
+
+%%__________________________________________________________
+%%                           ESO Interface Control Documents
+
+@techreport {eso.dic,
+  author      = {ESO},
+  title       = {Data Interface Control Document},
+  year        = {2008},
+  month       = {April},
+  type        = {DIC},
+  number      = {GEN-SPE-ESO-19400-0794},
+  institution = {ESO},
+  url         = {http://archive.eso.org/cms/tools-documentation/eso-data-interface-control}
+}
+
+%%__________________________________________________________
+%%                   LOFAR Data format specifications (ICDs)
+
+@techreport{lofar.icd.001,
+    author      = {L.~B\"ahren and K.~Anderson and A.~Corstanje and A.~Horneffer and J.~Masters},
+    title       = "{TBB Time-Series Data}",
+    type        = {LOFAR Data Format ICD}, 
+    number      = {LOFAR-USG-ICD-001},
+    year        = {2011},
+    institution = {ASTRON}
+}
+
+@techreport {lofar.icd.002,
+  author       = {L.~B\"ahren and A.~Alexov and K.~Anderson and J.-M.~Grie{\ss}meier},
+  title        = "{Representations of World Coordinates}",
+  type         = {LOFAR Data Format ICD},
+  number       = {LOFAR-USG-ICD-002},
+  year         = {2011},
+  institution  = {ASTRON}
+}
+
+@techreport {lofar.icd.003,
+  author      = {A.~Alexov and K.~Anderson and L.~B\"ahren and J.-M. Grie{\ss}meier and J.W.T.~Hessels and J.S.~Masters and B.W.~Stappers},
+  title       = "{Beam-Formed Data}",
+  year        = {2011},
+  type        = {LOFAR Data Format ICD},
+  number      = {LOFAR-USG-ICD-003},
+  institution = {ASTRON}
+}
+
+@techreport {lofar.icd.004,
+  author      = {L.~B\"ahren and K.~Anderson and J. Masters},
+  title       = {Radio Sky Image Cubes},
+  year        = {2011},
+  type        = {LOFAR Data Format ICD},
+  number      = {LOFAR-USG-ICD-004},
+  institution = {ASTRON}
+}
+
+@techreport {lofar.icd.005,
+  author      = {A.~Alexov and K. Anderson and L.~B\"ahren and A.~Gunst and H.~Holties and M.~Wise},
+  title       = {File Naming Conventions},
+  year        = {2011},
+  type        = {LOFAR Data Format ICD},
+  number      = {LOFAR-USG-ICD-005},
+  institution = {ASTRON}
+}
+
+@techreport {lofar.icd.006,
+  author      = {J.-M.~Grie{\ss}meier and A.~Alexov and K.~Anderson and L.~B\"ahren},
+  title       = {Dynamic Spectrum Data},
+  year        = {2011},
+  type        = {LOFAR Data Format ICD},
+  number      = {LOFAR-USG-ICD-006},
+  institution = {ASTRON}
+}
+
+@techreport {lofar.icd.007,
+  author      = {K.~Anderson},
+  title       = {Visibility Data},
+  year        = {2011},
+  type        = {LOFAR Data Format ICD},
+  number      = {LOFAR-USG-ICD-007},
+  institution = {ASTRON}
+}
+
+@techreport {lofar.icd.008,
+  author      = {J.~Anderson and L.~B\"ahren and M.~Bell and T.~Riller and K. Anderson},
+  title       = {Rotation Measure Synthesis Cubes},
+  year        = {2011},
+  type        = {LOFAR Data Format ICD},
+  number      = {LOFAR-USG-ICD-008},
+  institution = {ASTRON}
+}
+
+@techreport {ms2.2008,
+  author      = {A.~P.~Schoenmakers},
+  title       = {MS2 description for LOFAR-CS1},
+  year        = {2008},
+  institution = {ASTRON}
+}
+
+%%__________________________________________________________
+%%                   Websites
+
+@misc{website:casacore,
+      key = "casacore",
+      title = "Casacore website",
+      howpublished = {\url{http://code.google.com/p/casacore/}}
+}
+
+@misc{website:casa,
+      key = "casa",
+      title = "CASA website",
+      howpublished = {\url{http://casa.nrao.edu/}}
+}
+
+% \bibitem{eso.2008}ESO Data Interface Control Document, Doc. No. GEN-SPE-ESO-19400-0794, Issue 4, 8 April, 2008.

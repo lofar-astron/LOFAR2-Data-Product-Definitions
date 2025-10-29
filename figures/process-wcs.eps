@@ -1,0 +1,164 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%Creator: Eric Greisen
+%%CreationDate: Sun 1993/1/12
+%%Title: wcsPRO.ps
+%%Pages: 1 1
+%%DocumentFonts: Courier
+%%BoundingBox: 25 235 350 640
+%%EndComments
+
+%%BeginProcSet: graphics.pro
+   /TextFont /Courier-Bold findfont 15 scalefont def
+   /BraceFont /Courier-Bold findfont 45 scalefont def
+
+   % Constants.
+   /nstr 13 string def
+
+  /prt-n {
+      dup abs 0.001 lt {pop 0} if
+      nstr cvs show
+      } def
+
+  /max {
+      /mx1 exch def
+      /mx2 exch def
+      mx1 mx2 gt
+      {mx1}{mx2}ifelse
+      } def 
+
+  /BoxIt {
+     dup stringwidth pop  /Xsp exch def
+     /XXsp (COORDINATES) stringwidth pop def
+     /Ysp 15 def   /XXsp XXsp Xsp max 8 add def  /ycc 2 def
+     currentpoint /Yc exch def /Xc exch def
+     XXsp 2 div neg 0 rmoveto
+     0 -2 Ysp mul ycc sub rlineto
+     XXsp 0 rlineto
+     0 2 Ysp mul ycc add rlineto
+     XXsp  neg 0 rlineto
+     Xc Yc moveto
+     Xsp 2 div neg Ysp neg rmoveto show
+     Xc Yc Ysp sub 1 sub moveto
+     (COORDINATES) dup stringwidth pop 2 div neg -11 rmoveto show
+     Xc Yc 2 Ysp mul sub ycc sub moveto
+     currentpoint /Yc exch def /Xc exch def
+     stroke
+     Xc Yc moveto
+     } def
+
+  /BBoxIt {
+     dup stringwidth pop  /Xsp exch def
+     /XXsp (PIXEL COORDINATES) stringwidth pop def
+     /Ysp 15 def   /XXsp XXsp Xsp max 8 add def  /ycc 2 def
+     currentpoint /Yc exch def /Xc exch def
+     XXsp 2 div neg 0 rmoveto
+     0 -2 Ysp mul ycc sub rlineto
+     XXsp 0 rlineto
+     0 2 Ysp mul ycc add rlineto
+     XXsp  neg 0 rlineto
+     Xc Yc moveto
+     Xsp 2 div neg Ysp neg rmoveto show
+     Xc Yc Ysp sub 1 sub moveto
+     (PIXEL COORDINATES) dup stringwidth pop 2 div neg -11 rmoveto show
+     Xc Yc 2 Ysp mul sub ycc sub moveto
+     currentpoint /Yc exch def /Xc exch def
+     stroke
+     Xc Yc moveto
+     } def
+
+   /CenterIt {
+      dup stringwidth pop /Xsp exch def
+      Xsp -2 div -11 rmoveto
+      show
+      Xsp -2 div -4 rmoveto
+      currentpoint /Yc exch def /Xc exch def
+      stroke
+      Xc Yc moveto
+      } def
+
+   /Arrow {
+      -5  7 rmoveto
+       5 -7 rlineto
+       5  7 rlineto
+      -5 -9 rmoveto
+      } def
+
+%%EndProcSet
+
+%%EndProlog
+
+userdict /start-hook known {start-hook} if
+
+
+/vmsave save def
+TextFont setfont
+2 setlinecap
+
+140 656 translate
+
+1.6 setlinewidth
+
+     0    0 moveto
+     0  -20 rmoveto
+
+  (PIXEL) BoxIt
+
+     0  -25 rlineto
+  (linear transformation) CenterIt
+  (matrix rotates, skews,) CenterIt
+   140   26 rmoveto
+   -32  -17 rlineto
+    32  -17 rlineto
+  Xc 145 add Yc 28 add moveto
+  (CRPIXjs) show
+  Xc 145 add Yc 12 add moveto
+  (PCi_js) show
+  Xc 160 add Yc  4 sub moveto
+  (or) show
+  Xc 145 add Yc 20 sub moveto
+  (CDi_js) show
+  Xc Yc moveto
+  (and \(optionally\) scales) CenterIt
+     0  -25 rlineto Arrow
+
+  (INTERMEDIATE PIXEL) BoxIt
+
+     0  -25 rlineto
+  (rescale to physical) CenterIt
+   140   26 rmoveto
+   -32  -17 rlineto
+    32  -17 rlineto
+  Xc 145 add Yc 4 add moveto
+  (CDELTis) show
+  Xc Yc moveto
+  (units) CenterIt
+     0  -25 rlineto Arrow
+
+  (INTERMEDIATE WORLD) BoxIt
+
+     0  -25 rlineto
+  (coordinate computation) CenterIt
+   140   17 rmoveto
+   -32  -17 rlineto
+    32  -17 rlineto
+  Xc 145 add Yc 11 add moveto
+  (CTYPEis) show
+  Xc 145 add Yc  3 sub moveto
+  (CRVALis) show
+  Xc 145 add Yc 17 sub moveto
+  (PVi_ms) show
+  Xc Yc moveto
+  (per agreement) CenterIt
+     0  -25 rlineto Arrow
+
+  (WORLD) BoxIt
+  stroke
+
+% ( Yc ) show Yc prt-n
+vmsave restore
+showpage
+
+
+%%Trailer
+userdict /end-hook known {end-hook} if
+%%EOF

@@ -1,0 +1,68 @@
+\svnInfo $Id$
+
+%% ==============================================================================
+%%
+%% Table with the attributes attached to the Spectral Coordinate group.
+%%
+%% ==============================================================================
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|lllp{5.5cm}|} 
+    \hline
+    \textsc{Field/Keyword} & \textsc{Type} & \textsc{Value} & \textsc{Description} \\
+    \hline \hline
+    \small \verb|GROUPTYPE| & \small\verb|string| & \small \verb|`SpectralCoord'| &
+    Group type descriptor \\
+    \small \verb|COORDINATE_TYPE| & \small\verb|string| & \small \verb|`Spectral'| &
+    Coordinate Type descriptor \\
+    \small \verb|STORAGE_TYPE| & \small\verb|array<string,1>| & \small
+    \verb|`Linear'| $|$ \verb|`Tabular'|
+    & Descriptor for the underlying storage type for this coordinate \\
+    \small \verb|REFERENCE_FRAME| & \small\verb|string| &  & Reference
+    position w.r.t. which the spectral coordinate axis are defined;
+    see Tab. \ref{tab:reference frames location} for a list of recognized
+    values. This can be a diferent frame as used for e.g. the
+    direction coordinate or as noted in the coordinates group. \\
+    \small \verb|REST_FREQUENCY| & \small\verb|double| &  & Rest
+    frequency, $\nu_0$ \\
+    \small \verb|REST_FREQUENCY_UNIT| & \small\verb|string| & \verb|`Hz'| & Physical
+    units within which the rest frequency is given \\
+    \small \verb|REST_WAVELENGTH| & \small\verb|double| &  & Rest
+    wavelength, $\lambda_0$ \\
+    \small \verb|REST_WAVELENGTH_UNIT| & \small\verb|string| & \verb|`m'| & Physical
+    units within which the rest wavelength is given \\
+    \small\verb|NOF_AXES| & \small\verb|int| & $N \equiv 1$ & Number
+    of coordinate axes \\
+    \small \verb|AXIS_NAMES| & \small\verb|array<string,1>| &
+    $[name_{0}]$ & World axis names \\
+    \small \verb|AXIS_UNITS| & \small\verb|array<string,1>| &
+    $[unit_{0}]$ & Physical units along each coordinate axis. \\
+    \hline \hline
+    \small \verb|REFERENCE_VALUE| & \small\verb|array<double,1>| &
+    $[val_{0}]$ & Coordinate value at the reference point \\
+    \small\verb|REFERENCE_PIXEL| & \small\verb|array<double,1>| &
+    $[pix_{0}]$ & Array location of the reference point in pixels. \\
+    \small\verb|INCREMENT| & \small\verb|array<double,1>| &
+    $[incr_{0}]$ & Coordinate increment at reference point. \\
+    \small\verb|PC| & \small\verb|array<double,1>| &
+    $[p_{00}] \equiv 1$ & Non-singular square
+    matrix, for the transformation from intermediate pixel coordinates
+    to intermediate world coordinates. \\
+    \hline \hline
+    \small{\verb|AXIS_LENGTH|} & \small\verb|int| & $N_{\rm Pixels}$ &
+    Length of the axis, i.e. the number of elements stored in the
+    \verb|AXIS_VALUES_PIXEL| and \verb|AXIS_VALUES_WORLD| arrays. \\
+    \small{\verb|AXIS_VALUES_PIXEL|} & \small\verb|array<double,1>| &
+    $[p_{0},..,p_{N_{\rm Pixels}}]$ & Tabulated values along the pixel
+    axis. \\
+    \small{\verb|AXIS_VALUES_WORLD|} & \small\verb|array<double,1>| &
+    $[w_{0},..,w_{N_{\rm Pixels}}]$ & Tabulated values along the world
+    axis. \\
+    \hline
+  \end{tabular}
+  \caption[Keywords decribing a Spectral Coordinate]{Keywords decribing a Spectral Coordinate; attributes within
+  the first segment of the table will be present independent of the
+  specific storage method.}
+  \label{tab:coord-spectral}
+\end{table}

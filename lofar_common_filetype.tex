@@ -1,0 +1,27 @@
+\svnInfo $Id$
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|lrp{9cm}|}
+    \hline
+    \sc \textbf{File Type} & \sc \textbf{Value} & \textbf{Description} \\
+    \hline \hline
+    UV Vis   & \verb|`uv'|  & LOFAR visibility file w/correlation UV information. \\
+    Sky cube & \verb|`sky'| & LOFAR Image cube w/RA, Dec, frequency and polarization \\
+    RM cube  & \verb|`rm'|  & Rotation Measure Synthesis Cube w/ axes
+    of RA, Dec, Faraday Depth, polarization. \\
+    Near-field image & \verb|`nfi'| & Near Field Sky Image w/ axes of
+    position on the sky (x, y, z), frequency time, polarization. \\
+    Dynamic Spectra  & \verb|`dynspec'|& Dynamic Spectra w/ axes of
+    time, frequency, polarization. \\
+    Beamformed data  & \verb|`bf'| & Beam-Formed file w/ time series
+    data with axes of frequency vs time. \\
+    TBB dump & \verb|`tbb'| & TBB dump file, raw time-series: (1) raw voltage mode: voltage vs time (baseband data) (2) subband mode: complex voltage vs time for selected frequency channels. \\
+    Instrument Model & \verb|`inst'| & Parameters describing gain and other instrument characteristics for calibation. \\
+    Sky Model & \verb|`lsm'| & List of sources, either point sources or shapelets. \\
+    \hline
+  \end{tabular}
+  \caption[Overview of standard LOFAR data products]{Overview of standard LOFAR data products and the
+    corresponding file type attribute value.}
+  \label{tab:file-type}
+\end{table}

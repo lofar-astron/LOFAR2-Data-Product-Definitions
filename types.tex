@@ -1,0 +1,31 @@
+\svnInfo $Id$
+
+\paragraph{Standard Data Types.}
+
+The following table describes the short-form name for each type used
+throughout the rest of this document, it's logical meaning in the context of
+the astronomical data product, and the physical storage which must be
+allocated to it within the HDF5 data model.  Future versions of this document
+may augment these types but will not remove support for existing types.
+
+\begin{center}
+  \begin{tabular}{rlp{7.8cm}}
+    \textsc{Name}        & \textsc{Logical Type}                  & \textsc{Physical Storage Allocation} \\
+    \hline
+    \verb|short|         & Integer; range $-2^{15}$ to $2^{15}-1$ & 16 bit signed two's complement integer \\
+    \verb|int|           & Integer; range $-2^{31}$ to $2^{31}-1$ & 32 bit signed two's complement integer \\
+    \verb|unsigned|      & Integer; range $0$ to $2^{32}-1$       & 32 bit unsigned integer \\
+    \verb|unsigned long long| & Integer; range $0$ to $2^{64}-1$  & 64 bit unsigned integer \\
+    \verb|float|         & Single precision floating-point        & IEEE 754-2008 \cite{ieee.754-2008} ``binary32'' floating point (1 bit sign, 8 bit exponent, 23 bit mantissa) \\
+    \verb|double|        & Double precision floating-point        & IEEE 754-2008 ``binary64'' floating point (1 bit sign, 11 bit exponent, 52 bit mantissa)\\
+    \verb|complex<type>| & Complex form of \verb|type|            & Compound type; the part at the lower memory location is real \\
+    \verb|bool|          & Boolean true/false                     & 32 bit signed two's complement integer; non-zero denotes ``true''\\
+    \verb|string|        & Text                                   & Null-terminated string of 8 bit bytes. The lower 128 values interpreted as ASCII encoded characters\\
+    \verb|array<type,N>| & Array of \verb|type| with rank \texttt{N} & \\
+    \hline
+  \end{tabular}
+\end{center}
+
+Note that data may be written with either ``big-endian'' or ``little-endian''
+byte ordering; either is valid within the context of this document.
+

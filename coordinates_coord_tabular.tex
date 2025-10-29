@@ -1,0 +1,51 @@
+\svnInfo $Id$
+
+%%
+%%  Section: Tabular Coordinate
+%%
+
+\begin{comment}
+  Add paragraph outlining motivation and need for tabular coordinate:
+  representation of non-linear (tabulated) 1-dimensional coordinate
+  axis.
+\end{comment}
+
+\input coordinates_coord_tabular_table
+
+\begin{lstlisting}[float,caption={Structure of the tabular coordinate group.}]
+.
+`- COORDINATE_{N}
+   |- GROUPTYPE             Group       string
+   |- COORDINATE_TYPE       Attr.       string
+   |- STORAGE_TYPE          Attr.       string
+   |- NOF_AXES              Attr.       int
+   |- AXIS_NAMES            Attr.       array<string,1>
+   |- AXIS_UNITS            Attr.       array<string,1>
+   |- AXIS_LENGTH           Attr.       int
+   |- AXIS_VALUES_PIXEL     Attr.       array<double,1>
+   `- AXIS_VALUES_WORLD     Attr.       array<double,1>
+\end{lstlisting}
+
+\begin{list}{\textbf{--}}{}
+\item \verb|GROUPTYPE| is the group type descriptor with the fixed value 
+  \verb|`TabularCoord'|. 
+\item \verb|COORDINATE_TYPE| is the is the descriptor for the
+  coordinate type, of value \verb|`Tabular'|.
+\item \verb|STORAGE_TYPE| is the descriptor for the underlying storage
+  type for this coordinate, of value \verb|`Tabular'|.
+\item \verb|NOF_AXES| is the number of coordinate axes; keep in mind that a
+  coordinate can consist of multiple axes.
+\item \verb|AXIS_NAMES| are the world axis names connected with the
+  coordinate axes, e.g.
+  \begin{verse}
+    \verb|AXIS_NAME=[`Distance']| \\
+    \verb|AXIS_NAME=[`Time']|
+  \end{verse}
+\item \verb|AXIS_UNITS| are the physical units along each coordinate axis
+  (corresponding to the FITS keyword \verb|CUNITi|, see \cite{fits.paper1}).
+  Restrictions on the nature and range of units, if any, will be determined by
+  agreements applying to the specific axis. If they are not so limited, units
+  should conform to the IAU Style Manual \cite{mcnally.1988}.
+\item \verb|AXIS_VALUES_PIXEL| are the tabulated values of pixel coordinates.
+\item \verb|AXIS_VALUES_WORLD| are the tabulated values of world coordinates.
+\end{list}

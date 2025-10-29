@@ -1,0 +1,64 @@
+\svnInfo $Id$
+
+%%
+%%  Section: Spectral Coordinate
+%%
+
+Spectral coordinates are commonly given in units of frequency,
+wavelength, velocity, and other parameters proportional to these
+three \cite{fits.paper3}. The coordinate types discussed here are then frequency,
+wavelength, and “apparent radial velocity” denoted by the symbols
+$\nu$, $\lambda$, and $v$. There are also three conventional
+velocities frequently used in astronomy. These are the so-called
+“radio” velocity, “optical” velocity, and redshift, denoted here by
+$V$, $Z$, and $z$ and given by
+\begin{displaymath}
+  V \ = \ c \ \frac{\nu_{0} - \nu}{\nu_{0}} \ , \qquad
+  Z \ = \ c \ \frac{\lambda-\lambda_0}{\lambda_0} \quad \hbox{and} \qquad
+  z \ = \ Z/c \ .
+\end{displaymath}
+The velocities are defined so that an object receding from the observer has a
+positive velocity. Table \ref{tab:spectral coordinate codes} below
+lists the various spectral quantities and their respective encoding as
+an attribute; the symbols $\lambda_{0}$ and $\nu_{0}$ are the rest
+wavelength and frequency, respectively, of the spectral line used to
+associate velocity with observed wavelength and frequency.
+
+\begin{table}[htb]
+  \centering
+  \begin{tabular}{lp{1.5cm}llp{1.5cm}p{1.5cm}}
+    \hline
+    \textsc{Attribute} & \textsc{FITS Code} & \textsc{Name} &
+    \textsc{Symbol} & Associate variable & Default units \\
+    \hline \hline
+    \verb|Frequency|       & \verb|FREQ| & Frequency  & $\nu$ & $\nu$ & Hz \\
+    \verb|Energy|          & \verb|ENER| & Energy     & $E$   & $\nu$ & J  \\
+    \verb|Wavenumber|      & \verb|WAVN| & Wavenumber & $\kappa$ & $\nu$ & m$^{-1}$ \\
+    \verb|VelocityRadio|   & \verb|VRAD| & Radio velocity & $V$ & $\nu$ & m s$^{-1}$ \\
+    \verb|VelocityOptical| & \verb|VOPT| & Optical velocity & $Z$ & $\lambda$ & m s$^{-1}$ \\
+    \verb|VelocityAppRadial| & \verb|VELO| & Apparent radial velocity & $v$ & $v$ & m s$^{-1}$ \\
+    \verb|Redshift|        & \verb|ZOPT| & Redshift    & $z$ & $\lambda$ & -- \\
+    \verb|WavelengthVacuum|& \verb|FREQ| & Vacuum wavelength & $\lambda$ & $\lambda$ & m \\
+    \verb|WavelengthAir|   & \verb|AWAV| & Air wavelength  & $\lambda_a$ & $\lambda_a$ & m \\
+    \verb|BetaFactor|      & \verb|BETA| & Beta factor $v/c$  & $\beta$ & $v$ & -- \\
+    \hline
+  \end{tabular}
+  \caption{Attributes values corresponding to the spectral coordinate
+    codes, as defined in \cite{fits.paper3}. The IAU-standard prefixes
+    for scaling the unit are described in \cite{fits.paper1} and
+    should be used with al coordinate types, except that the
+    dimensionless ones are not scaled.}
+  \label{tab:spectral coordinate codes}
+\end{table}
+
+As it turns out, providing a set of parameters to properly describe a spectral
+coordinate is not straight-forward: given the arrangement of frequency channels
+or bands the values along the coordinate axis might be linear, but
+does not necessarily have to be. Therefore in principle a spectral
+coordinate can be considered a derivative of either a linear or a
+tabular coordinate, with a number of specific attributes added, as
+they will be required for the transformation between different
+spectral quantities.
+
+\input coordinates_coord_spectral_table
+

@@ -1,0 +1,40 @@
+graph "rmimage" {
+	graph [
+		fontsize = "14"
+		fontname = "Courier"
+		fontcolor = "black"
+		splines = "ortho"
+	]
+	node [
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		shape = "box"
+		style = "solid"
+	]
+	edge [
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		style = "solid"
+	]
+
+	"RMSC Root Header" -- "SYS_LOG" 
+	"RMSC Root Header" -- "RMIMAGE" 
+	"RMSC Root Header" -- "SIG_001" 
+	"RMSC Root Header" -- "More SIGs"
+	 
+	"RMIMAGE" -- "COORDINATES" 
+	"RMIMAGE" -- "DATA" 
+	"RMIMAGE" -- "PROCESS_HISTORY" 
+	"RMIMAGE" -- "PSF_INFO"
+	"RMIMAGE" -- "SOURCE"  
+	
+    "COORDINATES" -- "DIRECTION" 	
+	"COORDINATES" -- "FARADAY_DEPTH"
+    "COORDINATES" -- "POLARIZATION"
+
+	"PSF_INFO" -- "ISD" 
+	"PSF_INFO" -- "NOISE" 
+	"PSF_INFO" -- "RMSF"
+}

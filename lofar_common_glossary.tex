@@ -1,0 +1,128 @@
+\svnInfo $Id$
+
+\begin{description}
+\item[Az] Azimuth.
+\item[AIPS++] The AIPS++ project was a project from the nineties supposed to replace the original Astronomical Information Processing System or classical AIPS. The ++ comes from it being mainly developed in C++. It's also known as AIPS 2. It evolved into CASA, casacore and casarest (see those entries).
+\item[BBS] BlackBoard Selfcal, pipeline used for LOFAR imaging data.
+\item[Beam] A beam is formed by combining all the SubArrayPointing,
+one for each station, which are looking in a particular direction.
+There may be more than one beam for each SubArrayPointing, and different types
+of beams are available.
+\item[BF] Beam-Formed data (time series structure).
+\item[CASA] The Common Astronomy Software Applications package. User software for radioastronomy developed out of the old AIPS++ project. The project is led by NRAO with contributions from ESO, CSIRO/ATNF, NAOJ and ASTRON. \cite{website:casa}
+\item[casacore] The set of C++ libraries that form the basis of CASA and several other astronomical packages. It contains classes for storing and handling visibility and image data, RDBMS-like table system and handling coordinates. Mainly maintained by ASTRON and CSIRO/ATNF. \cite{website:casacore}
+\item[casarest] The libraries and tools from the old AIPS++ project that are not part of casacore or CASA but still in use.
+\item[CEP] Central Processing facility.
+\item[Channel] The subband data of a LOFAR observation may be passed through a
+second polyphase filter to obtain a large number of channels (i.e. to increase
+the spectral resolution).
+\item[CLA] Common LOFAR attributes. Set of root-level attributes that
+  are used and required as attributes in all LOFAR science data
+  products. If a value is not available for an Attribute,
+  \verb|`NULL'| maybe used.
+\item[Co-I] Co-investigators on an observation project under the leadership of
+the PI.
+\item[Data Interface] Set of definitions that describe the contents
+  and structure of data files.
+\item[Data Access Layer (DAL)] A \cpp\ library with Python bindings
+  providing read/write functionality for HDF5 format files, as well as
+  access to Measurement Sets.
+\item[Dec] Declination.
+\item[DPPP] Default Pre-Processing Pipeline, pipeline used for LOFAR
+  imaging data.
+\item[EAS] Extensive Air-Shower.
+\item[El] Elevation.
+\item[FITS] FITS (Flexible Image Transport System) is a digital file format
+  used to store, transmit, and manipulate scientific and other images. FITS
+  commonly used in astronomy.
+\item[HBA] High Band Antenna.
+\item[HDFView] Hierarchical Data Format Viewer;  a Java software tool
+  for viewing the HDF5 structure and
+  data. [http://www.hdfgroup.org/hdf-java-html/hdfview/]
+\item[HDF5] Hierarchical Data Format, 5 \cite{hdf5}. A file format capable of
+  accommodating large datasets that comprises two (2) primary types of
+  objects: groups and datasets. Implements self-organisation and
+  hierarchical structures within the file format itself, facilitating
+  self-contained data administration. \cite{hdf5.rm,hdf5.ug}
+\item[HDF5 group] A grouping structure containing zero or more HDF5
+  objects, together with supporting meta-data.
+\item[HDF5 dataset] A multidimensional array of data elements,
+  together with supporting meta-data.
+\item[HDU Header-Data Unit] Though typically used for FITS data
+  descriptions, the term ``HDU'' can also be used more generically when
+  discussing any data group that contains both data and a descriptive
+  header.
+\item[Hypercube] The hypercube is a generalization of a 3-cube to $n$
+  dimensions, also called an $n$-cube or measure polytope. In data
+  modelling a hypercube is a cube-like logical model in which all
+  measurements are organized into a multidimensional space.
+\item[ICD] Interface Control Document.
+\item[IVOA] International Virtual Observatory Alliance.
+\item[KSP] Key Science Project.  One of several major observational
+  and research projects defined by the LOFAR organization. These Key
+  Science Projects are,
+  \begin{itemize}
+  \item Cosmic Magnetism in the Nearby Universe
+  \item High Energy Cosmic Rays
+  \item Epoch of Re-ionization
+  \item Extragalactic Sky Surveys
+  \item Transients - Pulsars, Jet Sources, Planets, Flare stars
+  \item Solar Physics and Space Weather
+  \end{itemize}
+\item[LBA] Low Band Antenna.
+\item[LOFAR] The LOw Frequency ARray. LOFAR is a multipurpose sensor array;
+  its main application is astronomy at low radio frequencies, but it also has
+  geophysical and agricultural applications.  [http://www.lofar.org/]
+\item[LOFAR Sky Image] Standard LOFAR Image Cube.  A LOFAR data
+  product encompassing science data, associated meta-data, and
+  associated calibration information, including a Local Sky Model
+  (LSM) , and other ancillary meta groups that are defined in this
+  document.
+\item[LSM/GSM] The Local Sky Model/Global Sky Model.  Sky Models are
+  essentially catalogues of known real radio sources in the sky.  A
+  Local Sky Model for an observation is merely a subset of a Global
+  Sky Model catalogue pertaining to that observation's relevant region
+  of the sky.
+\item[LTA] The Long Term Archive for LOFAR.
+\item[MJD] Modified Julian Day. Derived from Julian Date (JD) by MJD =
+  JD -  2400000.5. Starts from midnight rather than noon.
+\item[MS] Measurement Set, a self-described, structured set of casacore
+  tables comprising the data and meta-data of an observation. \cite{aips++.note.229}
+\item[PI] A Principal Investigator is the lead scientist resopnsible for a
+particular observation project.
+\item[RA] Right Ascension.
+\item[RFI] Radio Frequency Interference.
+\item[RM] Rotation Measure.
+\item[RMSC] The Rotation Measure synthesis cube is a data product which contains
+the output of LOFAR RM synthesis routines, namely the polarized emission as a
+function of Faraday depth.  As with the Sky Image data files, all associated
+information is stored within an RMSC file.
+\item[RSP] Remote Station Processing Board.
+\item[SIP] Standard Imaging Pipeline or Submission Information Package within the context of the LTA.
+\item[Station] Group of antennae separated from other groups. In it's current
+cofiguration, LOFAR has 48 stations.
+\item[SubArrayPointing] This corresponds to the beam formed by the sum of all of
+the elements of a station. For any given observation there may be more
+than one SubArrayPointing, and they can be pointed at different locations.
+\item[Subband] At the station level, LOFAR data are passed through a polyphase
+filter, producing subbands of either 156.250 kHz or 195.3125 kHz (depending on
+system settings).
+\item[TAI] International Atomic Time (Temps Atomique International),
+  atomic coordinate time standard.
+\item[TBB] Transient Buffer Board.
+\item[TRAP] Transients Pipeline.
+\item[USG] LOFAR User Software Group.
+\item[UTC] Coordinated Universal Time (UTC) is a time standard based
+  on International Atomic Time (TAI) with leap seconds added at
+  irregular intervals to compensate for the Earth's slowing rotation.
+\item[UV-Coverage] A spatial frequency domain area that must be covered
+completely by observation in order to assure an optimal target image (Full UV-
+Coverage). During observation, the radio telescope turns with respect to its
+target, due to the earth rotation. A certain -instrument geometry dependent-
+rotation angle has to be covered in order to accomplish full coverage.
+\item[VHECR] Very high-energy cosmic ray.
+\item[WCS] World Coordinate Information (WCS). The FITS "World
+  Coordinate System" (WCS) convention defines keywords and usage that
+  provide for the description of astronomical coordinate systems in a
+  FITS image header \cite{fits.paper1, fits.paper2, fits.paper3}.
+\end{description}

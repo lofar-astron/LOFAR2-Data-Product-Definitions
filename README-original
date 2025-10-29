@@ -1,0 +1,158 @@
+
+Contents:
+
+  1. Layout of the repository
+  2. Generating PDF documents from LaTeX sources
+  3. Brief introduction to Graphviz
+
+_________________________________________________________________________________
+>>> 1. Layout of the repository
+
+The documents repository as a rather minimal layout, in order not hide document
+within some deep structure:
+
+.
+|-- build           ...  Directory where to build documents from LaTeX sources
+|-- ADD             ...  Architectural Design Documents
+|-- ICD             ...  Interface Coontrol Documents
+|-- Minutes         ...  Minutes from various meetings, workshops, etc
+|-- Presentations   ...  Presentations given at meetings, workshops, conferences, etc
+`-- Tutorials       ...  Tutorials how to use individual pieces of software
+
+_________________________________________________________________________________
+>>> 2. Generating PDF documents from LaTeX sources
+
+1) Using CMake
+
+If you are using CMake (www.cmake.org) on your system, you can profit from the 
+add-on functionality build into the configuration scripts:
+
+    cd build
+    cmake ..
+
+If you now type 
+
+    make help
+
+you will be presented with a list of build targets; while there is a target for 
+each individual document, also a number of collective targets are available, such
+as e.g.
+
+    make ICD
+
+which will cause the generation of PDF documents from all ICD LaTeX sources.
+Documents also can be generated individually, by calling up a specific target, e.g.
+
+    make LOFAR-USG-ICD-001
+
+2) Without using CMake
+
+If you chose not to use CMake for the generation of the documents, you can also run
+the 'makefile' contained within the 'ICD' directory:
+
+    cd ICD
+    make
+
+Again by default all of the ICDs will be generated; if however you rather want to
+generate an individual document, you can d so by running
+
+    make ICD-001
+
+_________________________________________________________________________________
+>>> 3. Brief introduction to Graphviz 
+
+Written by Michael Bell (email: mrbell@mpa-garching.mpg.de)
+
+This file describes the basic concepts needed for working with Graphvis. Graphviz
+is a multiplatform, open-source diagram generation package and the prefered
+software on Linux for creating diagrams for the ICDs. This introduction is by no
+means exhaustive, but it should get you going in order to make a basic block
+diagram for inclusion in your document.  For more information please visit
+
+  http://www.graphviz.org
+
+You can think of graphviz like Latex but for diagram making. The diagram is
+created by writing a .doc file, which is just a list of graphviz commands that
+define all of the objects in your diagram, and then compiling that file using
+one of several command line utilities.  The basic utility is called 'dot'.  
+
+Making a simple diagram is, well... simple.  You start by creating a graph object
+like so: 
+
+    graph "name" {}
+
+where "name" is the name of the graph object.  Other types of graphs are
+available, for example digraph which allows for directed connections between
+objects. The objects in the graph and their attributes will be entered within the
+curly brackets.  
+
+Attributes define how the various graph elements appear.  There are two basic
+graph elements: node (the objects in the diagram) and edge (the lines between
+objects). Examples of the options that can be set are things like "fontsize",
+"shape", "fontcolor", etc.  The list of options and objects is long; see the
+website for more information.  Attributes are given in the following way:
+
+    object_type[attribute = "value"]
+
+For example, if you wanted to change the behavior for the nodes in your
+diagram you could do the following:
+
+    graph "name" {
+
+        node [ 
+            fontsize = "14"
+		    fontname = "Times-Roman"
+		    fontcolor = "black"
+		    shape = "box"
+		    style = "solid"
+	    ]
+	
+    }
+
+All that is left is to add things to the diagram.  Each node is given an ID which
+is just a name you give it e.g. "IMAGE".  This can be in quotes or not, but since
+there are some keywords that must be in quotes if you want to use them in an ID
+(e.g. node) I just always use quotes.  This ID is what will appear within the
+box (or circle or whatever node shape you choose) on the actual diagram.  
+
+On each line you list two object IDs and tell graphviz how they are connected,
+e.g. "NODE 1" -- "NODE 2".  There are different types of ways two nodes can be
+connected, or different 'edgeop's in graphviz speak.  Most notably, connections
+between nodes or edges will be directed, ->, or undirected, --.  Word of warning,
+in order to use directed edges, you need to create a 'digraph' rather than a
+'graph'.  So, for a very simple example, building on what we have above:
+
+    digraph "name" {
+
+        node [ 
+            fontsize = "14"
+		    fontname = "Times-Roman"
+		    fontcolor = "black"
+		    shape = "box"
+		    style = "solid"
+	    ]
+	
+	    "PARENT" -> "CHILD A"
+	    "PARENT" -> "CHILD B"
+	    "PARENT" -> "CHILD C"
+    }  
+
+This short example will create a graph with box shaped nodes having black, 14 pt,
+Times-Roman font text.  The diagram will have a box that says "PARENT", and from
+this three arrows will point to three boxes that say "CHILD A", "CHILD B" and "CHILD C".  
+
+So how does one create a diagram from this text?  Make a text file with the extension .dot and enter some commands.  Then, to generate a figure, invoke the command 'dot' from the command line.  
+
+For example, if you were to save the above example in a file called example.dot, you could generate an eps file using the following command:
+
+    > dot -Teps -oexmple.eps example.dot
+
+The -T option tells dot what type of image to create (eps in this case) and -o tells it what the output filename should be.  Graphviz comes with several programs that create diagrams in different formats.  Using dot, as above, creates heirarchical diagrams.  In our example, parent appears above child a, b and c and these are all aligned with one another horizontally.  If instead of using dot as above you ran: 
+
+    > neato -Teps -oexmple.eps example.dot
+
+you would generate a diagram with parent in the center, and child a, b, c surrounding it.
+
+Graphviz can of course get much more complicated than this.  Again, for more details see http://www.graphviz.org/
+
+One other note, if you prefer to have orthogonal edges i.e. edges that are oriented only horizontally or vertically rather than diagonal edges, you can set the graph attribute: splines = "ortho".  Beware that this only works if you have compiled graphviz in a certain way.  Beware that the version of graphviz in the Ubuntu repository (at least in Ubuntu 11.04) was NOT compiled in such a way that this works.   

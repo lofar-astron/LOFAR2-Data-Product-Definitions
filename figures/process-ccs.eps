@@ -1,0 +1,158 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%Creator: Eric Greisen
+%%CreationDate: Sun 1993/01/12
+%%Title: Process.eps
+%%Pages: 1 1
+%%DocumentFonts: Courier
+%%BoundingBox: 28 20 361 407
+%%EndComments
+
+%%BeginProcSet: graphics.pro
+   /TextFont /Courier-Bold findfont 15 scalefont def
+   /BraceFont /Courier-Bold findfont 45 scalefont def
+
+   % Constants.
+   /w3 1.2 def
+   /w4 1.6 def
+   /nstr 13 string def
+
+  /prt-n {
+      dup abs 0.001 lt {pop 0} if
+      nstr cvs show
+      } def
+
+  /max {
+      /mx1 exch def
+      /mx2 exch def
+      mx1 mx2 gt
+      {mx1}{mx2}ifelse
+      } def 
+
+  /BoxIt {
+     dup stringwidth pop  /Xsp exch def
+     /XXsp (COORDINATES) stringwidth pop def
+     /Ysp 15 def   /XXsp XXsp Xsp max 8 add def  /ycc 2 def
+     currentpoint /Yc exch def /Xc exch def
+     XXsp 2 div neg 0 rmoveto
+     0 -2 Ysp mul ycc sub rlineto
+     XXsp 0 rlineto
+     0 2 Ysp mul ycc add rlineto
+     XXsp  neg 0 rlineto
+     Xc Yc moveto
+     Xsp 2 div neg Ysp neg rmoveto show
+     Xc Yc Ysp sub 1 sub moveto
+     (COORDINATES) dup stringwidth pop 2 div neg -11 rmoveto show
+     Xc Yc 2 Ysp mul sub ycc sub moveto
+     currentpoint /Yc exch def /Xc exch def
+     stroke
+     Xc Yc moveto
+     } def
+
+   /CenterIt {
+      dup stringwidth pop /Xsp exch def
+      Xsp -2 div -11 rmoveto
+      show
+      Xsp -2 div -4 rmoveto
+      currentpoint /Yc exch def /Xc exch def
+      stroke
+      Xc Yc moveto
+      } def
+
+   /Arrow {
+      -5  7 rmoveto
+       5 -7 rlineto
+       5  7 rlineto
+      -5 -9 rmoveto
+      } def
+
+%%EndProcSet
+
+%%EndProlog
+
+userdict /start-hook known {start-hook} if
+
+
+/vmsave save def
+TextFont setfont
+2 setlinecap
+
+140 425 translate
+
+w4 setlinewidth
+
+     0    0 moveto
+     0  -20 rmoveto
+
+  (PIXEL) BoxIt
+
+     0  -20 rlineto
+  (linear transformation:) CenterIt
+  (translation, rotation,) CenterIt
+   140   26 rmoveto
+   -32  -17 rlineto
+    32  -17 rlineto
+  Xc 145 add Yc 20 add moveto
+  (CRPIXja) show
+  Xc 145 add Yc  6 add moveto
+  (PCi_ja) show
+  Xc 145 add Yc  9 sub moveto
+  (CDELTia) show
+  Xc Yc moveto
+  (skewness, scale) CenterIt
+     0  -30 rlineto Arrow
+
+  (PROJECTION PLANE) BoxIt
+
+     0  -18 rlineto
+  (spherical) CenterIt
+   140   17 rmoveto
+   -32  -17 rlineto
+    32  -17 rlineto
+  Xc 145 add Yc  5 add moveto
+  (CTYPEia) show
+  Xc 145 add Yc 11 sub moveto
+  (PVi_ma) show
+  Xc Yc moveto
+  (projection) CenterIt
+     0  -18 rlineto Arrow
+
+  (NATIVE SPHERICAL) BoxIt
+
+     0  -20 rlineto
+  (spherical) CenterIt
+  (coordinate) CenterIt
+   140   26 rmoveto
+   -32  -17 rlineto
+    32  -17 rlineto
+  Xc 145 add Yc 20 add moveto
+  (CRVALia) show
+  Xc 145 add Yc  6 add moveto
+  (LONPOLEa) show
+  Xc 145 add Yc  8 sub moveto
+  (LATPOLEa) show
+  Xc Yc moveto
+  (rotation) CenterIt
+     0  -18 rlineto Arrow
+
+  (CELESTIAL SPHERICAL) BoxIt
+  stroke
+
+  1.1 setlinewidth
+  [5 3] 0 setdash
+
+     5 -128  moveto
+   215    0 rlineto
+     0 -277 rlineto
+  -330    0 rlineto
+     0  277 rlineto
+   105    0 rlineto
+  stroke
+
+% ( Yc ) show Yc prt-n
+vmsave restore
+showpage
+
+
+%%Trailer
+userdict /end-hook known {end-hook} if
+%%EOF

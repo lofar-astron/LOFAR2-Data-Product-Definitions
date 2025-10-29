@@ -1,0 +1,57 @@
+\svnInfo $Id$
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|lp{1.5cm}rrp{5cm}|}
+
+    %% Table header line with column descriptions %%
+
+    \hline
+    \textsc{Field/Keyword} & \textsc{Type} & \textsc{Value} & \textsc{Software} & \textsc{Description} \\
+     &  &  & \textsc{Version} & \\
+    \hline \hline
+
+    %% Table main contents %%
+
+    \small \verb|GROUPTYPE| & \small\verb|string| & \verb|`Root'| & DAL v2.5.0 & \small{\verb|LOFAR|} Group type \\
+    \small \verb|FILENAME| & \small\verb|string| & ---  & DAL v2.5.0 & File name \\
+    \small \verb|FILEDATE| & \small\verb|string| & ---  & DAL v2.5.0 & File creation date \\
+    \small \verb|FILETYPE| & \small\verb|string| & ---  & DAL v2.5.0 & File type (see Table~\ref{tab:file-type}) \\
+    \small \verb|TELESCOPE| & \small\verb|string| & \verb|`LOFAR'|  & DAL v2.5.0 & Name of the telescope \\
+    \small \verb|PROJECT_ID| & \small\verb|string| & ---  & DAL v2.5.0 & Project unique identifier \\
+    \small \verb|PROJECT_TITLE| & \small\verb|string| & ---  & DAL v2.5.0 & Title of the project \\
+    \small \verb|PROJECT_PI| & \small\verb|string| & ---  & DAL v2.5.0 & Name of Principal Investigator  \\
+    \small \verb|PROJECT_CO_I| & \small\verb|string| & ---  & DAL v2.5.0 & Name(s) of the Co-investigator(s)  \\
+    \small \verb|PROJECT_CONTACT| & \small\verb|string| & ---  & DAL v2.5.0 & Project contact details \\
+    \small \verb|OBSERVATION_ID| & \small\verb|string| & ---  & DAL v2.5.0 & Observation unique identifier \\
+    \small \verb|OBSERVATION_START_UTC| & \small\verb|string|& ---  & DAL v2.5.0 & Observation start date \verb|(UTC)| \\
+    \small{\textit{OBSERVATION\_START\_MJD}} & \small\verb|double| & ---  & DAL v2.5.0 & Observation start date \verb|(MJD)|\\
+    \small{\texttt{OBSERVATION\_END\_UTC}} & \small\verb|string| & ---  & DAL v2.5.0 & Observation end date \verb|(UTC)| \\
+    \small{\textit{OBSERVATION\_END\_MJD}} & \small\verb|double| & ---  & DAL v2.5.0 & Observation end date \verb|(MJD)| \\
+    \small{\texttt{OBSERVATION\_NOF\_STATIONS}}  & \small\verb|unsigned|& ---  & DAL v2.5.0 & nof. stations used during the observation \\
+    \small{\texttt{OBSERVATION\_STATIONS\_LIST}} & \small\verb|array<string,1>| & ---  & DAL v2.5.0 & List of stations used during the observation \\
+    \small{\texttt{OBSERVATION\_FREQUENCY\_MIN}} & \small\verb|double| & ---  & DAL v2.5.0 & Observation minimum frequency \\
+    \small{\texttt{OBSERVATION\_FREQUENCY\_CENTER}} & \small\verb|double| & ---  & DAL v2.5.0 & Observation center frequency (weighted) \\
+    \small{\texttt{OBSERVATION\_FREQUENCY\_MAX}} & \small\verb|double| & ---  & DAL v2.5.0 & Observation maximum frequency\\
+    \small\verb|OBSERVATION_FREQUENCY_UNIT| & \small\verb|string| &
+    \verb|`MHz'|  & DAL v2.5.0 & \\
+    \small\verb|OBSERVATION_NOF_BITS_PER_SAMPLE| & \small\verb|int| & ---  & DAL v2.5.0 &
+    Number of bits per sample in the incoming data stream from the
+    stations to CEP/BlueGene. \\
+    \small\verb|CLOCK_FREQUENCY| & \small\verb|double| & ---  & DAL v2.5.0 & Clock
+    frequency ($160 \mathrm{MHz}$ or $200 \mathrm{MHz}$). \\
+    \small{\verb|CLOCK_FREQUENCY_UNIT|} & \small\verb|string| & \verb|`MHz'| & DAL v2.5.0 & \\
+    \small\verb|ANTENNA_SET| & \small\verb|string| & ---  & DAL v2.5.0 & Antenna set specification (see Table~\ref{tab:antenna-set}) \\
+    \small \verb|FILTER_SELECTION| & \small\verb|string| & ---  & DAL v2.5.0 & Filter selection (see Table~\ref{tab:filter-selection}) \\
+    \small \verb|TARGETS| & \small\verb|array<string,1>| & ---  & DAL v2.5.0 & List of observation targets/sources \\
+    \small \verb|SYSTEM_VERSION| & \small\verb|string| & ---  & DAL v2.5.0 & Processing system name/version \\
+    \small{\textit{PIPELINE\_NAME}}  & \small\verb|string|  & ---  & DAL v2.5.0 & Pipeline processing name \\
+    \small{\textit{PIPELINE\_VERSION}} & \small\verb|string|  & ---  & DAL v2.5.0 & Pipeline processing version \\
+    \small \verb|DOC_NAME| & \small\verb|string|  & ---  & DAL v2.5.0 & Interface Control Document name \\
+    \small \verb|DOC_VERSION| & \small\verb|string|  & ---  & DAL v2.5.0 & Interface Control Document version/issue number \\
+    \small \verb|NOTES| & \small\verb|string|  & ---  & DAL v2.5.0 & Notes or comments \\
+   \hline
+  \end{tabular}
+  \caption{Common LOFAR Attributes (CLA).}
+  \label{tab:lofar common metadata}
+\end{table}

@@ -1,0 +1,48 @@
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|llrp{6cm}|} 
+    \hline
+    \textsc{Field/Keyword} & \textsc{Type} & \textsc{Value} & \textsc{Description} \\
+    \hline \hline
+    \small\verb|GROUPTYPE| & \small\verb|string| & \verb|`DirectionCoord'|&
+    Group type descriptor \\
+    \small\verb|COORDINATE_TYPE| & \small\verb|string| & \verb|`Direction'| &
+    Coordinate Type descriptor \\
+    \small{\verb|STORAGE_TYPE|} & \small\verb|string| & \verb|`Direction'|
+    & Descriptor for the underlying storage type for this coordinate \\
+    \small\verb|NOF_AXES| & \small\verb|int| & $N \equiv 2$ & Number
+    of coordinate axes \\
+    \small\verb|AXIS_NAMES| & \small\verb|array<string,1>| &
+    $[name_{0},name_{1}]$ & World axis names \\
+    \small\verb|AXIS_UNITS| & \small\verb|array<string,1>| &
+    $[unit_{0},unit_{1}]$ & Physical units along each coordinate axis. \\
+   \small\verb|REFERENCE_VALUE| & \small\verb|array<double,1>| &
+   $[val_{0},val_{1}]$ & Coordinate value at the reference point \\
+    \small\verb|REFERENCE_PIXEL| & \small\verb|array<double,1>| &
+    $[pix_{0},pix_{1}]$ & Array location of the reference point in pixels. \\
+    \small\verb|INCREMENT| & \small\verb|array<double,1>| &
+    $[incr_{0},incr_{1}]$ & Coordinate increment at reference point. \\
+    \small\verb|PC| & \small\verb|array<double,1>| &
+    $[pc_{00},pc_{01},pc_{10},pc_{11}]$ & Non-singular square matrix,
+    for the transformation from intermediate pixel coordinates to
+    intermediate world coordinates. \\
+    \hline
+    \small\verb|EQUINOX|           & \small\texttt{string}  &  &
+    Equinox of the observation \\
+    \small\verb|RADEC_SYS|         & \small\texttt{string} &  &
+    System of equatorial coordinates \\
+    \small\verb|PROJECTION|        & \small\verb|string| & &
+    Spherical map projection \\
+    \small\verb|PROJECTION_PARAM|  & \small\verb|array<double,1>| &
+    & Spherical projection parameters \\
+    \small\verb|LONPOLE|           & \small\verb|double| &  & Native
+    longitude of the celestial pole, $\phi_p$ \\
+    \small\verb|LATPOLE|           & \small\verb|double| &  & Native
+    latitude of the celestial pole, $\theta_p$. \\
+   \hline
+  \end{tabular}
+  \caption{Attributes/keywords attached to a group describing a
+    direction coordinate.}
+  \label{tab:coord-direction}
+\end{table}

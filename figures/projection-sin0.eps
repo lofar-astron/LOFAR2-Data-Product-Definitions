@@ -1,0 +1,135 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%BoundingBox: 0 0 100 100
+%%Creator: Mark Calabretta
+%%CreationDate: Sun 1992/09/20
+%%Title: Orthographic projection.
+%%Pages: 1 1
+%%DocumentFonts: Courier
+%%EndComments
+
+%%BeginProcSet: graphics.pro
+   /TextFont /Courier-Bold findfont 8 scalefont def
+
+   % Constants.
+   /ws 0.2 def
+
+   % Radius of the generating sphere and map boundary.
+   /r0 40 def
+   /eps r0 8 div def
+   /Rlim 1.0000 r0 mul def
+
+   /Zen 20 def
+   /Par 45 def
+ 
+   /alpha 0 def
+   /beta 0 def
+
+   /DrawMeridian {
+      ws mul setlinewidth
+      0 0 moveto
+      /phi exch def
+      /theta 90 def
+      DoMove
+      45 {
+         /theta theta 2 sub def
+         DoDraw
+         } repeat
+      phi neg rotate
+      dup stringwidth
+      pop -2 div -8 rmoveto
+      show
+      phi rotate
+      stroke
+      } def
+
+   /DrawParallel {
+      ws mul setlinewidth
+      /phi 0 def
+      /theta exch def
+      DoMove
+      180 {
+        /phi phi 2 add def
+        DoDraw
+        } repeat
+      2 3 rmoveto
+      show
+      stroke
+      } def
+
+   /DoMove {
+      DoGeom
+      newx newy moveto
+      /oldx newx def
+      /oldy newy def
+      } def
+
+   /DoDraw {
+      DoGeom
+      newx newy 
+      newx oldx sub dup mul  newy oldy sub dup mul 
+      add sqrt eps gt {moveto} {lineto} ifelse 
+      /oldx newx def
+      /oldy newy def
+      } def
+
+   /DoGeom {
+      /newx theta cos phi sin mul def
+      /newy theta cos phi cos mul def
+      /newx newx theta sin 1 sub alpha mul add def
+      /newy newy theta sin 1 sub beta mul add def
+      /newx newx r0 mul neg def
+      /newy newy r0 mul neg def
+      } def
+
+%%EndProcSet
+
+%%EndProlog
+
+userdict /start-hook known {start-hook} if
+
+
+/vmsave save def
+TextFont setfont
+2 setlinecap
+
+50 50 translate
+
+  (0)   0 4 DrawMeridian
+   ()  15 2 DrawMeridian
+ (30)  30 3 DrawMeridian
+   ()  45 2 DrawMeridian
+ (60)  60 3 DrawMeridian
+   ()  75 2 DrawMeridian
+ (90)  90 4 DrawMeridian
+   () 105 2 DrawMeridian
+(120) 120 3 DrawMeridian
+   () 135 2 DrawMeridian
+(150) 150 3 DrawMeridian
+   () 165 2 DrawMeridian
+(180) 180 4 DrawMeridian
+   () 195 2 DrawMeridian
+(210) 210 3 DrawMeridian
+   () 225 2 DrawMeridian
+(240) 240 3 DrawMeridian
+   () 255 2 DrawMeridian
+(270) 270 4 DrawMeridian
+   () 285 2 DrawMeridian
+(300) 300 3 DrawMeridian
+   () 315 2 DrawMeridian
+(330) 330 3 DrawMeridian
+   () 345 2 DrawMeridian
+
+   ()  75 2 DrawParallel
+ (60)  60 3 DrawParallel
+   ()  45 2 DrawParallel
+ (30)  30 3 DrawParallel
+   ()  15 2 DrawParallel
+   ()   0 2 DrawParallel
+
+vmsave restore
+showpage
+
+
+%%Trailer
+userdict /end-hook known {end-hook} if
+%%EOF

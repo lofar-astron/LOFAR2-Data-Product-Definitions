@@ -1,0 +1,20 @@
+digraph G {
+    node [shape = record]
+
+    Root -> TriggerGroup;
+    Root -> StationGroup_000;
+    Root -> StationGroup_001;
+    Root -> StationGroups;
+    StationGroup_000 -> DipoleDataset0;
+    StationGroup_000 -> DipoleDataset1;
+    StationGroup_000 -> DipoleDatasets;
+
+    Root [label = "TBB Time-Series\n Root Group\n Header"];
+    StationGroup_000 [label = "Station Group\n (Station_000)"];
+    StationGroup_001 [label = "Station Group\n (Station_001)"];
+    StationGroups [label = "More Station\n Groups ..."];
+
+    DipoleDataset0 [label = "Dipole Dataset\n Group\n (000000000)"];
+    DipoleDataset1 [label = "Dipole Dataset\n Group\n (000000001)"];
+    DipoleDatasets [label = "More Dipole\n Dataset Groups ..."];
+}

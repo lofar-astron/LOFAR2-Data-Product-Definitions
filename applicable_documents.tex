@@ -1,0 +1,56 @@
+\svnInfo $Id$
+
+\subsection{Applicable documents}
+\label{sec:applicable documents}
+
+Table \ref{tab:applicable list} lists all the LOFAR ICDs.  Most of the ICDs are for the various LOFAR data types, while ICD numbers 002 and 005 are general and applicable to all the data-format-oriented ICDs.  Please note that the data and header information is written in Little-endian format within the HDF5 files.
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \textsc{Reference} & \textsc{Title} & \textsc{Description} \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{3}{r}{\small \textbf{Applicable documents}
+      \textsl{continued from previous page}} \\
+    \hline
+    \textsc{Reference} & \textsc{Title} & \textsc{Description} \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{3}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \bottomcaption[List of all LOFAR Interface Control Documents (ICDs)]{
+    List of all the LOFAR Interface Control Documents.  ICDs 001, 003, 004, 006, 007 and 008 describe different LOFAR data
+    formats, while ICDs 002 and 005 are general and apply to the other ICDs.
+  \label{tab:applicable list}}
+  \begin{supertabular}{lp{5.8cm}p{7cm}}
+    \shrinkheight{-4.5em}
+    \texttt{ICD-001} \cite{lofar.icd.001} & TBB Time-Series Data & Digitized
+    voltage output, as received by the individual LOFAR dipoles. \\
+    \texttt{ICD-002} \cite{lofar.icd.002} & Representations of World
+    Coordinates & Definition of how to represent and store metadata
+    that serve to locate a measurement in some multidimensional parameter space. \\
+    \texttt{ICD-003} \cite{lofar.icd.003} & Beam-Formed Data & Hosting
+    structure for LOFAR Beam-Formed data. \\
+    \texttt{ICD-004} \cite{lofar.icd.004} & Radio Sky Image Cubes &
+    Primary data product of the imaging pipeline. \\
+    \texttt{ICD-005} \cite{lofar.icd.005} & File Naming Conventions &
+    Conventions for the naming scheme applied to LOFAR standard data products. \\
+    \texttt{ICD-006} \cite{lofar.icd.006} & Dynamic Spectrum Data &
+    Hosting structure for dynamic spectrum data, i.e. intensity as
+    function of time and frequency. \\
+    \texttt{ICD-007} \cite{lofar.icd.007} & Visibility Data & Hosting structure for
+    LOFAR UV Visibility data, primary output of interferometer operations. \\
+    \texttt{ICD-008} \cite{lofar.icd.008} & RM Synthesis Cubes &
+    Hosting structure for LOFAR Rotation Measure Synthesis Cubes
+    output data. \\
+    \hline
+  \end{supertabular}
+\end{center}

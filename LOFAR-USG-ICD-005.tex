@@ -1,0 +1,473 @@
+
+\documentclass[a4paper,10pt,bibtotoc]{scrartcl}
+\usepackage{a4wide,usg}
+\usepackage{draftcopy}
+
+%% Do NOT remove: required to extract SVN information
+\svnInfo $Id$
+
+%% Adjust page footer
+\fancyfoot[LE,LO]{LOFAR-USG-ICD-005: File Naming Conventions}
+\fancyfoot[RE,RO]{\textsc{lofar} Project}
+
+\begin{document}
+
+%%_______________________________________________________________________________
+%% Titlepage
+
+\title{LOFAR Data Format ICD \\ File Naming Conventions \\
+{\normalsize Document ID: LOFAR-USG-ICD-005} \\ 
+{\normalsize Version 2.00.15} \\
+{\normalsize SVN Repository Revision: \svnInfoMaxRevision}}
+\author{A.~Alexov, K.~Anderson, L.~B\"ahren, J.-M. Grie{\ss}meier, \\
+  A.~Gunst, H.~Holties, M.~Wise, G.A.~Renting}
+\date{\small{SVN Date: \svnInfoMaxToday}}
+\maketitle
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\clearpage
+
+%%_______________________________________________________________________________
+%% Change record of the document
+
+\section*{Change record}
+\addcontentsline{toc}{section}{Change record}
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \sc Version & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{4}{r}{\small\sl continued from previous page} \\
+    \hline
+    \sc Version & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{4}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \begin{supertabular}{lllp{10cm}}
+    0.1 & 2009-09-23 & all & Document creation following format discussion \\
+    2.00.00  & 2010-07-08 & Cover & Changed \texttt{`revision'} to
+    `\texttt{version}';  updated  this version number to 2.00.00 for
+    LOFAR ICDs 1 through 7 to put them on the same version numbering scheme.\\
+    2.00.01 & 2010-09-21 & \ref{sec:filename convention} &  Optional
+    Description table matches the current BF naming convention of
+    Sub-Array Pointing and Beam;  added Stokes to the same table.
+    Text updated to reflect the need to pad numbers with zero's. \\
+    2.00.02 & 2010-11-23 & \ref{sec:filename convention} & Added \texttt{.raw} and
+    \texttt{.incoherentstokes} all possible extension names. \\
+    2.00.03 & 2010-12-06 & \ref{sec:filename convention} & Added ``p"
+    for ``part" as a new file option descriptor.\\ 
+    2.00.04 & 2011-03-10 & all & Maintain list of references through
+    Bib\LaTeX\ database. \\
+    2.00.05 & 2011-03-28 & all & Added text to the first few sections 
+    about motivation/scope/etc, since they had been blank. \\
+    2.00.06 & 2011-04-01 & \ref{sec:non standard file names} & Added
+    suggested naming convention for non standard filenames. \\
+    2.00.07 & 2011-04-21 & \ref{sec:glossary} & Added glossary.
+    Expanded list of authors. \\
+    2.00.08 & 2011-04-25 & \ref{sec:filename convention}, \ref{sec:non
+      standard file names}, \ref{sec:examples} & Introduction of
+    \textsl{prefix} as part of the filename; adding section with
+    examples. \\
+    2.00.09 & 2011-09-28 & \ref{sec:filename convention}, \ref{sec:examples} & Added new
+    fields which were requested by the TBB group;  added order preference 
+    listing to the optional descriptors.  \\
+    2.00.10 & 2011-11-18 & \ref{sec:filename convention} & Added and updated naming conventions for SkyModel and InstrumentModel.  \\
+    2.00.11 & 2012-01-10 & \ref{sec:filename convention} & Added Subband Group.  \\
+    2.00.12 & 2012-02-06 & title page & Changed the svnInfoRevision to svnInfoMaxRevision, in order to take the sub-tex file changes into account for the latex compile. \\
+    2.00.13 & 2012-02-21 & all & Fixed all quotes for correct forward/backwards orientation.  \\
+    2.00.14 & 2012-03-06 & cover   & Added draftcopy package for background 'draft' text.\\
+    2.00.15 & 2012-04-03 & cover   & Added list of tables and list of figures to the contents page.\\
+
+\end{supertabular}
+\end{center}
+
+\clearpage
+
+%%_______________________________________________________________________________
+%% Introduction
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Purpose and Scope}
+
+This document sets forth a formal data interface specification for
+\textbf{LOFAR file naming conventions}. The specification applies to data
+structures produced by various LOFAR online and offline processing 
+pipelines that will be called LOFAR data products.
+
+This document is intended to be the formal interface control agreement
+between the LOFAR project, observers/users of LOFAR data products, and
+the LOFAR long-term archive (LTA) facility.
+
+\subsection{Context and Motivation}
+
+This document is not an Interface Control Document (ICD), per say, but
+describes the names of the LOFAR data products, and is therefore is
+considered to be part of the group of ICDs.
+
+\input applicable_documents
+
+%% ______________________________________________________________________________
+%%                                                              Section: Overview
+
+\section{Overview}
+\label{sec:overview}
+
+This document is structured as follows: Section \ref{sec:filename convention} 
+will describe the convention to follow for required and optional naming tags 
+for LOFAR file names. Section \ref{sec:non standard file names} gives suggestions to follow for file names for files that can not be covered, or not entirely by this convention.
+
+%% ------------------------------------------------------------------------------
+
+\section{Filename Convention}
+\label{sec:filename convention}
+
+LOFAR data products \cite{lofar.icd.001,lofar.icd.003,lofar.icd.004,lofar.icd.006,lofar.icd.007,lofar.icd.008} will have file names of the form,
+
+\begin{center}
+  \verb|<Prefix><Observation ID>_<Optional Descriptors>_<Filetype>.<Extension>|
+\end{center}
+
+In this the individual fields are defined as follows:
+
+\begin{enumerate}
+\item \textbf{Prefix}, for a standard LOFAR dataset, is a fixed single
+  character, `L'.
+\item \textbf{Observation ID} -- unique identifier of the observation
+  as part of which (or based on which) this data product was created.
+\item \textbf{Optional Descriptors} are used to further indicate the
+  nature of the data stored within the file.  It is best to keep the
+  file name as short as possible;  optional descriptors should only be
+  used if necessary to better uniquely identify a file.  Underscores 
+  should be used between multiple optional descriptors.  Please note 
+  that the optional descriptors listed below are in their preferential 
+  order in which they should be used within the file name:
+  \\
+  \begin{center}
+    \begin{tabular}{|lll|}
+      \hline
+      \textbf{Description} & \textbf{Format} & \textbf{Example} \\
+      \hline \hline
+      Sub-Array Pointing (SAP)   & 3 digits   & \verb|SAPxxx|   \\
+      Subband (SB)      & 3 digits   & \verb|SBxxx| \\
+      Subband Group (SBG)      & 3 digits   & \verb|SBGxxx| \\
+      Beam (B)          & 3 digits   & \verb|Bxxx| \\
+      Part (P)          & 3 digits   & \verb|Pxxx| \\
+      Stokes (S)        & 1 digit    & \verb|Sx| \\
+      Station Name (CS, RS, DE, etc)  & 3 digit  & \verb|CSxxx|, \verb|RSxxx|, \verb|DExxx| \\
+      Date (D)          & 8 digits   & \verb|D<yyyymmdd>| \\
+      Date (D) \& Time  & 8+6.3 digits & \verb|D<yyyymmdd>T<hhmmss.sss>Z| \\
+      Readout (R)       & 3 digits   & \verb|Rxxx| \\
+      \hline
+    \end{tabular}
+  \end{center}
+  While the descriptors can be used to e.g. indicate a specific sub-band, beam
+  or date it is \underline{not to be} \underline{used for ranges}.
+  Digits should be padded with zero's.  Please note that the number of
+  digits can increase in the future;  software should be made flexible
+  to take this into account.
+  
+  The ``P" (Part) parameter holds the number of parts/slits the
+  Beam-Formed coherentstokes data files will be split by frequency
+  range.  It is anticipated that the typical 240 subbands will be
+  evenly split into 8 sections (to match the number of cores for ease
+  of processing).  Each of these 8 sections will have a unique part
+  number. 
+  
+  The ``SBG" (Subband Group) parameter is used when data from more than one subband is combined into one output dataproduct. This is then enumerated using the Subband Group index.
+  
+\item \textbf{Filetype} is a marker for the contents of the
+  file. There will be several different kinds of data produced by
+  LOFAR, see table below. Importantly, filetype signifies the kind of
+  LOFAR data that comprise the particular data file, and therefore,
+  will also signal the appropriate interface control document for
+  further reference, should users find that necessary. The options for
+  the file type along with their abbreviations are listed in the table below.
+  \input lofar_common_filetype
+  
+\item \textbf{Extension}
+  \begin{center}
+    \begin{tabular}{|lp{11cm}|}
+      \hline
+      \textbf{Extension} & \textbf{Type of data} \\
+      \hline \hline
+      \verb|.MS|     & CASA/casacore MeasurementSet \\
+      \verb|.h5|     & HDF5 file \\
+      \verb|.fits|   & FITS file \\
+      \verb|.log|    & Logfile \\
+      \verb|.parset| & A parset file \\
+      \verb|.LSM|    & Local sky model \\
+      \verb|.IM|     & CASA/casacore image file (PagedImage) \\
+      \verb|.INST|     & Instrument model (ParmDB) file generated by BBS \\
+      \verb|.vds|    & Dataset description file \\
+      \verb|.gds|    & Dataset description file \\
+      \verb|.conf|   & Configuration file (mostly local to station) \\
+      \verb|.raw|    & Raw Beam-Formed (non-Incoherentstokes) file
+      written from the Blue Gene/P \\
+      \verb|.incoherentstokes| & Raw Beam-Formed incoherent Stokes
+      file written from the Blue Gene/P \\
+      \hline
+    \end{tabular}
+  \end{center}
+  Files generated by CASA/casacore will continue the currently
+  existing conventions using upper-case suffixes.
+\end{enumerate}
+
+%% ------------------------------------------------------------------------------
+
+\section{Non standard file names}
+\label{sec:non standard file names}
+
+\subsection{Introduction}
+
+Section \ref{sec:filename convention} only covers dataproducts
+generated by the automatic systems in the Central Processing (CEP)
+facility of LOFAR. It is useful to also have file naming conventions
+for files that fall outside that regime. This is of particular
+importance if the data might need to be archived in the LOFAR Long
+Term Archive (LTA).
+
+The biggest difference with section \ref{sec:filename convention} is
+that for data generated by processes not under SAS control, there is
+no Observation ID. Two cases can be distinguished: where the data are
+derived from CEP generated data, and where the process is completely
+autonomous.
+
+\subsection{Derived from a SAS process}
+
+For data that is basically generated by further processing of a standard data product it is advised to keep the identifiers of the standard product and add extra descriptors as needed just before the Extension separated by one or more dots.
+
+\begin{center}
+  \verb|<Prefix><Observation ID>_<Optional Descriptors>_<Filetype>.<Other descriptors>.<Extension>|
+\end{center}
+
+In this the individual fields are defined as follows:
+
+\begin{enumerate}
+\item \textbf{Prefix}, for a standard LOFAR dataset, is a fixed single
+  character, `L'.
+\item \textbf{Observation ID} is the SAS identifier for the process
+  that generated the data product that this data product is derived
+  from.
+\item \textbf{Optional Descriptors} are the same as defined under the
+  previous section \ref{sec:filename convention}, if applicable.
+\item \textbf{Filetype} is the same as defined under the previous
+  section \ref{sec:filename convention}, if applicable.
+\item \textbf{Other descriptors} is relatively free form and could for
+  example be things like \verb|flagged|, \verb|manual|,
+  \verb|pub_version3|, \verb|Nature.page45.image|. Basically anything
+  that can't be caught by the standard descriptors from the previous
+  section. Note if needed these should preferably be separated by
+  dots, not underscores, to separate them from the more standardized
+  descriptors.
+\item \textbf{Extension} should be last, so it is easy to identify the
+  type of data product and what tools are needed to read it.
+\end{enumerate}
+
+\subsection{Not derived from a SAS process}
+
+For data that not derived from a dataproduct directly related to a SAS
+Observation ID, a slightly different naming convention is advised.
+
+\begin{center}
+  \verb|<Prefix><Non numerical identifier><Custom ID>_<Optional Descriptors>_<Filetype>|
+  \verb|.<Other descriptors>.<Extension>|
+\end{center}
+
+In this the individual fields are defined as follows:
+
+\begin{enumerate}
+\item \textbf{Prefix}, for a standard LOFAR dataset, is a fixed single
+  character, `L'.
+\item \textbf{Non numerical identifier} is needed to make it clear
+  that what follows is not a SAS Observation ID. This could be just
+  one character, or the name of a project or instrument.
+\item \textbf{Custom ID} is probably needed to identify dataproducts
+  within your project or instrument.
+\item \textbf{Optional Descriptors} are the same as defined under the
+  previous section \ref{sec:filename convention}, if applicable.
+\item \textbf{Filetype} is the same as defined under the previous
+  section \ref{sec:filename convention}, if applicable.
+\item \textbf{Other descriptors} is relatively free form and could for
+  example be things like \verb|flagged|, \verb|manual|,
+  \verb|pub_version3|, \verb|Nature.page45.image|. Basically anything
+  that can't be caught by the standard descriptors from the previous
+  section. Note if needed these should preferably be separated by
+  dots, not underscores, to separate them from the more standardized
+  descriptors.
+\item \textbf{Extension} should be last, so it is easy to identify the
+  type of data product and what tools are needed to read it. The 123th
+  dataset of a project called DCI, could then for example be
+  \begin{verse}
+    \verb|LDCI123_B012_P345_sky.something.else.h5|
+  \end{verse}
+\end{enumerate}
+
+%% ------------------------------------------------------------------------------
+
+\section{Examples}
+\label{sec:examples}
+
+In order to illustrate how to construct file names based on the
+before-mentioned rules:
+\begin{enumerate}
+\item Beam-formed data
+  \begin{enumerate}
+  \item Files containing data for a single sub-array pointing:
+    \begin{verse}
+      \verb|L123456789_SAP000_bf.h5| \\
+      \verb|L123456789_SAP001_bf.h5| \\
+      \verb|L123456789_SAP002_bf.h5| \\
+      \verb|L123456789_SAP003_bf.h5|
+   \end{verse}
+  \item Files containing data for a single beam within a sub-array pointing:
+    \begin{verse}
+      \verb|L123456789_SAP000_B000_bf.h5| \\
+      \verb|L123456789_SAP000_B001_bf.h5| \\
+      \verb|L123456789_SAP000_B002_bf.h5| \\
+      \verb|L123456789_SAP000_B003_bf.h5|
+   \end{verse}
+  \item File containing data for a single Stokes parameter of a beam
+    within a sub-array pointing:
+    \begin{verse}
+      \verb|L123456789_SAP000_B001_S0_bf.h5| \\
+      \verb|L123456789_SAP000_B001_S1_bf.h5| \\
+      \verb|L123456789_SAP000_B001_S2_bf.h5| \\
+      \verb|L123456789_SAP000_B001_S3_bf.h5|
+   \end{verse}
+\end{enumerate}
+\item TBB time-series data
+  \begin{verse}
+      \verb|L123456789_tbb.h5|   \\
+      \verb|L123456789_CS011_D20110719T110541.036Z_R002_tbb.h5|
+  \end{verse}
+\end{enumerate}
+
+
+%% ==============================================================================
+%%
+%%  Appendices
+%%
+%% ==============================================================================
+
+\clearpage
+\appendix
+
+%%_______________________________________________________________________________
+%%                                                    Discussion & open questions
+
+\section{Discussion \& open questions}
+\label{sec:discussion}
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                        The Grouptype attribute
+
+\section{The {\tt GROUPTYPE} attribute}
+\label{sec:grouptype attribute}
+
+The first attribute in every group/dataset must be the attribute
+\verb|GROUPTYPE|. Since the {\cla} are in the root header, the value
+in the {\cla} for (\verb|GROUPTYPE|) = \verb|`Root'|.  The options for
+the group type are listed in the Group Type table below, grouped by
+category.
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \textsc{Group/Dataset} & \textsc{Value} & \textsc{Use in ICD...} & \textsc{Comments} \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{4}{r}{\small\sl continued from previous page} \\
+    \hline
+    \textsc{Group/Dataset} & \textsc{Value} & \textsc{Use in ICD...} & \textsc{Comments} \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{4}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \begin{supertabular}{llp{3cm}p{5.5cm}}
+    \shrinkheight{-3em}
+    File root group         & \verb|`Root'|
+                            & \small 001, 003, 004, 006, 007, 008
+                            & Root group of HDF5 file. \\
+    \verb|SYS_LOG|          & \verb|`SysLog'|
+                            & \small 001, 003, 004, 006, 007, 008
+                            & System log files, parsets. \\
+    \verb|PROCESS_HISTORY|  & \verb|`ProcessHistory'|
+                            & \small 003, 004, 006, 007, 008
+                            & Processing history logs. \\
+    \verb|COORDINATES|      & \verb|`Coordinates'|
+                            & \small 001, 002, 003, 004, 006, 007, 008
+                            & Coordinates group. \\
+    Direction coordinate    & \verb|`DirectionCoord'|
+                            & \small 002, 004
+                            & Coordinate describing a direction towards
+                            a position on the sky/celestial sphere. \\
+    Linear coordinate       & \verb|`LinearCoord'|
+                            & \small 002, 004
+                            & Coordinate with a linear set of values
+                            along the world axis. \\
+    Tabular coordinate      & \verb|`TabularCoord'|
+                            & \small 002, 004
+                            & Coordinate with a tabulated set of values
+                            along the world axis. \\
+    Polarization coordinate & \verb|`PolarizationCoord'|
+                            & \small 002, 004, 006
+                            & Representation of a polarization coordinate. \\
+    \hline
+    \verb|IMAGE_NNN|        & \verb|`Image'|
+                            & \small 004
+                            & Container for the various components
+                            associated with an image. \\
+    \verb|DATA|             & \verb|`Data'|
+                            & \small 004	
+                            & Dataset containing the actual pixel data array. \\
+    \verb|SOURCE_TABLE|     & \verb|`SourceTable'| 
+                            & \small 004
+                            & Table collecting a list of sources and
+                            their associated parameters. \\
+  \end{supertabular}
+\end{center}
+
+As can be seen from the above table, some of \verb|GROUPTYPE|
+attribute are common to all data format ICDs, whereas other are more
+specific to a given data product, depending on its hierarchical structure.
+
+%% _______________________________________________________________________________
+%%                                                           LOFAR common glossary
+
+\section*{\glossaryname}
+\label{sec:glossary}
+\addcontentsline{toc}{section}{\glossaryname}
+
+\input lofar_common_glossary
+
+%%_______________________________________________________________________________
+%%                                                                   Bibliography
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

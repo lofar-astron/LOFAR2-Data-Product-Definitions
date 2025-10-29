@@ -1,0 +1,34 @@
+\svnInfo $Id$
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|lllp{5.5cm}|} 
+    \hline
+    \textsc{Field/Keyword} & \textsc{Type} & \textsc{Value} & \textsc{Description} \\
+    \hline \hline
+    \small\verb|GROUPTYPE| & \small\verb|string| & \verb|`LinearCoord'| &
+    Group type descriptor \\
+    \small\verb|COORDINATE_TYPE| & \small\verb|string| & \verb|`Linear'|&
+    Coordinate Type descriptor \\
+    \small{\verb|STORAGE_TYPE|} & \small\verb|string| & \verb|`Linear'|
+    & Descriptor for the underlying storage type for this coordinate \\
+    \small\verb|NOF_AXES| & \small\verb|int| & $N$ & Number of coordinate axes \\
+    \small\verb|AXIS_NAMES| & \small\verb|array<string,1>| &
+    $[name_{0},..,name_{N}]$ & World axis names \\
+    \small\verb|AXIS_UNITS| & \small\verb|array<string,1>| &
+    $[unit_{0},..,unit_{N}]$ & Physical units along each coordinate axis. \\
+   \small\verb|REFERENCE_VALUE| & \small\verb|array<double,1>| &
+   $[val_{0},..,val_{N}]$ & Coordinate value at the reference point \\
+    \small\verb|REFERENCE_PIXEL| & \small\verb|array<double,1>| &
+    $[pix_{0},..,pix_{N}]$ & Array location of the reference point in pixels. \\
+    \small\verb|INCREMENT| & \small\verb|array<double,1>| &
+    $[incr_{0},..,incr_{N}]$ & Coordinate increment at reference point. \\
+    \small\verb|PC| & \small\verb|array<double,1>| &
+    $[p_{00},pc_{01},..,p_{0N},..,p_{NN}]$ & Non-singular square
+    matrix, for the transformation from intermediate pixel coordinates
+    to intermediate world coordinates. \\
+   \hline
+  \end{tabular}
+  \caption{Keywords decribing a Linear Coordinate.}
+  \label{tab:coord-linear}
+\end{table}

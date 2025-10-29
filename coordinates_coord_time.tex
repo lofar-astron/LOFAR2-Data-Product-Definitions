@@ -1,0 +1,42 @@
+\svnInfo $Id$
+
+%%
+%%  Section: Time Coordinate
+%%
+
+Given the characteristics of the time axis, a time coordinate internal
+will either be storing its values as a linear axis
+(\verb|STORAGE_TYPE=`Linear'|) or as a 1-dimensional look-up table
+(\verb|STORAGE_TYPE=`Tabular'|).
+
+\input coordinates_coord_time_table
+
+\begin{list}{\textbf{--}}{}
+\item \verb|GROUPTYPE| is the group type descriptor with the fixed
+  value \verb|`TimeCoord'|.
+\item \verb|COORDINATE_TYPE| is the coordinate type descriptor with
+  the fixed value \verb|`Time'|.
+\item \verb|STORAGE_TYPE| indicates the underlying storage mechanism: if 
+  \verb|STORAGE_TYPE=`Linear'| the coordinate axis is expected to be linear and
+  represented by the attributes defined for a Linear Coordinate (see section
+  \ref{sec:coord-linear}). If set \verb|STORAGE_TYPE=`Tabular'|, the values along
+  the coordinate axis are expected to be tabulated, thereby represented by the
+  attributes defined for a Tabular Coordinate (see section
+  \ref{sec:coord-tabular}).
+  \begin{comment}
+    Add description of structure depending on storage type.
+  \end{comment}
+\item \verb|REFERENCE_FRAME| records the reference frame within which
+  the time coordinate axis is defined; see
+  Tab.~\ref{tab:reference-frames-time} for a list of recognized
+  values. This can be a diferent frame as used for e.g. the direction
+  coordinate or as noted in the coordinates group. 
+\item \verb|NOF_AXES| is the number of coordinate axes.
+\item \verb|AXIS_NAMES| are the world axis names connected with the
+  coordinate axes, i.e. \verb|AXIS_NAMES=[`Time']|.
+\item \verb|AXIS_UNITS| are the physical units world axis of the coordinate
+  (corresponding to the FITS keyword \verb|CUNITi|, see \cite{fits.paper1}).
+  Restrictions on the nature and range of units, if any, will be determined by
+  agreements applying to the specific axis. If they are not so limited, units
+  should conform to the IAU Style Manual \cite{mcnally.1988}.
+\end{list}

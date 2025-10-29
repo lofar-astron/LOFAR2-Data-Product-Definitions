@@ -1,0 +1,42 @@
+\svnInfo $Id$
+
+%% ==============================================================================
+%%
+%% Table with the components of a Coordinates group.
+%%
+%% ==============================================================================
+
+\begin{table}[ht]
+ \centering
+  \begin{tabular}{|llp{8.5cm}|} 
+    \hline
+    \textsc{Field/Keyword} & \textsc{Type} & \textsc{Description} \\
+    \hline \hline
+    \small{\verb|GROUPTYPE|} & \verb|string| & Group type descriptor,
+    \texttt{Coordinates} \\
+    \small{\verb|REF_LOCATION_VALUE|}  & \verb|array<double,1>| & Numerical value(s) of
+    the reference location \\
+    \small{\verb|REF_LOCATION_UNIT|} & \verb|array<string,1>| & Physical unit(s) for the
+    reference location \\
+    \small{\verb|REF_LOCATION_FRAME|} & \texttt{string} & Identifier for the
+    reference system of the location; see Tab.~\ref{tab:reference frames location} 
+    for a list of recognized values. \\
+    \small{\verb|REF_TIME_VALUE|} & \texttt{double} & Numerical value of the
+    reference time \\
+    \small{\verb|REF_TIME_UNIT|} & \texttt{string} & Physical unit of the
+    reference time \\
+    \small{\verb|REF_TIME_FRAME|} & \texttt{string} & Identifier for the reference
+    time system used \\
+   \small{\verb|NOF_COORDINATES|} & \texttt{int} & N of coordinate objects \\
+    \small{\verb|NOF_AXES|} & \texttt{int} & N of coordinate axes \\
+    \small{\verb|COORDINATE_TYPES|} & \verb|array<string,1>| & embedded coordinate
+    object types \\
+    \hline
+    \small{\verb|COORDINATE_{N}|} & \texttt{Group} & coordinate object
+    container \\
+    \hline
+  \end{tabular}
+  \caption{Components of a Coordinates group.}
+  \label{tab:coordinates-group} 
+\end{table}
+

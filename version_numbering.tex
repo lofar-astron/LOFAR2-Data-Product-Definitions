@@ -1,0 +1,20 @@
+\svnInfo $Id$
+
+\paragraph{Version numbering scheme}
+
+In order to track the evolution of the format specification documents the following numbering scheme has been adopted:
+
+\begin{verbatim}
+<major version>.<minor version>.<patch version>
+  [0..]        .  [0..99]      .  [0..99]
+\end{verbatim}
+where
+
+\begin{itemize}
+\item the \verb|<patch version>| is getting incremented on changes to the document, which do not affect the actual contents of the file (such as when changing attribute names and such), e.g. correcting/augmenting descriptions, adding examples, etc.
+\item The \verb|<minor version>| tracks minor changes to the actual content of
+  the file, such as renaming, adding or removing attributes.
+\item The \verb|<major version>| indicates major changes with in the file format,
+  such as reorganization of the internal hierarchical structure or
+  official release to the public.
+\end{itemize}

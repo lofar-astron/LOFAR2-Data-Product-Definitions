@@ -1,0 +1,150 @@
+%% $Id$
+
+\documentclass[a4paper,10pt,bibtotoc]{scrartcl}
+\usepackage{a4wide,usg,supertabular}
+\usepackage[today,nofancy]{svninfo}
+
+\svnInfo $Id$
+
+\begin{document}
+
+%%_______________________________________________________________________________
+%%                                                                      Titlepage
+
+\title{LOFAR Data Format ICD: \\ +++DOCUMENT TITLE+++ \\
+{\normalsize Document ID: +++DOCUMENT NAME+++} \\ 
+{\normalsize Revision 0.0} \\
+{\normalsize SVN Repository Revision: \svnInfoRevision}}
+\author{+++AUTHORS+++}
+\date{\small{SVN Date: \svnInfoDate}}
+\maketitle
+
+\tableofcontents
+
+\clearpage
+
+%%_______________________________________________________________________________
+%%                                                                  Change record
+
+\section*{Change record}
+\addcontentsline{toc}{section}{Change record}
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \sc Issue & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{4}{r}{\small\sl continued from previous page} \\
+    \hline
+    \sc Issue & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{4}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \begin{supertabular}{lllp{10cm}}
+    0.1 & yyyy-mm-dd & all & Document creation \\
+  \end{supertabular}
+\end{center}
+
+%%_______________________________________________________________________________
+%%                                                                   Introduction
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Purpose and Scope}
+
+---/---
+
+\subsection{Context and Motivation}
+
+---/---
+
+\subsection{Applicable Documents}
+
+---/---
+
+\subsection{Reference Documents}
+
+---/---
+
+\subsection{Glossary}
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                                   Requirements
+
+\section{Requirements}
+\label{sec:requirements}
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                  High Level Data Specification
+
+\section{High Level Data Specification}
+\label{sec:structure}
+
+
+%%_______________________________________________________________________________
+%%                                                    Detailed Data Specification
+
+\section{Detailed Data Specification}
+
+
+%%_______________________________________________________________________________
+%%                                                                     Interfaces
+
+\section{Interfaces}
+\label{sec:interfaces}
+
+---/---
+
+\subsection{Interface requirements}
+
+---/---
+
+\subsection{Relation to other workpackages}
+
+---/---
+
+%% ------------------------------------------------------------------------------
+
+\section{Changelog}
+\label{sec:changelog}
+
+---/---
+
+%% ------------------------------------------------------------------------------
+
+\section{Discussion}
+\label{sec:discussion}
+
+---/---
+
+\subsection{Open questions}
+\label{sec:open-questions}
+
+---/---
+
+\subsection{Future enhancements}
+\label{sec:future-enhancements}
+
+---/---
+
+%% ------------------------------------------------------------------------------
+%% References
+
+
+
+\end{document}
+

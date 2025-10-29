@@ -1,0 +1,596 @@
+\documentclass[a4paper,10pt,bibtotoc]{scrartcl}
+\usepackage{a4wide,usg}
+
+%% Do NOT remove: required to extract SVN information
+\svnInfo $Id$
+
+%% Adjust page footer
+\fancyfoot[LE,LO]{LOFAR-USG-ICD-003: Beam-Formed Data}
+\fancyfoot[RE,RO]{\textsc{lofar} Project}
+
+\begin{document}
+
+\title{LOFAR Data Format ICD \\ Beam-Formed Data \\
+{\normalsize VERSION 2.5} \\
+\author{A.~Alexov, K.~Anderson, L.~B\"ahren, J.-M. Grie{\ss}meier, J.W.T.~Hessels, \\
+J.S.~Masters, B.W.~Stappers, J.J.D.~Mol}
+{\normalsize SVN Repository Revision: \svnInfoMaxRevision}}
+\date{\small{SVN Date: \svnInfoMaxToday}}
+\maketitle
+
+\tableofcontents
+
+\clearpage
+
+%% ------------------------------------------------------------------------------
+%% Change record
+
+\section*{Change record}
+\addcontentsline{toc}{section}{Change record}
+
+\subsection*{Version 2.5}
+
+Initial public release.
+
+\subsection*{Version 2.6}
+
+Added support to store quantized (8 bits or lower) data.
+
+
+
+\clearpage
+
+%% ------------------------------------------------------------------------------
+%% Section: Introduction
+
+\section{Introduction}  
+\label{sec:introduction}
+
+This Interface Control Document (ICD) sets forth a formal data interface specification for
+LOFAR beam-formed (BF) data products. The LOFAR beam-formed data is described as an hierarchical
+structure of groups, containing attributes and data, and uses the HDF5 file format as a
+container for this hierarchy.
+
+%% _______________________________________________________________________________
+%% Organization of the data
+
+\section{Organization of the data}
+\label{sec:organization of the data}
+The LOFAR beam-formed data products contain data for one to four Stokes datasets (or Stokes groups) belonging to a single observation. The Stokes datasets will be numbered 0--3, and can represent one of the following sets of Stokes parameters and polarizations:
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|lp{10cm}|}
+    \hline
+    \textsc{Stokes parameters} & \textsc{Description} \\
+    \hline \hline
+    \verb|I, Q, U, V|     & Full Stokes of (in)coherently summed data. \\
+    \verb|I|              & Signal intensity of (in)coherently summed data. \\
+    \verb|Xr, Xi, Yr, Yi| & Raw voltages of coherently summed data. \verb|X| and \verb|Y| are the polarizations, and \verb|r| and \verb|i| represent the real and the imaginary components, respectively. \\
+    \hline
+  \end{tabular}
+  \caption{Overview of Stokes parameters.}
+  \label{tab:stokes}
+\end{table}
+
+The Stokes datasets are contained within a hierarchy of groups and attributes that describe the observation meta-data necessary to interpret the Stokes data. Note: when the data is quantized, the Stokes parameters are stored as a group, because it needs the quantized values, the scales and the offsets to be stored as separate types. The original (unquantized) data are 32 bit floating point values.
+
+\subsection{High level LOFAR BF file structure}
+\label{sec:High level LOFAR BF file structure}
+
+The beamformed data are organized within a hierarchical structure,
+which reflects upon the structure in which data are grouped during
+processing.  This structure can be represented as a HDF5 hierarchy, for example:
+
+\begin{lstlisting}
+L1002977_B000_S0_P000_bf.h5     .. Group      .. Root level of the HDF5 file
+|-- SUB_ARRAY_PONTING_000       .. Group      .. First Sub-Array Pointing group
+|   |-- PROCESS_HISTORY         .. Group      .. Process History Group for Sub-Array Pointing Group
+|   |-- BEAM_000                .. Group      .. First Beam group
+|   |   |-- PROCESS_HISTORY     .. Group      .. Processing History Group for Beam Group
+|   |   |-- COORDINATES         .. Group      .. First Coordinates group
+|   |   |  |-- COORDINATE_0     .. Group      .. Time Coordinates group (LinearCoord)
+|   |   |  `-- COORDINATE_1     .. Group      .. Frequency Coordinates group (TabularCoord)
+|   |   |-- STOKES_0            .. Dataset    .. First Stokes (I) dataset
+|   |   |-- STOKES_1            .. Dataset    .. First Stokes (Q) dataset
+|   |   |-- STOKES_2            .. Dataset    .. First Stokes (U) dataset
+|   |   `-- STOKES_3            .. Dataset    .. First Stokes (V) dataset
+... In the case of quantized data, the 4 lines above are replaced with ....
+|   |   |-- QUANTIZED_STOKES_0  .. Group      .. First quantized Stokes (I)  group
+|   |   |-- QUANTIZED_STOKES_1  .. Group      .. First quantized Stokes (Q)  group
+|   |   |-- QUANTIZED_STOKES_2  .. Group      .. First quantized Stokes (U)  group
+|   |   `-- QUANTIZED_STOKES_3  .. Group      .. First quantized Stokes (V)  group
+|   |-- BEAM_001                .. Group      .. Second Beam beam group
+|   |   |-- PROCESS_HISTORY
+|   |   |-- COORDINATES
+|   |   |   |-- COORDINATE_0
+|   |   |   `-- COORDINATE_1
+|   |   |-- STOKES_0
+|   |   |-- STOKES_1
+|   |   |-- STOKES_2
+|   |   `-- STOKES_3
+...  Or ...........
+|   |   |-- QUANTIZED_STOKES_0
+|   |   |-- QUANTIZED_STOKES_1
+|   |   |-- QUANTIZED_STOKES_2
+|   |   `-- QUANTIZED_STOKES_3
+|   `-- BEAM_{NNN}
+|-- SUB_ARRAY_PONTING_001       .. Group      .. Second Sub-Array Pointing group
+|   |-- PROCESS_HISTORY
+|   |-- BEAM_000
+'
+\end{lstlisting}
+
+The main building blocks of the BF HDF5 file are:
+
+\begin{enumerate} \parskip 0pt
+\item \textbf{File Root-level} (\verb|ROOT|). The root level of the
+  file contains the majority of associated meta-data, describing the
+  circumstances of the observation. These data attributes include time
+  (start and end), frequency window (high band vs. low band, filters)
+  and other important characteristics of the dataset. See Sections
+  \ref{sec:root group} and \ref{sec:common lofar attributes} for details.
+  
+\item \textbf{Sub-Array Pointing Groups}
+  (\verb|SUB_ARRAY_POINTING_{NNN}|). Each observation sub-array
+  pointing is stored as a seperate group within the file, each
+  containing its own beam groups. Characteristics about each sub-array
+  pointing such as direction are stored as Attributes in group
+  headers.  LOFAR can observe with up to several hundred sub-array pointings,
+  since you can ``trade bandwidth for beams'' (less data per beam in
+  order to gain additional beams). Therefore it is unknown as to the
+  maximum number of \texttt{Sub-Array Pointing Groups} in a BF H5
+  file.  See Section \ref{sec:sub-array pointing group} for details.
+
+\item \textbf{Beam Groups} (\verb|BEAM_{NNN}|). Each observation beam is stored as a
+  seperate group within the \texttt{Sub-Array Pointing Groups}, each
+  containing its own set of \texttt{Coordinate} and \texttt{Stokes
+    Datasets} with the data.  The pointing information is given for each
+  Beam as Attributes.  The starting frequency of the subband (start
+  frequency of all the channels) information is stored as World
+  Coordinate System (WCS) information in the Beam Coordinates Group.  Beams
+  can be incoherently added, coherently added or not added at all.
+  This group encompasses a variety of possible `beams', including the
+  most known which will be used frequently, called the Tied-Array Beam.
+  See Section \ref{sec:Beam group} for details.
+
+\item \textbf{Coordinates Groups} (\verb|COORDINATES|).  Each \texttt{Beam Group} contains
+  one \texttt{Coordinates Group}, which stores the time series
+  relation for the data stored in the lowest (4th) hierarchical depth
+  of the file in the \texttt{Stokes Datasets}.  The \texttt{Coordinates
+    Group} will contain 2 Coordinate types (1 Time and 1
+  Spectral (Frequency) Coordinate) as an associated pair.  See Section
+  \ref{sec:coordinates group} for details.
+
+\item \textbf{Processing History Groups} (\verb|PROCESS_HISTORY|). \texttt{Processing History
+    Groups} can be found on the \texttt{Sub-Array Pointing Group} and
+  \texttt{Beam Group} levels. These are catch-all envelops
+  encapsulating information about all the steps of processing, such as
+  parameter sets and processing logs. Their contents are implementation dependent.
+
+\item \textbf{Stokes Datasets} (\verb|STOKES_{N}|). Each Beam has a fixed number
+  \texttt{Stokes Datasets}, one per Stokes type (or polarizations).  The
+  Stokes type depends on the type of observation and summing of the
+  data.  
+
+\item \textbf{Quantized Stokes Groups} (\verb|QUANTIZED_STOKES_{N}|). Each Beam has a fixed number
+  quanzited \texttt{Stokes Groups}, one per Stokes type (or polarizations).  The
+  Stokes type depends on the numer of bits used in the quantization and the type of observation. In addition, the scale and offsets are also stored in the same group, as they are needed to recover the original data. Either \verb|STOKES_{N}| or \verb|QUANTIZED_STOKES_{N}| will be used to store the data, but not both.
+
+\end{enumerate}
+
+%% _______________________________________________________________________________
+%% Detailed Data Specification
+
+\section{Detailed Data Specification}
+\label{sec:detailed data structure}
+
+\input metadata_intro
+
+\subsection{The Root Group ({\tt ROOT})}
+\label{sec:root group}
+
+The LOFAR file hierarchy begins with the top level \textbf{File Root
+  Group} (\verb|ROOT|). Contained within this group is a merged set of attributes, consisting of the {\cla} (CLA) shared by all LOFAR science data products (listed in Table~\ref{tab:lofar common metadata}, note that \verb|FILETYPE = `bf'| for beam-formed data), and a set of attributes that are specific to LOFAR beam-formed data (listed in Table~\ref{tab:root attributes}).
+
+\input lofar_common_metadata
+
+\begin{small}
+\begin{table}[p]
+\begin{small}
+  \centering
+  \begin{tabular}{|llllp{6cm}|}
+    \hline
+    \sc Field/Keyword  & \sc Type & \sc Value & \sc Software  & Description \\
+    \sc   & \sc & \sc & \sc Version  & \\
+    \hline \hline
+    \sc The following are & \sc & \sc & \sc   &\\
+    \sc H5Type == Attribute & \sc & \sc & \sc   &\\
+    \hline 
+  \begin{small}\verb|CREATE_OFFLINE_ONLINE|\end{small}  & \verb|string| & --- & DAL v2.5.0  & Whether the file was created \verb|`Online'| (stream to file) or \verb|`Offline'| (file to file). \\
+ \verb|BF_FORMAT|  & \verb|string| & --- & DAL v2.5.0 &  Set to \verb|`RAW'| if the file is BeamFormed RAW data; set to \verb|`TAB'| if the file is BeamFormed Processed data.  \\
+ \verb|BF_VERSION|  & \verb|string| & --- & DAL v2.5.0 &  BeamFormed data format version number.\\  
+  \begin{small}\verb|TOTAL_INTEGRATION_TIME|\end{small} & \verb|double| & --- & DAL v2.5.0 & Total integration time
+  of the observation. \\
+  \begin{small}\verb|TOTAL_INTEGRATION_TIME_UNIT|\end{small} & \verb|string| & \verb|`s'| & DAL v2.5.0 & \\
+  \verb|OBSERVATION_DATATYPE|  & \verb|string| & --- & DAL v2.5.0 &  Type of observation: Searching, timing, etc. \\
+  \begin{scriptsize}\textit{SUB\_ARRAY\_POINTING\_}\end{scriptsize} &  &  & & \\
+  \begin{scriptsize}\textit{ DIAMETER}\end{scriptsize} & \verb|double| & --- & DAL v2.5.0 & FWHM of the sub-array pointing at zenith at center frequency. \\
+  \begin{scriptsize}\textit{SUB\_ARRAY\_POINTING\_}\end{scriptsize}  &  &  & & \\
+  \begin{scriptsize}\textit{ DIAMETER\_UNIT}\end{scriptsize}  & \verb|string| & \verb|`arcmin'| & DAL v2.5.0 & \\
+  \verb|BANDWIDTH|  & \verb|double| & --- & DAL v2.5.0 & Total bandwidth (excluding gaps). \\
+  \verb|BANDWIDTH_UNIT|  & \verb|string| & \verb|`MHz'| & DAL v2.5.0 & \\
+  \begin{scriptsize}\textit{BEAM\_DIAMETER}\end{scriptsize}  & \verb|double| & --- & DAL v2.5.0 & FWHM of the beams at zenith at center frequency. \\
+  \begin{scriptsize}\textit{BEAM\_DIAMETER\_UNIT}\end{scriptsize}  & \verb|string| & \verb|`arcmin'| & DAL v2.5.0 & \\
+  \verb|OBSERVATION_|  &  &  &  &  \\
+  \verb| NOF_SUB_ARRAY_POINTINGS|  & \verb|int| & --- & DAL v2.5.0 & Number of sub-array pointing synthesized beams in the entire observation. \\
+  \verb|NOF_SUB_ARRAY_POINTINGS|  & \verb|int| & --- & DAL v2.5.0 & Number of sub-array pointing synthesized beams stored in this file. \\
+  \hline
+  \sc The following are & \sc & \sc & \sc   &\\
+  \sc H5Type == Group & \sc & \sc & \sc   &\\
+  \hline 
+  \verb|SUB_ARRAY_POINTING_{NNN}|  & \verb|---| & --- & DAL v2.5.0 &  Container for individual Sub-Array Pointing objects \\
+  \hline
+  \end{tabular}
+  \caption{The Additional Root Header Group Attributes}
+  \label{tab:root attributes}
+\end{small}
+\end{table}
+\end{small}
+
+\clearpage
+
+%%_______________________________________________________________________________
+%% Subsection: The Sub-Array Pointing Group
+
+\subsection{The Sub-Array Pointing Group ({\tt SUB\_ARRAY\_POINTING\_\{NNN\}})}
+\label{sec:sub-array pointing group}
+
+A BF file can contain one or more Sub-Array Pointings (SAPs), each of which is represented by a {\tt SUB\_ARRAY\_POINTING\_NNN} group. Table~\ref{tab:sub-array pointing attributes} lists the set of attributes present in each group.
+
+\begin{small}
+\begin{table}[p]
+\begin{small}
+  \centering
+  \begin{tabular}{|llllp{5.0cm}|}
+    \hline
+    \sc Field/Keyword  & \sc Type & \sc Value & \sc Software  & Description \\
+    \sc   & \sc & \sc & \sc Version  & \\
+    \hline \hline
+    \sc The following are & \sc & \sc & \sc   &\\
+    \sc H5Type == Attribute & \sc & \sc & \sc   &\\
+    \hline 
+    \verb|GROUPTYPE|   & \verb|string| & \verb|`SubArrayPointing'| & DAL v2.5.0 & Group type  \\
+    \verb|EXPTIME_START_UTC|  & \verb|string| & --- & DAL v2.5.0 & Start time of obs (UTC time). \\
+    \verb|EXPTIME_END_UTC|  & \verb|string| & --- & DAL v2.5.0 & End time of obs (UTC time). \\
+    \verb|EXPTIME_START_MJD|  & \verb|double| & --- & DAL v2.5.0 & Start time of obs (MJD). \\
+    \verb|EXPTIME_END_MJD|  & \verb|double|  & --- & DAL v2.5.0 & End time of obs (MJD). \\
+    \verb|TOTAL_INTEGRATION_TIME| & \verb|double| & --- & DAL v2.5.0 & Total integration time of this SAP. \\
+    \verb|TOTAL_INTEGRATION_TIME_UNIT| & \verb|string| & \verb|`s'| & DAL v2.5.0 & \\
+    \verb|POINT_RA|  & \verb|double| & --- & DAL v2.5.0 & J2000 RA of SAP at observation start. \\
+    \verb|POINT_RA_UNIT|  & \verb|string| & \verb|`deg'| & DAL v2.5.0 & \\
+    \verb|POINT_DEC|  & \verb|double| & --- & DAL v2.5.0 & J2000 DEC of SAP at observation start. \\
+    \verb|POINT_DEC_UNIT|  & \verb|string| & \verb|`deg'| & DAL v2.5.0 & \\
+    \begin{scriptsize}\textit{POINT\_ALTITUDE}\end{scriptsize} & \verb|array<double,1>| & --- & DAL v2.5.0  &Alt. of SAP, obs start.\\
+    \begin{scriptsize}\textit{POINT\_ALTITUDE\_UNIT}\end{scriptsize} & \verb|array<string,1>| & \verb|`deg'| & DAL v2.5.0  & \\
+    \begin{scriptsize}\textit{POINT\_AZIMUTH}\end{scriptsize} & \verb|array<double,1>| & --- & DAL v2.5.0 & Az. of the SAP, obs start.\\
+    \begin{scriptsize}\textit{POINT\_AZIMUTH\_UNIT}\end{scriptsize} & \verb|array<string,1>| & \verb|`deg'| & DAL v2.5.0 & \\
+    \verb|OBSERVATION_NOF_BEAMS|  & \verb|int| & --- & DAL v2.5.0 & Number of beams in the entire observation. \\
+    \verb|NOF_BEAMS|  & \verb|int| & --- & DAL v2.5.0 & Number of beams stored in this file. \\
+    \hline
+    \sc The following are & \sc & \sc & \sc   &\\
+    \sc H5Type == Group & \sc & \sc & \sc   &\\
+    \hline 
+    \verb|PROCESS_HISTORY| & \verb|---| & --- & DAL v2.5.0 &  container for processing
+    history for any of the SAPs \\
+    \verb|BEAM_{NNN}| & \verb|---| & --- & DAL v2.5.0 &  container for individual
+    Beam objects \\
+    \hline
+  \end{tabular}
+  \caption{The Sub-Array Pointing Group Header Attributes}
+  \label{tab:sub-array pointing attributes}
+\end{small}
+\end{table}
+\end{small}
+
+%%_______________________________________________________________________________
+%% Subsection: The Processing History Group (PROCESS_HISTORY)
+
+\subsection{The Processing History Group ({\tt PROCESS\_HISTORY})}
+\label{sec:processing history group}
+
+The data definition for the \texttt{Processing History (PROCESS\_HISTORY)} Group is implementation dependent to accomodate for the wide variety of meta-data related to the various processing pipelines. \texttt{Processing History} Groups can be found at both the Sub-Array Pointing and the Beam level.
+
+%%_______________________________________________________________________________
+%% Subsection: The Beam Group (BEAM_NNN)
+
+\subsection{The Beam Group ({\tt BEAM\_\{NNN\}})}
+\label{sec:Beam group}
+
+Each Sub-Array Pointing Group contains one or more Beam Groups. Table~\ref{tab:beam attributes} lists the attributes that are defined for each beam.
+
+\vspace{15pt}
+
+\tablefirsthead{%
+  \hline
+  \sc Field/Keyword  & \sc Type & \sc Value & \sc Software  & Description \\
+  \sc   & \sc & \sc & \sc Version  & \\
+  \hline \hline}
+\tablehead{%
+  \hline
+   \sc Field/Keyword  & \sc Type & \sc Value & \sc Software  & Description \\
+   \sc   & \sc & \sc & \sc Version  & \\
+  \hline \hline}
+\tabletail{%
+  \hline
+  \multicolumn{5}{|r|}{\small\sl continued on next page}\\
+  \hline}
+\tablelasttail{\hline}
+\bottomcaption{Beam Group Attributes.
+  \label{tab:beam attributes}}
+\begin{supertabular}{|llllp{5.0cm}|}
+  \hline
+  \hline 
+  \sc The following are & \sc & \sc & \sc   &\\
+  \sc H5Type == Attribute & \sc & \sc & \sc   &\\
+  \hline 
+  \small{\verb|GROUPTYPE|}  & \verb|string| & `Beam' & DAL v2.5.0 & Group type \\
+  \small{\verb|TARGETS|}   & \verb|array<string,1>| & --- & DAL v2.5.0 & List of observation
+    targets/sources observed within this Beam \\
+  \small{\verb|NOF_STATIONS|}  & \verb|int|& --- & DAL v2.5.0 & Number of stations used
+    within this Beam \\
+  \small{\verb|STATIONS_LIST|}  & \verb|array<string,1>| & --- & DAL v2.5.0 & List of stations used for this Beam \\
+    \verb|NOF_SAMPLES|  & \verb|int| & --- & DAL v2.5.0 & number of time samples. \\
+    \verb|SAMPLING_RATE|     & \verb|double|  & --- & DAL v2.5.0 & Sampling rate \\
+    \verb|SAMPLING_RATE_UNIT|    & \verb|string| & \verb|`Hz'| & DAL v2.5.0 & \\
+    \verb|SAMPLING_TIME|   & \verb|double|  & --- & DAL v2.5.0 & Sampling time \\
+    \verb|SAMPLING_TIME_UNIT|   & \verb|string| & \verb|`s'| & DAL v2.5.0 & \\
+    \verb|CHANNELS_PER_SUBBAND|  & \verb|int|& --- & DAL v2.5.0 & Number of channels for each subband \\
+    \verb|SUBBAND_WIDTH|    & \verb|double|  & --- & DAL v2.5.0 & Subband width, typically 156250 or 195312.5 \\
+    \verb|SUBBAND_WIDTH_UNIT|   & \verb|string| & \verb|`Hz'| & DAL v2.5.0 & \\
+    \verb|CHANNEL_WIDTH|    & \verb|double|  & --- & DAL v2.5.0 & Channel width \\
+    \verb|CHANNEL_WIDTH_UNIT|   & \verb|string| & \verb|`Hz'| & DAL v2.5.0 & \\
+  \small{\verb|TRACKING|}  & \verb|string| & \verb|`J2000'| & DAL v2.5.0 & Tracking method \\
+  \small{\verb|POINT_RA|}  & \verb|double| & --- & DAL v2.5.0 & J2000 right ascension of the center of
+  the beam at start of observation (at LOFAR core). \\
+  \small{\verb|POINT_RA_UNIT|}  & \verb|string| & \verb|`deg'| & DAL v2.5.0 & \\
+  \small{\verb|POINT_DEC|}  & \verb|double| & --- & DAL v2.5.0 & J2000 declination of the center of the
+  beam at start of observation (at LOFAR core). \\
+  \small{\verb|POINT_DEC_UNIT|}  & \verb|string| & \verb|`deg'| & DAL v2.5.0 & \\
+  \small{\verb|POINT_OFFSET_RA|}  & \verb|double| & --- & DAL v2.5.0 & RA offset of beam from sub-array pointing at start of observation. \\
+  \small{\verb|POINT_OFFSET_RA_UNIT|}  & \verb|string| & \verb|`deg'| & DAL v2.5.0 & \\
+  \small{\verb|POINT_OFFSET_DEC|}  & \verb|double| & --- & DAL v2.5.0 & Dec offset of beam from sub-array pointing at start of observation. \\
+  \small{\verb|POINT_OFFSET_DEC_UNIT|}  & \verb|string| & \verb|`deg'| & DAL v2.5.0 & \\
+  \small{\verb|BEAM_DIAMETER_RA|}  & \verb|double| & --- & DAL v2.5.0 & The diameter of the beam ellipse in the major axis a (RA), at zenith at center frequency. \\
+  \small{\verb|BEAM_DIAMETER_RA_UNIT|}  & \verb|string| & \verb|`arcmin'| & DAL v2.5.0 & \\
+  \small{\verb|BEAM_DIAMETER_DEC|}  & \verb|double| & --- & DAL v2.5.0 & The diameter of the beam ellipse in the minor axis b (Dec), at zenith at center frequency. \\
+  \small{\verb|BEAM_DIAMETER_DEC_UNIT|}  & \verb|string| & \verb|`arcmin'| & DAL v2.5.0 & \\
+  \small{\verb|BEAM_FREQUENCY_CENTER|}  & \verb|double| & --- & DAL v2.5.0 & Beam center
+  frequency - the middle frequency of all the channel frequencies. \\
+  \small{\verb|BEAM_FREQUENCY_CENTER_UNIT|}  & \verb|string| & \verb|`MHz'| & DAL v2.5.0 & \\
+  \small{\verb|FOLDED_DATA|}  & \verb|bool| & --- & DAL v2.5.0 &  Are the data folded within
+  this Beam? \\
+  \small{\verb|FOLD_PERIOD|}     & \verb|double| & --- & DAL v2.5.0 & The fold period if the
+  data were folded. \\
+  \small{\verb|FOLD_PERIOD_UNIT|}     & \verb|string| & \verb|`s'| & DAL v2.5.0 & \\
+  \small{\verb|DEDISPERSION|}     & \verb|string| & --- & DAL v2.5.0 & Where the
+  data dedispersed incoherently (\verb|`INCOHERENT'|), dedispersed coherently
+  (\verb|`COHERENT'|), or not dedispersed at all (\verb|`NONE'|). \\
+  \small{\verb|DISPERSION_MEASURE|}     & \verb|double| & --- & DAL v2.5.0 &  The dispersion 
+  measure applied to the data, if data were de-dispersed \\
+  \small{\verb|DISPERSION_MEASURE_UNIT|}     & \verb|string| & \verb|`pc/cm^3'| & DAL v2.5.0 & \\
+  \small{\verb|BARYCENTERED|}   & \verb|bool| & --- & DAL v2.5.0 & Are the data barycentered? \\
+  \small{\verb|OBSERVATION_NOF_STOKES|}   & \verb|int|     & --- & DAL v2.5.0 & Number of Stokes
+  components (1--4) in the observation. \\
+  \small{\verb|NOF_STOKES|}   & \verb|int|     & --- & DAL v2.5.0 & Number of Stokes
+  components (1--4) stored in the file. \\
+  \small{\verb|STOKES_COMPONENTS|} & \verb|array<string,1>| & --- & DAL v2.5.0 & Stokes
+  components for which data are attached to this group. \\
+  \small{\verb|COMPLEX_VOLTAGE|}  & \verb|bool| & --- & DAL v2.5.0 & Is the data in Complex
+  Voltages (Xreal Ximg, Yreal, Yimg)? \\
+  \small{\verb|SIGNAL_SUM|} & \verb|string| & --- & DAL v2.5.0 & Whether the signal between stations was summed coherently
+  (\texttt{`COHERENT'}) or incoherently (\texttt{`INCOHERENT'}) \\
+  \small{\verb|QUANTIZED|}  & \verb|array<int,1>| & --- & DAL v2.6.0 & Is the data quantized (=1)? \\
+  \hline
+  \sc The following are & \sc & \sc & \sc   &\\
+  \sc H5Type == Group & \sc & \sc & \sc   &\\
+  \hline
+  \small{\verb|PROCESS_HISTORY|}  & \verb|---| & --- & DAL v2.5.0 & Container for Processing History for the Beam.  \\
+  \small{\verb|COORDINATES|}  & \verb|---| & --- & DAL v2.5.0 &  container for Coordinates
+  Group for this entire Sub-Array Pointings' set of data. \\
+  \small{\verb|QUANTIZED_STOKES_0|}   & \verb|---| & --- & DAL v2.6.0 & Group for quantized Stokes data. \\
+  \small{\verb|QUANTIZED_STOKES_1|}   & \verb|---| & --- & DAL v2.6.0 & Group for quantized Stokes data. \\
+  \small{\verb|QUANTIZED_STOKES_2|}   & \verb|---| & --- & DAL v2.6.0 & Group for quantized Stokes data. \\
+  \small{\verb|QUANTIZED_STOKES_3|}   & \verb|---| & --- & DAL v2.6.0 & Group for quantized Stokes data. \\
+  \hline
+  \sc The following are & \sc & \sc & \sc   &\\
+  \sc H5Type == Dataset & \sc & \sc & \sc   &\\
+  \hline
+  \begin{scriptsize}\textit{STOKES\_0}\end{scriptsize}  & \verb|array<float,2>| & --- & DAL v2.5.0 & Container for Stokes data. \\
+  \begin{scriptsize}\textit{STOKES\_1}\end{scriptsize}  & \verb|array<float,2>| & --- & DAL v2.5.0 & Container for Stokes data. \\
+  \begin{scriptsize}\textit{STOKES\_2}\end{scriptsize}  & \verb|array<float,2>| & --- & DAL v2.5.0 & Container for Stokes data. \\
+  \begin{scriptsize}\textit{STOKES\_3}\end{scriptsize}  & \verb|array<float,2>| & --- & DAL v2.5.0 & Container for Stokes data. \\
+  \hline
+\end{supertabular}
+
+%%_______________________________________________________________________________
+%% Subsection: The Coordinates Group (COORDINATES)
+
+\subsection{The Coordinates Group ({\tt COORDINATES})}
+\label{sec:coordinates group}
+
+Coordinate information within a LOFAR BF file will exist in what is
+called a \texttt{Coordinates (COORDINATES) Group}, which will act as a
+container for at least one \texttt{Coordinates Group object}.   There
+is one \texttt{Coordinates Group} per Beam Group in the BF data.
+There are two \texttt{Coordinates Group objects}, a TIME and SPECTRAL
+(frequency) coordinate set which apply to that Beam.  As show in
+Table~\ref{tab:coordinates-group} below, this group only contains a
+small number of attributes by itself and is a container for the
+coordinate sub-groups which contain the World Coordinate Information
+(WCS) of the data within that Beam Group.  More information on coordinates
+in LOFAR data files in general can be found in ICD-002 \cite{lofar.icd.002}. 
+
+\input coordinates_group_table
+\input coordinates_frames_location
+
+All LOFAR BF files have two coordinate axes (\verb|NOF_AXES|=2), the first axis describing the temporal dimension (see Table~\ref{tab:temporal coordinate}), and the second axis describing the spectral dimension (see Table~\ref{tab:spectral coordinate}). To convert a pixel $P$ (= a position in the dataset) to a value $V$ (= its real world representation), the following conversion should be used:
+\begin{itemize}
+\item \verb|STORAGE_TYPE == `Linear'|: $V = \verb|REFERENCE_VALUE| + (P + \verb|REFERENCE_PIXEL|) * \verb|INCREMENT| * \verb|PC|$.
+\item \verb|STORAGE_TYPE == `Tabular'|: $V = \verb|AXIS_VALUES_WORLD|[x]$ where $x$ is defined by $P = \verb|AXIS_VALUES_PIXEL|[x]$.
+\end{itemize}
+
+\begin{table}[p]
+\begin{center}
+  \begin{tabular}{|lllrp{4cm}|}
+    \hline
+    \sc Field/Keyword  & \sc Type & \sc Value & \sc Software  & Description \\
+    \sc   & \sc & \sc & \sc Version  & \\
+    \hline \hline
+    \sc The following are & \sc & \sc & \sc   &\\
+    \sc H5Type == Attribute & \sc & \sc & \sc   &\\
+    \hline 
+    \small{\verb|GROUPTYPE|} & \verb|string| & \verb|`TimeCoord'| & DAL v2.5.0 & Group Type descriptor \\
+    \small{\verb|COORDINATE_TYPE|} & \verb|string| & \verb|`Time'| & DAL v2.5.0 & Coordinate Type descriptor \\
+    \small{\verb|STORAGE_TYPE|} & \small\verb|array<string,1>| & \verb|`Linear'| & DAL v2.5.0 & Coordinate storage type \\ 
+    \small{\verb|NOF_AXES|}  & \verb|int| & \verb|1| & DAL v2.5.0 & Number of coordinate axes \\
+    \small{\verb|AXIS_NAMES|}  & \verb|array<string,1>| & \verb|[`Time']| & DAL v2.5.0 & World axis names \\
+    \small{\verb|AXIS_UNITS|}  & \verb|array<string,1>| & \verb|[`us']| & DAL v2.5.0 & World axis units \\
+    \small{\verb|REFERENCE_VALUE|}  & \verb|double| & --- & DAL v2.5.0 & Reference value \\
+    \small{\verb|REFERENCE_PIXEL|}  & \verb|double| & --- & DAL v2.5.0 & Reference pixel \\
+    \small{\verb|INCREMENT|}  & \verb|double| & --- & DAL v2.5.0 & Coordinate increment \\
+    \small{\verb|PC|}  & \verb|array<double,1>| & --- & DAL v2.5.0 & The World Coordinate Reference scaling delta matrix. \\
+    \small{\verb|AXIS_VALUES_PIXEL|}  & \verb|array<double,1>| & --- & DAL v2.5.0 & Reference pixels \\
+    \small{\verb|AXIS_VALUES_WORLD|}  & \verb|array<double,1>| & --- & DAL v2.5.0 & Reference values \\
+    \hline
+  \end{tabular}
+  \caption{Time Coordinate Attributes}
+  \label{tab:temporal coordinate}
+\end{center}
+\end{table}
+
+\begin{table}[p]
+\begin{small}
+\begin{center}
+  \begin{tabular}{|llllp{4.5cm}|}
+    \hline
+    \sc Field/Keyword  & \sc Type & \sc Value & \sc Software  & Description \\
+    \sc   & \sc & \sc & \sc Version  & \\
+    \hline \hline
+    \sc The following are & \sc & \sc & \sc   &\\
+    \sc H5Type == Attribute & \sc & \sc & \sc   &\\
+    \hline 
+    \verb|GROUPTYPE|   & \verb|string| & \verb|`SpectralCoord'| & DAL v2.5.0 & Group type descriptor\\
+    \verb|COORDINATE_TYPE| & \verb|string| & \verb|`Spectral'| & DAL v2.5.0 & Coordinate Type  descriptor \\
+    \verb|STORAGE_TYPE| & \verb|array<string,1>| & \verb|`Tabular'| & DAL v2.5.0 & Coordinate storage type \\    
+    \verb|NOF_AXES|    & \verb|int| & \verb|1| & DAL v2.5.0 & Number of coordinate axes \\
+    \verb|AXIS_NAMES|  & \verb|array<string,1>| & \verb|[`Frequency']| & DAL v2.5.0 & World axis names \\
+    \verb|AXIS_UNITS|  & \verb|array<string,1>| & \verb|[`MHz']| & DAL v2.5.0 & World axis units \\
+    \verb|REFERENCE_VALUE|  & \verb|double| & --- & DAL v2.5.0 & Reference value (CRVAL) \\
+    \verb|REFERENCE_PIXEL|  & \verb|double| & --- & DAL v2.5.0 & Reference pixel (CRPIX) \\
+    \verb|INCREMENT|  & \verb|double| & --- & DAL v2.5.0 & Coordinate increment (CDELT) \\
+    \verb|PC|     & \verb|array<double,1>| & --- & DAL v2.5.0 & The World Coordinate Reference scaling delta matrix \\
+    \verb|AXIS_VALUES_PIXEL|  & \verb|array<double,1>| & --- & DAL v2.5.0 & Reference pixels \\
+    \verb|AXIS_VALUES_WORLD|  & \verb|array<double,1>| & --- & DAL v2.5.0 & Reference values \\
+ \hline
+\end{tabular}
+\end{center}
+\end{small}
+\caption{Spectral Coordinate Attributes}
+\label{tab:spectral coordinate}
+\end{table}
+
+\clearpage
+
+%%_______________________________________________________________________________
+%% Subsection: The Stokes Datasets (STOKES_N)
+
+\subsection{The Stokes Datasets ({\tt STOKES\_\{N\}})}
+\label{sec:Stokes Datasets}
+
+Within each Beam group, there are one to four Stokes datasets. Each dataset contains a two-dimensional array of 32-bit floats, with the following axes. The major axis describes time (each element represents one sample), the minor axis describes frequency (each element represents one channel or frequency bin). Table~\ref{tab:stokes attributes} lists all the attributes attached to each dataset.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|llllp{5.5cm}|}
+    \hline
+    \sc Field/Keyword  & \sc Type & \sc Value & \sc Software  & Description \\
+    \sc   & \sc & \sc & \sc Version  & \\
+    \hline \hline
+    \sc The following are & \sc & \sc & \sc   &\\
+    \sc H5Type == Attribute & \sc & \sc & \sc   &\\
+    \hline 
+    \verb|GROUPTYPE|    & \verb|string|  & \verb|`bfData'| & DAL v2.5.0 & Group type. \\
+    \verb|DATATYPE |    & \verb|string|  & \verb|`float'| & DAL v2.5.0 & Data type used. \\
+    \verb|STOKES_COMPONENT|  & \verb|string| & --- & DAL v2.5.0 & Stokes component stored within the dataset. \\
+    \verb|NOF_SAMPLES|  & \verb|int| & --- & DAL v2.5.0 & Number of bins along the time axis of the dataset. \\
+    \verb|NOF_SUBBANDS|  & \verb|int| & --- & DAL v2.5.0 & Number of frequency sub-bands, into which the frequency domain is being divided \\
+    \verb|NOF_CHANNELS|  & \verb|array<int,1>| & --- & DAL v2.5.0 & Number of channels (frequency bins) within each subband. \\ 
+    \hline 
+  \end{tabular}
+  \caption{Attributes attached to a Stokes dataset.}
+  \label{tab:stokes attributes}
+\end{table}
+
+
+%%_______________________________________________________________________________
+%% Subsection: The Quantized Stokes Groups 
+
+\subsection{The Quantized Stokes Groups ({\tt QUANTIZED\_STOKES\_\{N\}})}
+\label{sec:QuantizedStokes}
+
+When the data is quantized, the number of bits used to represent each datapoint is lower then the original number of bits (normally orignal data use 32 bits while the quantized data use 8 bits or less).
+Within each Beam group, there are one to four quantized Stokes groups. Each group contains three datasets, all two-dimensional arrays. The scale and offset arrays are 32-bit floats and the data array is 8 bits (signed or unsigned char).  The two axes used are as follows: The major axis describes time (each element represents one sample), the minor axis describes frequency (each element represents one channel or frequency bin). However, for scale and offset, the major axis is time counted by the number of blocks, in other words, each row of scale and offset corresponds to \verb|NOF_SAMPLES_PERBLOCK| bins in the data. Table~\ref{tab:Qstokes attributes} lists all the attributes attached to each dataset.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|llllp{4.5cm}|}
+    \hline
+    \sc Field/Keyword  & \sc Type & \sc Value & \sc Software  & Description \\
+    \sc   & \sc & \sc & \sc Version  & \\
+    \hline \hline
+    \sc The following are & \sc & \sc & \sc   &\\
+    \sc H5Type == Attribute & \sc & \sc & \sc   &\\
+    \hline 
+    \small{\verb|GROUPTYPE|}    & \verb|string|  & \verb|`bfData'| & DAL v2.6.0 & Group type. \\
+    \small{\verb|DATATYPE |}    & \verb|string|  & \verb|`{signed or unsigned} char'| & DAL v2.6.0 & Data type used,\\
+ & & & & depends on the \\
+ & & & & number of bits. \\
+    \small{\verb|SCALEOFFSSETTYPE |}    & \verb|string|  & \verb|`float'| & DAL v2.6.0 & Data type used\\
+ & & & &  for scale and offset.\\
+    \small{\verb|STOKES_COMPONENT|}  & \verb|string| & --- & DAL v2.6.0 & Stokes component stored \\
+ & & & & within the dataset. \\
+    \small{\verb|NOF_SAMPLES|}  & \verb|int| & --- & DAL v2.6.0 & Number of bins along \\
+ & & & & the time axis of the dataset. \\
+    \small{\verb|NOF_SAMPLES_PERBLOCK|}  & \verb|int| & --- & DAL v2.6.0 & Number of bins along \\
+& & & & the time axis of the dataset\\
+& & & &  that share a common \\
+& & & & scale and offset. \\
+    \small{\verb|NOF_SUBBANDS|}  & \verb|int| & --- & DAL v2.6.0 & Number of frequency\\
+ & & & &  sub-bands into\\
+ & & & &  which the frequency\\
+ & & & &  domain is being divided.\\
+    \small{\verb|NOF_CHANNELS|}  & \verb|array<int,1>| & --- & DAL v2.6.0 & Number of channels \\
+& & & & (frequency bins) within \\
+& & & & each subband.\\ 
+    \hline 
+    \sc The following are & \sc & \sc & \sc   &\\
+    \sc H5Type == Dataset & \sc & \sc & \sc   &\\
+    \hline 
+    \small{\verb|DATA|}  & \verb|Dataset<>| & --- & DAL v2.6.0 & Quantized data. \\ 
+    \small{\verb|OFFSET|}  & \verb|Dataset<>| & --- & DAL v2.6.0 & Offset. \\ 
+    \small{\verb|SCALE|}  & \verb|Dataset<>| & --- & DAL v2.6.0 & Scale. \\ 
+    \hline 
+  \end{tabular}
+  \caption{Attributes attached to a quantized Stokes group.}
+  \label{tab:Qstokes attributes}
+\end{table}
+% ------------------------------------------------------------------------------
+%% References
+
+\clearpage
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+\end{document}

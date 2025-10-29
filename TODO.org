@@ -1,0 +1,39 @@
+
+#+STARTUP: indent
+#+OPTIONS:   H:1
+
+* Common infrastructure [0/3]
+** TODO Support for passing options to usg.sty
+** TODO Provide description of 'convertEPS.sh' script to (selectively) adjust EPS files exported from Graffle.
+** TODO Description of how to work with the TODO file (using Emacs)
+* ICD-001: TBB Time-Series Data [1/2]
+** TODO Proof-reading by everybody until next meeting
+** DONE Check ordering of \caption and \label commands
+* ICD-002: Representations of World Coordinates [0/4]
+** TODO Test conversion from documentclass article -> report
+** TODO Provide translation scheme onto representation in FITS.
+** TODO Provide stripped-down version of the coordinate descriptions to be included to the other ICDs
+** TODO Replace STG -> SIN in figure with map projections
+* ICD-003: Beam-Formed Data [/]
+
+* ICD-004: Radio Sky Image Cubes [2/6]
+** DONE Add section for system logs groups (SYS_LOG)
+** DONE Clean up table listing additional root group attributes; remove sub-groups.
+** TODO Clean up introduction to section on additional root group attributes
+** TODO Does it really make sense to have TARGET_RA and TARGET_DEC as root group attributes?
+** TODO Take up conversation with Mike Bell to converge on a common source table model.
+** TODO Get arguments for why to have source table in the first place.
+
+* ICD-005: File Naming Conventions [0/1]
+** TODO Collect GROUPTYPE attribute values into common table
+
+* ICD-006: Dynamic Spectrum Data [/]
+
+* ICD-007: Visibility Data [/]
+
+* ICD-008: Rotation Measure Synthesis Cubes [4/5]
+** TODO Rename source table SOURCE -> SOURCE_TABLE to match ICD-004
+** DONE Reorder list of authors
+** DONE Remove 'H5Type' column from Tab. 20
+** DONE Add proper reference to HDF5 documentation (Sec. 4.5)
+** DONE Move discussion section to appendices
