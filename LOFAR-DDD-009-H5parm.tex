@@ -1,0 +1,368 @@
+%% $Id$
+
+\documentclass[a4paper,10pt,bibtotoc]{scrartcl}
+\usepackage{a4wide,usg,supertabular}
+\usepackage[today,nofancy]{svninfo}
+\usepackage{hyperref}
+
+\svnInfo $Id$
+
+\begin{document}
+
+%%_______________________________________________________________________________
+%%                                                                      Titlepage
+
+\title{LOFAR Data Definition Document 009: \\ Calibration Solution Files (H5Parm) \\
+{\normalsize Document ID: LOFAR2-DDD-009-H5parm} \\
+{\normalsize Revision 0.1} \\
+{\normalsize SVN Repository Revision: \svnInfoRevision} \\
+\author{LOFAR 2.0 Data Working Group (DWG)}
+\date{\small{SVN Date: \svnInfoDate}}}
+\maketitle
+
+\tableofcontents
+
+\clearpage
+
+%%_______________________________________________________________________________
+%%                                                                  Change record
+
+\section*{Change record}
+\addcontentsline{toc}{section}{Change record}
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \sc Issue & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{4}{r}{\small\sl continued from previous page} \\
+    \hline
+    \sc Issue & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{4}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \begin{supertabular}{lllp{10cm}}
+    0.1 & 2025-12-17 & all & Document creation based on existing H5Parm specification; scoped to formal LOFAR 2.0 DDD template \\
+  \end{supertabular}
+\end{center}
+
+%%_______________________________________________________________________________
+%%                                                                   Introduction
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Purpose and Scope}
+This Data Definition Document (DDD) defines the file format for {calibration solution} data products in LOFAR 2.0, stored in the \textbf{H5Parm} format. The goal of this document is to provide a  description of the required file structure, conventions, and metadata needed to exchange calibration solutions between the various LOFAR 2.0 pipelines and archives in the standard H5parm format.
+
+The scope includes:
+\begin{itemize}
+  \item File format and hierarchy (HDF5 groups, tables, arrays, chunked arrays);
+  \item Antenna and source tables;
+  \item Naming conventions for solution sets and solution tables;
+  \item Standard axes and data arrays for calibration solutions;
+  \item Handling of missing/flagged solutions and weights;
+\end{itemize}
+
+This DDD does not prescribe a specific calibration algorithm, solver, or parameterization beyond
+what is required to store and interpret solutions consistently.
+
+\subsection{Context and Motivation}
+Calibration solutions are a central data product in the processing of LOFAR imaging observations. They may be
+generated for calibrators and transferred to target observations, or solved directly on the target field data set. Calibration solutions may also originate from external inputs (e.g., beam or ionosphere models). The H5Parm format provides a flexible container that supports:
+\begin{itemize}
+  \item Multiple datasets in a single file (multiple \emph{solution-sets});
+  \item Arbitrary solution types (e.g. amplitude, phase, clock, TEC, rotation, rotationmeasure);
+  \item Different axis layouts per solution table;
+  \item Efficient storage and slicing through chunked arrays.
+\end{itemize}
+These properties are essential for scalable processing over many frequency channels and time intervals.
+
+\subsection{Applicable Documents}
+\begin{itemize}
+  \item LOFAR 2.0 pipeline / archive conventions (TBD; to be linked by document ID when available).
+%  \item LOFAR 2.0 world coordinate conventions (for antenna locations)
+  \item LOFAR 2.0 celestial coordinate conventions (for source directions)
+  \item Original H5Parm specifications: \href{https://docs.google.com/document/d/1pjDxRywhRO5HRuqciGYO2TWD-Ufu_5nxwFA3b_YnJJg/edit?tab=t.0#heading=h.uae9zka4fdfd}{HDF5 solutions tables for LOFAR (H5parm)}, v1.0 (26/07/13).
+\end{itemize}
+
+\subsection{Reference Documents}
+Here, we refer to existing documents and applications which make use of the H5parm solution format.
+\begin{itemize}
+  \item The LOFAR Solution Tool (\href{https://github.com/revoltek/losoto}{LoSoTo}): Performs operations such as plotting, smoothing, fitting and filtering for h5parm solutions. 
+  \item \href{https://dp3.readthedocs.io/en/latest/steps/DDECal.html}{DP3}: Creates H5parm solutions via solver. Can apply solutions to measurement sets.
+  \item \href{https://wsclean.readthedocs.io/en/latest/}{wsclean}: Imager that can apply direction-dependent h5parm solutions on-the-fly during facet imaging.
+  \item \href{https://git.astron.nl/RD/spinifex}{spinifex}: Tool to create h5parm solution files based on external ionosphere models.
+
+ 
+\end{itemize}
+
+\subsection{Glossary}
+\begin{center}
+  \tablefirsthead{\hline \sc Term & \sc Definition \\ \hline}
+  \tablehead{\multicolumn{2}{r}{\small\sl continued from previous page} \\ \hline \sc Term & \sc Definition \\ \hline}
+  \tabletail{\hline \multicolumn{2}{r}{\small\sl continued on next page} \\}
+  \tablelasttail{\hline}
+  \begin{supertabular}{lp{12cm}}
+    HDF5 & Hierarchical Data Format version 5. \\
+    H5Parm & LOFAR convention for storing calibration solutions in HDF5.  \\
+    solset (solution-set) & HDF5 group representing one dataset/context worth of solutions (e.g. calibrator, target).  \\
+    soltab (solution-table) & HDF5 group storing one type of solution (e.g. phase, amlitude) with its axes, values, and weights.  \\
+    axis & One dimension along which solutions are defined (e.g. time, freq, ant, dir, pol). \\
+    vals & Chunked array containing solution values. \\
+    weight & Values between $0$ and $1$ used when applying calibration solutions. A weight of $0$ results in the corresponding data being flagged.\\
+    NaN & Missing solution sample, represented by NaN in vals. All NaN values MUST have weight=0. \\
+  \end{supertabular}
+\end{center}
+
+%%_______________________________________________________________________________
+%%                                                                   Requirements
+
+\section{Requirements}
+\label{sec:requirements}
+
+\subsection*{R1: File format}
+Calibration solution files shall be stored as \textbf{HDF5} files following the
+\textbf{H5Parm} conventions described in the H5Parm specification.
+
+\subsection*{R2: Support multiple datasets}
+A single file shall support multiple datasets by containing multiple solution-sets (solsets),
+e.g. one solset for a calibrator and one for a target. 
+
+\subsection*{R3: Support arbitrary solution types}
+A solset shall support an arbitrary number of solution tables (soltabs), including standard
+solution types such as amplitude, phase, rotation, rotationmeasure, clock, TEC, and customized user-defined
+types. 
+
+\subsection*{R4: Support flexible axes}
+Each soltab shall define its own axis set and axis ordering, via an attribute on the values
+(and weight) arrays. 
+
+\subsection*{R5: Efficient access and large volume support}
+Solution value arrays shall be stored as chunked arrays (CArray-equivalent) suitable for
+efficient slicing without loading full arrays into memory. 
+
+\subsection*{R6: Flagging and missing data}
+The format shall support missing samples and flagging:
+\begin{itemize}
+  \item Missing samples may be stored as NaN in values. All NaN values shall be flagged (have weights equal to zero). 
+  \item Weights shall encode flagged solutions using weight=0 (and may use continuous values in [0,1]). 
+\end{itemize}
+
+%%_______________________________________________________________________________
+%%                                                  High Level Data Specification
+
+\section{High Level Data Specification}
+\label{sec:structure}
+
+\subsection*{Overview}
+An H5Parm calibration solution file is an HDF5 container with:
+\begin{itemize}
+  \item One or more \textbf{solution-set groups} at the root (solsets);
+  \item Within each solset:
+  \begin{itemize}
+    \item Station/antenna table (names and positions);
+    \item Source/direction table (names and coordinates);
+    \item Array centre coordinate;
+    \item One or more \textbf{solution-table groups} (soltabs), each containing axes and the
+          values/weights arrays.
+  \end{itemize}
+\end{itemize}
+This is aligned with the reference layout in the H5Parm specification. 
+
+\subsection*{Naming conventions}
+If producers do not provide explicit names:
+\begin{itemize}
+  \item solset names: \texttt{sol\#\#\#} with the smallest available integer \texttt{000--999}. 
+  \item soltab names: \texttt{<soltype>\#\#\#} with the smallest available integer \texttt{000--999}
+        (e.g. \texttt{amplitude000}, \texttt{phase000}, \texttt{tec000}, \texttt{rotation001}, \texttt{rotationmeasure002}). 
+\end{itemize}
+
+
+%%_______________________________________________________________________________
+%%                                                    Detailed Data Specification
+
+\section{Detailed Data Specification}
+
+\subsection{HDF5 node types}
+The H5Parm convention uses three node types:
+\begin{itemize}
+  \item \textbf{Table}: records with fixed columns/fields; column types may differ.
+  \item \textbf{Array}: homogeneous typed array (commonly float64).
+  \item \textbf{Chunked Array (CArray)}: homogeneous typed array stored in chunks for efficient slicing.
+\end{itemize}
+These node types are explicitly described in the specification. 
+
+\subsection{Root structure}
+At the HDF5 root level:
+\begin{itemize}
+  \item One or more solset groups exist, each representing a distinct dataset/context.
+\end{itemize}
+
+\subsection{Solution-set (solset) group}
+Each solset group shall contain, at minimum, the following nodes:
+
+\subsubsection*{Antenna table: \texttt{<solset>/antenna}}
+\begin{itemize}
+  \item Type: Table
+  \item Required columns:
+  \begin{itemize}
+    \item \texttt{name}: station/antenna identifier (string), e.g. \texttt{CS001LBA}
+    \item \texttt{position}: position vector (3 elements; cartesian Earth coordinate system, e.g. ETRS)
+  \end{itemize}
+\end{itemize}
+
+\subsubsection*{Source table: \texttt{<solset>/source}}
+\begin{itemize}
+  \item Type: Table
+  \item Required columns:
+  \begin{itemize}
+    \item \texttt{name}: direction/source identifier (string), e.g. \texttt{3C196}, \texttt{pointing}, \texttt{MODEL\_DATA}
+    \item \texttt{coords}: RA, Dec coordinate representation in J2000 radians
+  \end{itemize}
+\end{itemize}
+The presence and purpose of these tables are shown in the example file structure. 
+
+\subsection{Solution-table (soltab) group}
+A soltab group stores a single solution type (e.g. phase, amplitude, TEC) and its axes.
+
+\subsubsection*{Soltab attributes}
+Each soltab group shall define:
+\begin{itemize}
+  \item Attribute \texttt{type}: a string describing solution type (e.g., \texttt{phase}, \texttt{amplitude}, \texttt{clock}, \texttt{TEC}). 
+  \item Optional attribute \texttt{default}: scalar default value for missing data (commonly 0. for phase-like, 1. for amplitude-like), as used in examples. 
+\end{itemize}
+
+\subsubsection*{Axes arrays}
+For each axis used by the soltab, an HDF5 Array node shall exist:
+\begin{itemize}
+  \item \texttt{time}: float64; seconds (or time system) as stored; axis values may be non-uniform. 
+  \item \texttt{freq}: float64; frequency in Hz; axis values may be non-uniform.
+  \item \texttt{ant}: string; antenna/station identifiers (as listed in table \texttt{<solset>/ant}).
+  \item \texttt{dir}: string; direction/source identifiers (as listed in table \texttt{<solset>/source}). 
+  \item \texttt{pol}: string; polarization identifiers (e.g. \texttt{XX}, \texttt{XY} or \texttt{RR}, \texttt{RL}). \end{itemize}
+
+\paragraph{Virtual axes}
+The H5Parm specification describes a virtual axis \texttt{time\_w} (and analogously \texttt{freq\_w})
+to maintain compatibility with parmdb conventions. If present, it shall match the length
+of the corresponding axis. 
+
+\subsubsection*{Values array: \texttt{<soltab>/vals}}
+\begin{itemize}
+  \item Type: Chunked array (CArray)
+  \item Element type: float64 (recommended; other numeric types allowed if documented)
+  \item Shape: \texttt{(N\_axis1, N\_axis2, ...)} following the axis order defined below
+  \item Required attributes:
+  \begin{itemize}
+    \item \texttt{axes}: ordered list of axis names defining the dimensions (e.g. \texttt{[time,freq,pol,dir,ant]}).
+  \end{itemize}
+  \item Missing data: may be stored as NaN (\emph{holes}).
+\end{itemize}
+
+\subsubsection*{Weights array: \texttt{<soltab>/weight}}
+\begin{itemize}
+  \item Type: Chunked array (CArray)
+  \item Element type: float32 (recommended)
+  \item Shape: identical to \texttt{vals}
+  \item Required attributes:
+  \begin{itemize}
+    \item \texttt{axes}: ordered list of axis names (must match \texttt{vals}). 
+  \end{itemize}
+  \item Semantics:
+  \begin{itemize}
+    \item \texttt{0} indicates flagged/invalid solutions;
+    \item continuous values in \texttt{[0,1]} may represent data weights. 
+  \end{itemize}
+\end{itemize}
+
+\subsection{Standard axis and solution naming}
+The specification lists standard names for axes and common solution types (e.g. amplitude, phase,
+rotation, RM, clock, TEC). Producers should use these names when applicable to maximize
+interoperability. 
+
+\subsection{Illustrative example hierarchy}
+A simplified example (schematic) for one solset with two soltabs:
+\begin{verbatim}
+root/<solset>/
+  antenna   (Table: name, position)
+  source    (Table: name, coords)
+  array     (Array: shape (3,))
+  phase000/
+    time, freq, pol, dir, ant (Arrays)
+    vals   (CArray, axes=[time,freq,pol,dir,ant])
+    weight (CArray, axes=[time,freq,pol,dir,ant])
+  tec000/
+    time, ant, dir (Arrays)
+    vals, weight (CArray, axes=[time,ant,dir])
+\end{verbatim}
+This matches the structure described in the reference document. 
+
+%%_______________________________________________________________________________
+%%                                                                     Interfaces
+
+\section{Interfaces}
+\label{sec:interfaces}
+
+\subsection{Interface requirements}
+\begin{itemize}
+  \item Producers {shall} write valid HDF5 files that conform to the H5Parm conventions in this DDD.
+  \item Consumers {shall} interpret soltabs by reading the \texttt{axes} attribute to determine dimension
+        meaning and order (must not assume a fixed axis order). 
+  \item Consumers {shall} handle NaN values and \texttt{weight=0} as invalid/flagged samples. 
+  \item It is RECOMMENDED to use existing read/write libraries referenced in the H5Parm ecosystem (see LoSoTo for Python-based and DP3 for C++-based applications) . 
+\end{itemize}
+
+\subsection{Relation to other workpackages}
+This data product typically interfaces with:
+\begin{itemize}
+  \item Calibration/solve pipeline stages producing solsets and soltabs;
+  \item Application/transfer stages that apply, interpolate, smooth, or flag solutions;
+  \item Archival packaging stages persisting calibration products alongside imaging products.
+\end{itemize}
+
+%% ------------------------------------------------------------------------------
+
+\section{Changelog}
+\label{sec:changelog}
+
+\begin{itemize}
+  \item 0.1 (2025-12-17): Initial draft; based on published H5Parm specification, with LOFAR 2.0 calibration solution product framing. 
+\end{itemize}
+
+%% ------------------------------------------------------------------------------
+
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Open questions}
+\label{sec:open-questions}
+\begin{itemize}
+  \item Coordinate frames and units for:
+    \begin{itemize}
+      \item \texttt{antenna.position} (ECRS?)
+      \item \texttt{source.coords} (J2000?)
+    \end{itemize}
+    The H5Parm specification notes these fields but leaves formats open; LOFAR 2.0 should standardize these for interoperability. 
+  \item Time axis definition (epoch, scale, and units) and whether to require MJD seconds, UNIX seconds, etc.
+\end{itemize}
+
+\subsection{Future enhancements}
+\label{sec:future-enhancements}
+\begin{itemize}
+  \item Define a LOFAR 2.0 ``minimal metadata'' attribute set (pipeline name, software version, observation ID, station set, band, etc.).
+  \item Define recommended compression/chunking settings for typical LOFAR 2.0 solution volumes.
+\end{itemize}
+
+%% ------------------------------------------------------------------------------
+%% References
+
+\end{document}

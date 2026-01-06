@@ -1,0 +1,34 @@
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \textsc{Reference} & \textsc{Title} & \textsc{Description} \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{3}{r}{\small \textbf{Applicable documents}
+      \textsl{continued from previous page}} \\
+    \hline
+    \textsc{Reference} & \textsc{Title} & \textsc{Description} \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{3}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \bottomcaption[List of documents that apply to all LOFAR Interface Control Documents (ICDs)]{
+    List of documents that apply to all the LOFAR Interface Control Documents.
+  \label{tab:applicable list}}
+  \begin{supertabular}{lp{5.8cm}p{7cm}}
+    \shrinkheight{-4.5em}
+    \texttt{ICD-002} \cite{lofar.icd.002} & Representations of World
+    Coordinates & Definition of how to represent and store metadata
+    that serve to locate a measurement in some multidimensional parameter space. \\
+    \texttt{ICD-005} \cite{lofar.icd.005} & File Naming Conventions &
+    Conventions for the naming scheme applied to LOFAR standard data products. \\
+    \hline
+  \end{supertabular}
+\end{center}
