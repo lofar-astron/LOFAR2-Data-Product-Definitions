@@ -1,0 +1,159 @@
+%% $Id$
+
+\documentclass[a4paper,10pt,bibtotoc]{scrartcl}
+\usepackage{a4wide,usg,supertabular}
+
+\begin{document}
+
+%%_______________________________________________________________________________
+%%                                                                      Titlepage
+
+\title{LOFAR2 Data Definition Document \\ +++DOCUMENT TITLE+++ \\
+{\normalsize Document ID: +++DOCUMENT NAME+++} \\ 
+{\normalsize Version 0.0} \\
+}
+\author{+++AUTHORS+++}
+\date{\small{Compilation Date: \today}}
+\maketitle
+
+\section{Table of contents}
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\clearpage
+
+
+
+%%_______________________________________________________________________________
+%%                                                                   Introduction
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Purpose and Scope}
+\label{sec:purpose and scope}
+---/---
+
+\subsection{Applicable Documents}
+\input common_tables/applicable_to_all_documents
+
+\subsection{Reference applications}
+
+\subsection{Overview}
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                  High Level Data Specification
+
+\section{Organisation of the data}
+\label{sec:structure}
+
+\subsection{Conventions}
+The following conventions apply to this LOFAR interface control document.
+
+\input common_tables/types
+
+\input common_tables/notation
+
+\subsection{Data Structure}
+
+
+%%_______________________________________________________________________________
+%%                                                    Detailed Data Specification
+
+\section{Detailed Data Specification}
+
+\subsection{Common LOFAR attributes}
+\input common_tables/lofar_common_metadata
+
+\subsection{+++GROUP+SECTION+++}
+
+%%_______________________________________________________________________________
+%%                                                    Data Discovery
+
+
+\section{Data Discovery}
+
+
+%% ------------------------------------------------------------------- References
+
+\section{References}
+
+\subsection{Common LOFAR2 attributes}
+
+\subsection{Naming conventions}
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                    Discussion & open questions
+
+\appendix
+\section{Appendix}
+
+\subsection{Glossary}
+\label{sec:glossary}
+\addcontentsline{toc}{section}{\glossaryname}
+
+\input common_tables/lofar_common_glossary
+
+
+\subsection{Data Types}
+
+\subsection{Notation}
+
+\subsection{FAQ/known issues}
+
+
+\subsection{Discussion \& open questions - remove before publication}
+
+\subsection{Requirements}
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                                  Change record
+
+\subsection{Document history}
+\addcontentsline{toc}{section}{Change record}
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \sc Issue & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{4}{r}{\small\sl continued from previous page} \\
+    \hline
+    \sc Issue & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{4}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \begin{supertabular}{lllp{10cm}}
+    0.1 & yyyy-mm-dd & all & Document creation \\
+  \end{supertabular}
+\end{center}
+
+%% ------------------------------------------------------------------------------
+%% References
+
+
+
+\end{document}
+
