@@ -9,6 +9,10 @@
 \usepackage{draftcopy}
 \usepackage{upgreek}
 
+\usepackage{hyperref}
+
+\hypersetup{colorlinks=true, linkcolor=blue}
+
 \newcommand\sumline[2]{%
   \hbox to \linewidth{%
     \strut
@@ -63,7 +67,7 @@
 
 
 
-\input version_numbering
+\input common_tables/version_numbering
 
 
 
@@ -92,7 +96,7 @@ implementation of tools that read and write the data, see \ref{sec:tools}.
 
 
 \subsection{Applicable Documents}
-\input applicable_to_all_documents
+\input common_tables/applicable_to_all_documents
 
 \begin{center}
   %% Table head
@@ -192,9 +196,9 @@ This is not a finished document. It needs further definition and clarification i
 \subsection{Conventions}
 The following conventions apply to this LOFAR interface control document.
 
-\input types
+\input common_tables/types
 
-\input notation
+\input common_tables/notation
 
 
 \subsection{Data Structure}
@@ -297,7 +301,7 @@ Raw Voltage Mode:
 \section{Detailed Data Specification}
 \label{sec:detailed structure}
 
-\input metadata_intro
+\input common_tables/metadata_intro
 
 \subsection{The Root Group}
 \label{sec:root group}
@@ -375,7 +379,7 @@ maybe used in its place.
   \label{tab:group types}
 \end{table}
 
-\input lofar_common_metadata
+\input common_tables/lofar_common_metadata
 
 
 \subsubsection{Additional TBB Time-series Root Attributes}
@@ -625,7 +629,7 @@ per 10 minutes. With 32 stations active this would amount to 110 GB per day of o
 \label{sec:glossary}
 \addcontentsline{toc}{section}{\glossaryname}
 
-\input lofar_common_glossary
+\input common_tables/lofar_common_glossary
 
 
 \subsection{Data Types}

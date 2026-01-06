@@ -188,11 +188,11 @@
 \end{supertabular}
 \end{center}
 
-\input version_numbering
+\input common_tables/version_numbering
 
-\input types
+\input common_tables/types
 
-\input notation
+\input common_tables/notation
 
 \subsection*{Acknowledgements}
 
@@ -274,7 +274,7 @@ keyword model.
   actually defines the data products in terms of FITS files.
 \end{comment}
 
-\input applicable_documents
+\input common_tables/applicable_to_all_documents
 
 %% ______________________________________________________________________________
 %%                                                              Section: Overview
@@ -289,7 +289,7 @@ Cosmic Ray Images, etc., all have different dimensions and coordinate types.
 Table~\ref{tab:lofar_data_types} illustrates the various image data array
 dimensions that LOFAR imaging may produce.
 
-\input coordinates_image_table
+\input common_tables/coordinates_image_table
 
 Each data type is described in detail by an appropriate interface
 control document. This document pertains to, and describes only those
@@ -457,7 +457,7 @@ L1002977_sky.h5              ...  (Root) Group
 \section{Detailed Data Specification}
 \label{sec:detailed structure}
 
-\input metadata_intro
+\input common_tables/metadata_intro
 
 \subsection{The Root Group ({\tt ROOT})}
 \label{sec:root group}
@@ -500,7 +500,7 @@ be found in all LOFAR data file types. These attributes are required
 to be in the Root Group; if a value is not available for an
 attributes, a \verb|`NULL'| maybe used in its place.
 
-\input lofar_common_metadata
+\input common_tables/lofar_common_metadata
 
 \begin{table}[htbp]
   \centering
@@ -583,7 +583,7 @@ that do not appear in the {\cla} table.\footnote{\textbf{ *} Indicates attribute
 %%_______________________________________________________________________________
 %% Subsection: The System Logs Group (SYS_LOG)
 
-\input groups_sys_log
+\input common_tables/groups_sys_log
 
 %%_______________________________________________________________________________
 %% Subsection: The Image Group (IMAGE_NNN)
@@ -698,8 +698,8 @@ group using one or a combination of coordinate subgroups, where the
 enumerated are Direction coordinate, Spectral coordinate and
 Polarization coordinate.
 
-\input coordinates_group_table
-\input coordinates_frames_location
+\input common_tables/coordinates_group_table
+\input common_tables/coordinates_frames_location
 
 The attributes, as presented in Table \ref{tab:coordinates-group},  summarize the
 overall characteristics of the set of coordinates collected within this group:
@@ -718,17 +718,17 @@ which there are several types.
 \subsubsection{Direction coordinate}
 \label{sec:coord-direction}
 
-\input coordinates_coord_direction
+\input common_tables/coordinates_coord_direction
 
 \subsubsection{Spectral coordinate}
 \label{sec:coord-spectral}
 
-\input coordinates_coord_spectral
+\input common_tables/coordinates_coord_spectral
 
 \subsubsection{Polarization coordinate}
 \label{sec:coord-polarization}
 
-\input coordinates_coord_polarization
+\input common_tables/coordinates_coord_polarization
 
 %%_______________________________________________________________________________
 %% Subsection: The Image Dataset (DATA)
@@ -907,7 +907,7 @@ many log files may present, the \textbf{Processing History Group} will
 be a catch-all envelop encapsulating information about all steps of
 processing should the user need such information.
 
-\input table_processing_history
+\input common_tables/table_processing_history
 
 \begin{figure}[htbp]
   \begin{center}
@@ -1021,7 +1021,7 @@ format specification might be developed for future releases:
 \label{sec:glossary}
 \addcontentsline{toc}{section}{\glossaryname}
 
-\input lofar_common_glossary
+\input common_tables/lofar_common_glossary
 
 %%_______________________________________________________________________________
 %% Bibliography

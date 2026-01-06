@@ -80,11 +80,11 @@
   \hline
 \end{tabular}
 
-\input version_numbering
+\input common_tables/version_numbering
 
-\input types
+\input common_tables/types
 
-\input notation
+\input common_tables/notation
 
 \subsection*{Acknowledgements}
 
@@ -117,7 +117,7 @@ While image hypercubes are the primary data product of the RM synthesis pipeline
 
 For the purposes of further discussion regarding RMSC file adherence to FITS keyword standards, the \textit{ESO Data Interface Control Document}, has been adopted as the FITS keyword model.
 
-\input applicable_documents
+\input common_tables/applicable_to_all_documents
 
 %% ______________________________________________________________________________
 %%                                                              Section: Overview
@@ -127,7 +127,7 @@ For the purposes of further discussion regarding RMSC file adherence to FITS key
 
 LOFAR imaging data will be presented in a number of LOFAR data formats, all of which will provide data arrays of differing dimensions, depending upon the respective observation.  Sky Image Cubes, Rotation Measure Cubes, Near-field cosmic ray images (``CR image'' in Table \ref{tab:lofar_data_types}), etc., all have different dimensions and coordinate types.  Table \ref{tab:lofar_data_types} illustrates the various image data array dimensions  that LOFAR imaging may produce.
 
-\input coordinates_image_table
+\input common_tables/coordinates_image_table
 
 Each data type is described in detail by an appropriate interface control document.  This document pertains to, and describes only those data conforming to the LOFAR datatype "RMSC" (Rotation Measure Synthesis Cube).  The dataset array in a RMImage Cube will be a \verb|ndarray| data structure, as can be created by the C-based  \textit{numarray/numpy} Python packages. The Rotation Measure Synthesis Cube is designed to store the 3D polarized intensity data produced from the LOFAR RM synthesis pipeline.  The nominal dimensionality of a RMSC \texttt{DATA} group's dataset will be 4 (\texttt{NAXIS=4}), wherein the image cube (or cubes) will be defined in (C-type order) \textit{Polarization}, \textit{Faraday Depth}, \textit{Dec}, \textit{RA}, as shown in Table \ref{tab:lofar_data_types}
 
@@ -218,7 +218,7 @@ These main building blocks of the RMSC HDF5 file are:
 \section{Detailed Data Specification}
 \label{sec:detailed structure}
 
-\input metadata_intro
+\input common_tables/metadata_intro
 
 \subsection{The Root Group ({\tt ROOT})}
 \label{sec:root group}
@@ -250,7 +250,7 @@ any LOFAR file root group.
 
 Table~\ref{tab:lofar common metadata} lists the {\cla} (CLA) which can be found in all LOFAR data file types.  These Attributes are required to be in the Root Group; if a value is not available for an Attribute, a \verb|`NULL'| maybe used in its place.\\
 
-\input lofar_common_metadata
+\input common_tables/lofar_common_metadata
 
 \begin{table}[ht]
   \centering
@@ -311,7 +311,7 @@ This root group header will comprise general information about the observation i
 %%_______________________________________________________________________________
 %% Subsection: The System Logs Group (SYS_LOG)
 
-\input groups_sys_log
+\input common_tables/groups_sys_log
 
 %%_______________________________________________________________________________
 %% Subsection: The RMImage Group
@@ -392,7 +392,7 @@ The table of \texttt{RMIMAGE} group attributes, table \ref{tab:RMImage group Att
 
 Coordinate information within a LOFAR RMSC file will exist in what is called a \texttt{COORDINATES} group, which will act as a container for a number of \texttt{COORDINATES} group objects.  The \texttt{COORDINATES} group will be a subgroup of an \texttt{RMIMAGE} group container, and may contain one or more subgroups that will describe relevent axes of the coordinates' associated \texttt{DATA} group using one or a combination of coordinate subgroups, where the enumerated are \texttt{direction, faraday depth, polarization}.
 
-\input coordinates_group_table
+\input common_tables/coordinates_group_table
 
 The attributes presented in Table \ref{tab:coordinates-group} summarize the overall characteristics of the set of coordinates collected within this group:
 \begin{itemize}
@@ -421,14 +421,14 @@ The layout of the embedded sub-groups will depend on the type of coordinate, of 
 \subsubsection{Direction coordinate}
 \label{sec:coord-direction}
 
-\input coordinates_coord_direction
+\input common_tables/coordinates_coord_direction
 
 \subsubsection{Polarization coordinate}
 \label{sec:coord-polarization}
 	
 The data contained within the RMSC is inherently complex.  Rather than store a cube of complex values, the LOFAR RMSC stores the real and imaginary parts of the polarization data separately and so a `Polarization' coordinate is required.  For a RMSC, the Polarization coordinate will be of length 2 and include only Stokes $Q$ and $U$.  Following the normal conventions, the real part of the polarized intensity is stored in Stokes $Q$ and the imaginary part in Stokes $U$.
 
-\input coordinates_coord_polarization
+\input common_tables/coordinates_coord_polarization
 
 \subsubsection{Faraday depth coordinate}
 \label{sec:fd_coordinate}
@@ -759,7 +759,7 @@ Though a spectral coordinate is not needed for the definition of the RMSC, a rec
 
 The data definition for the \texttt{PROCESS\_HISTORY} group ( \verb|PROCESS_HISTORY|, as it will appear in LOFAR data products) is necessarily loose, and will accommodate a variety of ancillary meta-data related to or produced by the various LOFAR processing pipelines.  Products such as DP3 log files, processing parameters sets, RFI mitigation tables, etc.  In fact, and due the wide-ranging data types and free-form ASCII format of many log files that the \texttt{PROCESS\_HISTORY} group may encompass, this group will be a catch-all envelop encapsulating information about all steps of processing should the user need such information.  And it is because of this free-form nature of the meta-data that it is very difficult to define a header describing attached data when it is not yet know just what those data may include.  An attempt has been made to provide by example how this will or should appear in the \texttt{PROCESS\_HISTORY} group header.
 
-\input table_processing_history
+\input common_tables/table_processing_history
 
 \begin{figure}[htbp]
   \begin{center}
@@ -935,7 +935,7 @@ found in \texttt{LOFAR-USG-ICD-002} \cite{lofar.icd.002}. Readers are encouraged
 \label{sec:glossary}
 \addcontentsline{toc}{section}{\glossaryname}
 
-\input lofar_common_glossary
+\input common_tables/lofar_common_glossary
 
 %%_______________________________________________________________________________
 %% Bibliography

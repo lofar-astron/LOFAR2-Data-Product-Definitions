@@ -77,11 +77,11 @@
   \end{supertabular}
 \end{center}
 
-\input version_numbering
+\input common_tables/version_numbering
 
-\input types
+\input common_tables/types
 
-\input notation
+\input common_tables/notation
 
 \subsection*{Acknowledgements}
 
@@ -143,7 +143,7 @@ adherence to FITS keyword standards, the \textit{ESO Data Interface
   Control Document} (\textit{see \S\ References}), has been adopted as
 the FITS keyword model.
 
-\input applicable_documents
+\input common_tables/applicable_to_all_documents
 
 %% ______________________________________________________________________________
 %%                                                              Section: Overview
@@ -286,7 +286,7 @@ These main building blocks of the UV Visibility HDF5 file are:
 \section{Detailed Data Specification}
 \label{sec:detailed structure}
 
-\input metadata_intro
+\input common_tables/metadata_intro
 
 \subsection{The Root Group ({\tt ROOT})}
 \label{sec:root group}
@@ -365,7 +365,7 @@ its place.
 \end{table}
 \end{list}
 
-\input lofar_common_metadata
+\input common_tables/lofar_common_metadata
 
 \subsubsection{Supplemental UV Visibility Root Attributes} The root
 group of a LOFAR UV Visibility file will comprise header attributes,
@@ -453,7 +453,7 @@ conversion in a FITS-compatable form.
 
 Coordinate information within a LOFAR UV Visibility file will exist in what is called a \texttt{Coordinates} group, which will act as a container for a number of \texttt{Coordinates} group objects.  The \texttt{Coordinates} group will be a subgroup of an \texttt{Vis} group container, and may contain one or more subgroups that will describe relevent axes of the coordinates' associated \texttt{Data} group using one or a combination of coordinate subgroups, where the enumerated are \texttt{direction, linear, tabular, spectral, polarization}.
 
-\input coordinates_group_table
+\input common_tables/coordinates_group_table
 
 The attributes, as presented in Table \ref{tab:coordinates-group},  summarize the
 overall characteristics of the set of coordinates collected within this group:
@@ -471,22 +471,22 @@ which there are several types.
 \subsubsection{Linear coordinate}
 \label{sec:coord-linear}
 
-\input coordinates_coord_linear
+\input common_tables/coordinates_coord_linear
 
 \subsubsection{Spectral coordinate}
 \label{sec:coord-spectral}
 
-\input coordinates_coord_spectral
+\input common_tables/coordinates_coord_spectral
 
 \subsubsection{Polarization coordinate}
 \label{sec:polarization coordinate}
 
-\input coordinates_coord_polarization
+\input common_tables/coordinates_coord_polarization
 
 \subsubsection{Tabular coordinate}
 \label{sec:coord-tabular}
 
-\input coordinates_coord_tabular
+\input common_tables/coordinates_coord_tabular
 
 \subsection{The Data Group}
 
@@ -568,7 +568,7 @@ many log files may present, the \textbf{Processing History Group} will
 be a catch-all envelop encapsulating information about all steps of
 processing should the user need such information.
 
-\input table_processing_history
+\input common_tables/table_processing_history
 
 \begin{figure}[htbp]
   \begin{center}
@@ -657,7 +657,7 @@ information.
 \label{sec:glossary}
 \addcontentsline{toc}{section}{\glossaryname}
 
-\input lofar_common_glossary
+\input common_tables/lofar_common_glossary
 
 %%_______________________________________________________________________________
 %% Bibliography

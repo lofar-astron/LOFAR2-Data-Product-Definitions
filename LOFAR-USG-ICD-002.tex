@@ -182,9 +182,9 @@
  \end{supertabular}
 \end{center}
 
-\input version_numbering
+\input common_tables/version_numbering
 
-\input notation
+\input common_tables/notation
 
 \subsection*{Acknowledgements}
 
@@ -252,7 +252,7 @@ therefore is to describe and establish a standard for the
 encapsulation and representation of world coordinates as part of the
 data format specifications.
 
-\input applicable_documents
+\input common_tables/applicable_to_all_documents
 
 %% ______________________________________________________________________________
 %%                                                              Section: Overview
@@ -438,7 +438,7 @@ metadata). In order to illustrate the motivation for this type of
 abstraction, consider coordinate information required for the various
 types of data products as listed in Tab. \ref{tab:lofar_data_types} below:
 
-\input coordinates_image_table
+\input common_tables/coordinates_image_table
 
 \begin{itemize}
 \item \textsc{icd-003} (Beam-Formed Data) records stokes values as
@@ -707,7 +707,7 @@ information such as the equinox of the observation, the system of
 equatorial coordinates on the sphere of the sky, as well as parameters
 for the spherical map projection.
 
-\input coordinates_coord_direction_table
+\input common_tables/coordinates_coord_direction_table
 
 \begin{lstlisting}[float,caption={Structure of the direction
     coordinate group.}]
@@ -974,7 +974,7 @@ of which are by definition fixed with respect to the celestial sphere, each
 As already indicated by the name, this group encodes the properties of a simple
 linear coordinate (or a number thereof, as multiple axes are permitted).
 
-\input coordinates_coord_linear_table
+\input common_tables/coordinates_coord_linear_table
 
 \begin{lstlisting}[float,caption={Structure of the linear coordinate group.}]
 .
@@ -1040,7 +1040,7 @@ linear coordinate (or a number thereof, as multiple axes are permitted).
 \subsection{Tabular coordinate}
 \label{sec:coord-tabular}
 
-\input coordinates_coord_tabular_table
+\input common_tables/coordinates_coord_tabular_table
 
 \begin{lstlisting}[float,caption={Structure of the tabular coordinate group.}]
 .
@@ -1091,7 +1091,7 @@ will either be storing its values as a linear axis
 (\verb|STORAGE_TYPE=`Linear'|) or as a 1-dimensional look-up table
 (\verb|STORAGE_TYPE=`Tabular'|).
 
-\input coordinates_coord_time_table
+\input common_tables/coordinates_coord_time_table
 
 \begin{list}{\textbf{--}}{}
 \item \verb|GROUPTYPE| is the group type descriptor with the fixed
@@ -1210,7 +1210,7 @@ tabular coordinate, with a number of specific attributes added, as
 they will be required for the transformation between different
 spectral quantities.
 
-\input coordinates_coord_spectral_table
+\input common_tables/coordinates_coord_spectral_table
 
 \begin{list}{\textbf{--}}{}
 \item \verb|GROUPTYPE| is the group type descriptor with the fixed value \verb|`SpectralCoord'|.
@@ -1382,7 +1382,7 @@ respectively.
 
 \paragraph{Coordinate representation.}
 
-\input coordinates_coord_polarization_table
+\input common_tables/coordinates_coord_polarization_table
 
 \begin{list}{\textbf{--}}{}
 \item \verb|GROUPTYPE| is the group type descriptor with the fixed
@@ -1708,7 +1708,7 @@ questions regarding the format definition:
 \label{sec:glossary}
 \addcontentsline{toc}{section}{\glossaryname}
 
-\input lofar_common_glossary
+\input common_tables/lofar_common_glossary
 
 %% ==============================================================================
 %%

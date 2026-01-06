@@ -109,9 +109,9 @@
   \end{supertabular}
 \end{center}
 
-\input version_numbering
-\input types
-\input notation
+\input common_tables/version_numbering
+\input common_tables/types
+\input common_tables/notation
 
 \section*{Acknowledgements}
 
@@ -195,7 +195,7 @@ adherence to FITS
 keyword standards, the \textit{ESO Data Interface Control Document} (\textit{see
 \S\ References}), has been adopted as the FITS keyword model. 
 
-\input applicable_documents
+\input common_tables/applicable_to_all_documents
 
 %% ______________________________________________________________________________
 %%                                                              Section: Overview
@@ -211,7 +211,7 @@ Cubes, Near-field cosmic ray images (``CR image'' in Table
 types. Table  \ref{tab:lofar_data_types} illustrates the various data
 array dimensions that LOFAR may produce. 
 
-\input coordinates_image_table
+\input common_tables/coordinates_image_table
 
 Each data type is described in detail by an appropriate interface control
 document.  This document pertains to, and describes only those data conforming
@@ -410,7 +410,7 @@ OBS_NUMBER
 \section{Detailed Data Specification}
 \label{sec:detailed structure}
 
-\input metadata_intro   
+\input common_tables/metadata_intro   
 
 %% ------------------------------------------------------------------------------
 
@@ -456,7 +456,7 @@ value is not available for an Attribute, a \verb|`NULL'| maybe used in its place
 
 For LOFAR Dynamic Spectrum Data, \verb|FILETYPE|=`dynspec'.
 
-\input lofar_common_metadata
+\input common_tables/lofar_common_metadata
 
 \begin{table}[ht]
   \centering
@@ -616,7 +616,7 @@ dynamic spectrum pipelines used part of the BeamFormed software.
 %%_______________________________________________________________________________
 %% Subsection: The System Logs Group (SYS_LOG)
 
-\input groups_sys_log
+\input common_tables/groups_sys_log
 
 %%_______________________________________________________________________________
 %%                                                             The DYNSPEC Group
@@ -809,7 +809,7 @@ which is required for the proper transformation of quantities to other
 reference systems.
 
 %% ------
-\input coordinates_group_table
+\input common_tables/coordinates_group_table
 
 The attributes, as presented in Table \ref{tab:coordinates-group},  summarize the
 overall characteristics of the set of coordinates collected within a
@@ -828,7 +828,7 @@ usually 3
 \end{itemize}
 
 %% ------
-\input coordinates_frames_location
+\input common_tables/coordinates_frames_location
   
 The different axes stored within this container are described in the remainder of this
 section. 
@@ -1316,7 +1316,7 @@ The dynamic spectrum data flow is shown in Figure \ref{fig:dataflow}.
 \subsection{Summary of HBA JOINED Discussion}
 \label{sec:Summary of HBA JOINED Discussion}
 
-\input hba_joined_appendix
+\input common_tables/hba_joined_appendix
 %%_______________________________________________________________________________
 %% LOFAR Filename Convention
 
@@ -1342,7 +1342,7 @@ world coordinates information.
 \label{sec:glossary}
 \addcontentsline{toc}{section}{\glossaryname}
 
-\input lofar_common_glossary
+\input common_tables/lofar_common_glossary
 
 \bibliographystyle{abbrv}
 \bibliography{references}

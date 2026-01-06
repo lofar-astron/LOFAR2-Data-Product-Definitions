@@ -185,7 +185,7 @@ The main building blocks of the BF HDF5 file are:
 \section{Detailed Data Specification}
 \label{sec:detailed data structure}
 
-\input metadata_intro
+\input common_tables/metadata_intro
 
 \subsection{The Root Group ({\tt ROOT})}
 \label{sec:root group}
@@ -193,7 +193,7 @@ The main building blocks of the BF HDF5 file are:
 The LOFAR file hierarchy begins with the top level \textbf{File Root
   Group} (\verb|ROOT|). Contained within this group is a merged set of attributes, consisting of the {\cla} (CLA) shared by all LOFAR science data products (listed in Table~\ref{tab:lofar common metadata}, note that \verb|FILETYPE = `bf'| for beam-formed data), and a set of attributes that are specific to LOFAR beam-formed data (listed in Table~\ref{tab:root attributes}).
 
-\input lofar_common_metadata
+\input common_tables/lofar_common_metadata
 
 \begin{small}
 \begin{table}[p]
@@ -431,8 +431,8 @@ coordinate sub-groups which contain the World Coordinate Information
 (WCS) of the data within that Beam Group.  More information on coordinates
 in LOFAR data files in general can be found in ICD-002 \cite{lofar.icd.002}. 
 
-\input coordinates_group_table
-\input coordinates_frames_location
+\input common_tables/coordinates_group_table
+\input common_tables/coordinates_frames_location
 
 All LOFAR BF files have two coordinate axes (\verb|NOF_AXES|=2), the first axis describing the temporal dimension (see Table~\ref{tab:temporal coordinate}), and the second axis describing the spectral dimension (see Table~\ref{tab:spectral coordinate}). To convert a pixel $P$ (= a position in the dataset) to a value $V$ (= its real world representation), the following conversion should be used:
 \begin{itemize}
