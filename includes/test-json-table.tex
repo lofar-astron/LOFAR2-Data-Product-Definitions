@@ -1,15 +1,17 @@
 % This import the json table as \myJSONdata
 \JSONParseFromFile{\myJSONdata}{includes/test-json-input.json}
 % This converts the values stored in \myJSONdata to a table
+\JSONParseSet{escape={all}}
 \begin{tabular}{|llllll|}
 \toprule
 \textbf{keyword} & \textbf{type} & \textbf{default value} &  \textbf{example value} & \textbf{version} & \textbf{description} \\ \midrule
 \JSONParseArrayMapInline{\myJSONdata}{.}{%
        
-    \JSONParseValue{\myJSONdata}{[#1].keyword} & 
+    \JSONParseValue{\myJSONdata}{[#1].keyword} &
     \JSONParseValue{\myJSONdata}{[#1].type} & 
     \JSONParseValue{\myJSONdata}{[#1].default-value} &
     \JSONParseValue{\myJSONdata}{[#1].example-value} &
-    \JSONParseValue{\myJSONdata}{[#1].version} & \JSONParseValue{\myJSONdata}{[#1].description} \\
+    \JSONParseValue{\myJSONdata}{[#1].version} & 
+    \JSONParseValue{\myJSONdata}{[#1].description} \\
 } \bottomrule
 \end{tabular}

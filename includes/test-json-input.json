@@ -1,7 +1,7 @@
 {
   [
     {"keyword":"TELESCOPE", "type":"string", "default-value":"LOFAR2", "example-value":"LOFAR2","version":"1.0.0","description":"File name"},
-            {"keyword":"ANTENNA\\_SET", "type":"string", "default-value":"", "example-value":"LBA\\_ALL","version":"1.0.0","description":"Antenna set specification (see Table 4)"},
-    {"keyword":"CLOCK\\_FREQUENCY", "type":"double", "default-value":200.0, "example-value":160.0,"version":"1.0.0","description":"Clock frequency (160 MHz or 200 MHz)"}
+            {"keyword":"ANTENNA_SET", "type":"string", "default-value":"", "example-value":"LBA_ALL","version":"1.0.0","description":"Antenna set specification (see Table 4)"},
+    {"keyword":"CLOCK_FREQUENCY", "type":"double", "default-value":200.0, "example-value":160.0,"version":"1.0.0","description":"Clock frequency (160 MHz or 200 MHz)"}
   ]
 }
