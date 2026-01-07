@@ -13,10 +13,16 @@ The common_tables are shared between all documents. Note that editing these shou
 
 You can add figures in the figures directory. Please ensure a unique name to not change other documents.
 
-You can add other files to include in the includes directory. They can be included with \input includes/filename 
+To include other documents, please create a folder LOFAR2-DDD-XXX-includes. They can be included with \input includes/filename 
 This works without .tex in the filename.
 
-TODO: Looking into a machine readable table format that can also be used by tex
+The tables containing the metadata should be saved as JSON so they can be used for development. An example is available in includes/test-json-input.json and test-json-table.tex and rendered with json-table-test.tex . To use these in your document, store the relevant table.tex and input.json in the include directory for your document, e.g. LOFAR2-DDD-XXX-includes and then include the table in the tex document "\input LOFAR2-DDD-XXX-includes/table-filename". Change \myJSONdata to a unique, relevant descriptor in the table.tex file. 
+Ongoing issues:
+- Underscores should be escaped by a \\. We're still looking into better solutions for that.
+- The JSON data currently is not actual JSON as is doesn't have a key
+- Help page for the package: https://ctan.math.illinois.edu/macros/latex/contrib/jsonparse/jsonparse-doc.pdf
+- The common_tables should still be converted to this format but include the table file should work both before and after the conversion
+
 
 
 #### Contributors:
