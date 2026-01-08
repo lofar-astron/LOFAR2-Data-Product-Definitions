@@ -1,0 +1,156 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "http://yourdomain.com/schemas/lofar-common-metadata.json",
+    "title": "Common LOFAR Attributes",
+    "type": "object",
+    "version": 1,
+    "properties": {
+        "grouptype": {
+            "type": "string",
+            "description": "LOFAR Group type",
+            "const": "Root"
+        },
+        "filename":{
+            "type" : "string",
+            "description": "File name"
+        },
+        "filedate" : {
+            "type": "string",
+            "description": "File creation date"
+        },
+        "filetype": {
+            "type": "string",
+            "description": "File type"
+        },
+        "telescope": {
+            "type": "string",
+            "description": "Name of the telescope",
+            "const": "LOFAR"
+        },
+        "project_id": {
+            "type": "string",
+            "description": "Project unique identifier"
+        },
+        "project_title": {
+            "type": "string",
+            "description": "Title of the project"
+        },
+        "project_pi": {
+            "type": "string",
+            "description": "Name of the Principal Investigator"
+        },
+        "project_co_i": {
+            "type": "array",
+            "description": "Name(s) of the of Co-Investigator(s)",
+            "items": {
+                "type": "string"
+            }
+        },
+        "project_contact": {
+            "type": "string",
+            "description": "Project contact details"
+        },
+        "observation_id": {
+            "type": "string",
+            "description": "Observation unique identifier"
+        },
+        "observation_start_utc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Observation start time in UTC"
+        },
+        "observation_start_mjd": {
+            "type": "number",
+            "description": "Observation start time in Modified Julian Date (MJD)"
+        },
+        "observation_end_utc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Observation end time in UTC"
+        },
+        "observation_end_mjd": {
+            "type": "number",
+            "description": "Observation end time in Modified Julian Date (MJD)"
+        },
+        "observation_nof_stations": {
+            "type": "integer",
+            "description": "Number of stations used during the observation"
+        },
+        "observation_stations_list": {
+            "type": "array",
+            "description": "List of stations used during the observation",
+            "items": {
+                "type": "string"
+            }
+        },
+        "observation_frequency_min": {
+            "type": "number",
+            "description": "Observation minimum frequency"
+        },
+        "observation_frequency_center": {
+            "type": "number",
+            "description": "Observation center frequency (weighted)"
+        },
+        "observation_frequency_max": {
+            "type": "number",
+            "description": "Observation maximum frequency"
+        },
+        "observation_frequency_unit": {
+            "type": "string",
+            "const": "MHz"
+        },
+        "observation_nof_bits_per_sample": {
+            "type": "integer",
+            "description": "Number of bits per sample in the incoming data stream from the stations to CEP"
+        },
+        "clock_frequency": {
+            "enum": [160, 200],
+            "description": "Clock frequency (160MHz or 200MHz)"
+        },
+        "clock_frequency_unit": {
+            "type": "string",
+            "const": "MHz"
+        },
+        "antenna_set": {
+            "type": "string",
+            "description": "Antenna set specification"
+        },
+        "filter_selection": {
+            "type": "string",
+            "description": "Filter selection"
+        },
+        "targets": {
+            "type": "array",
+            "description": "List of observation targets/sources",
+            "items": {
+                "type": "string"
+            }
+        },
+        "system_version": {
+            "type": "string",
+            "description": "Processing system name/version"
+        },
+        "pipeline_name": {
+            "type": "string",
+            "description": "Pipeline processing name"
+        },
+        "pipeline_version": {
+            "type": "string",
+            "description": "Pipeline processing version"
+        },
+        "doc_name": {
+            "type": "string",
+            "description": "Interface Control Document name"
+        },
+        "doc_version": {
+            "type": "string",
+            "description": "Interface Control Document version/issue number"
+        },
+        "notes": {
+            "type": "string",
+            "description": "Notes or comments"
+        }
+    },
+    "additionalProperties": false,
+    "required": [] 
+}
