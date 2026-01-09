@@ -112,8 +112,84 @@
             "const": "MHz"
         },
         "antenna_set": {
-            "type": "string",
-            "description": "Antenna set specification"
+            "description": "Antenna set specification",
+            "anyOf": [
+                {
+                    "type": "string",
+                    "const": "LBA_ALL",
+                    "description": "All 96 LBA antennas"
+                },
+                {
+                    "type": "string",
+                    "const": "LBA_INNER",
+                    "description": "48 antennas of the INNER LBA configuration"
+                },
+                {
+                    "type": "string",
+                    "const": "LBA_OUTER",
+                    "description": "48 antennas of the OUTER LBA configuration"
+                },
+                {
+                    "type": "string",
+                    "const": "LBA_SPARSE_EVEN",
+                    "description": "Intersection of INNER-SPARSE configurations"
+                },
+                {
+                    "type": "string",
+                    "const": "LBA_SPARSE_ODD",
+                    "description": "Intersection of OUTER-SPARSE configurations"
+                },
+                {
+                    "type": "string",
+                    "const": "LBA_X",
+                    "description": "X component, ALL LBA antennas"
+                },
+                {
+                    "type": "string",
+                    "const": "LBA_Y",
+                    "description": "Y component, ALL LBA antennas"
+                },
+                {
+                    "type:": "string",
+                    "const": "HBA_ZERO",
+                    "description": "HBA antennas 0-23 in Core stations, and all HBA’s in the other stations"
+                },
+                {
+                    "type:": "string",
+                    "const": "HBA_ONE",
+                    "description": "HBA antennas 24-47 in Core stations, and all HBA’s in the other stations"
+                },
+                {
+                    "type": "string",
+                    "const": "HBA_DUAL",
+                    "description": "Both HBA antenna (sub)fields in the Core stations, which set up an identical beam/pointing on each of those (sub)fields. On CEP, those (sub)fields are treated as seperate stations. On non-core stations, the whole HBA field is used and one beam is made."
+                },
+                {
+                    "type": "string",
+                    "const": "HBA_JOINED",
+                    "description": "ALL HBA antennas in ALL stations types"
+                },
+                {
+                    "type": "string",
+                    "const": "HBA_ZERO_INNER",
+                    "description": "Similar to HBA ZERO, but with the inner half of the HBA antennas in use."
+                },
+                {
+                    "type": "string",
+                    "const": "HBA_ONE_INNER",
+                    "description": "Similar to HBA ONE, but with the inner half of the HBA antennas in use."
+                },
+                {
+                    "type": "string",
+                    "const": "HBA_DUAL_INNER",
+                    "description": "Similar to HBA DUAL, but with the inner half of the HBA antennas in use."
+                },
+                {
+                    "type": "string",
+                    "const": "HBA_JOINED_INNER",
+                    "description": "Similar to HBA JOINED, but with the inner half of the HBA antennas in use."
+                }
+            ]
         },
         "filter_selection": {
             "type": "string",
@@ -152,5 +228,5 @@
         }
     },
     "additionalProperties": false,
-    "required": [] 
+    "required": []
 }
