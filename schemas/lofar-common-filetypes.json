@@ -1,0 +1,60 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "http://yourdomain.com/schemas/lofar-common-filetypes.json",
+    "title": "LOFAR Common File Types",
+    "description": "LOFAR common file types",
+    "version": 1,
+    "properties": {
+        "filetype": {
+            "type": "string",
+            "oneOf": [
+                {
+                    "title": "UV Vis",
+                    "const": "uv",
+                    "description": "LOFAR visibility file w/correlation UV information."
+                },
+                {
+                    "title": "Sky cube",
+                    "const": "sky",
+                    "description": "LOFAR Image cube w/RA, Dec, frequency and polarization."
+                },
+                {
+                    "title": "RM cube",
+                    "const": "rm",
+                    "description": "Rotation Measure Synthesis Cube w/ axes of RA, Dec, Faraday Depth, polarization."
+                },
+                {
+                    "title": "Near-field image",
+                    "const": "nfi",
+                    "description": "Near Field Sky Image w/ axes of position on the sky (x, y, z), frequency time, polarization."
+                },
+                {
+                    "title": "Dynamic Spectra",
+                    "const": "dynspec",
+                    "description": "Dynamic Spectra w/ axes of time, frequency, polarization."
+                },
+                {
+                    "title": "Beamformed data",
+                    "const": "bf",
+                    "description": "Beam-Formed file w/ time series data with axes of frequency vs time."
+                },
+                {
+                    "title": "TBB dump",
+                    "const": "tbb",
+                    "description": "TBB dump file, raw time-series: (1) raw voltage mode: voltage vs time (baseband data) (2) subband mode: complex voltage vs time for selected frequency channels."
+                },
+                {
+                    "title": "Instrument Model",
+                    "const": "inst",
+                    "description": "Parameters describing gain and other instrument characteristics for calibration."
+                },
+                {
+                    "title": "Sky Model",
+                    "const": "lsm",
+                    "description": "List of sources, either point sources or shapelets."
+                }
+            ]
+        }
+    },
+    "additionalProperties": false
+}

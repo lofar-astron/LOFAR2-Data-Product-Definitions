@@ -1,0 +1,48 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "http://yourdomain.com/schemas/lofar-filter-selection.json",
+    "title": "LOFAR Filter Selection",
+    "description": "LOFAR frequency filter bands (MHz)",
+    "version": 1,
+    "properties": {
+        "filter_selection": {
+            "description": "Filter band (MHz)",
+            "type": "string",
+            "oneOf": [
+                {
+                    "const": "LBA_10_70",
+                    "description": "LBA filter 10-70 MHz"
+                },
+                {
+                    "const": "LBA_30_70",
+                    "description": "LBA filter 30-70 MHz"
+                },
+                {
+                    "const": "LBA_10_90",
+                    "description": "LBA filter 10-90 MHz"
+                },
+                {
+                    "const": "LBA_30_90",
+                    "description": "LBA filter 30-90 MHz"
+                },
+                {
+                    "const": "HBA_110_190",
+                    "description": "HBA filter 110-190 MHz"
+                },
+                {
+                    "const": "HBA_110_170",
+                    "description": "HBA filter 110-170 MHz"
+                },
+                {
+                    "const": "HBA_170_230",
+                    "description": "HBA filter 170-230 MHz"
+                },
+                {
+                    "const": "HBA_210_250",
+                    "description": "HBA filter 210-250 MHz"
+                }
+            ]
+        }
+    },
+    "additionalProperties": false
+}
