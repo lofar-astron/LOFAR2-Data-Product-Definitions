@@ -16,11 +16,11 @@
         },
         "filedate" : {
             "description": "File creation date",
-            "format": "string"
+            "type": "string"
         },
         "filetype": {
             "description": "Standard LOFAR data products and the corresponding file type ",
-            "anyOf": [
+            "oneOf": [
                 {
                     "title": "UV Vis",
                     "const": "uv",
