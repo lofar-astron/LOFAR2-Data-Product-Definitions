@@ -38,16 +38,12 @@
 \title{LOFAR Data Format ICD \\ MY-DATATYPE-DATA \\
   {\normalsize Document ID: LOFAR-DWG-ICD-XXX} \\
   {\normalsize Version 1.00.00} \\
-  {\normalsize SVN Repository Revision: \svnInfoMaxRevision} \\
    {\normalsize Persistent DOI: XXXXXX} \\
 \author{ \parbox{\linewidth}{\centering S.~ter~Veen, H.~Holties } }
-\date{\small{SVN Date: \svnInfoMaxToday}} \\
-
-  
+\date{\small{Compile Date: \today}} 
 }
 
 \maketitle
-
 
 \section{Table of contents}
 \tableofcontents
@@ -64,7 +60,7 @@
 
 
 
-\input version_numbering
+\input common_tables/version_numbering
 
 
 
@@ -93,7 +89,7 @@ implementation of tools that read and write the data, see \ref{sec:tools}.
 
 
 \subsection{Applicable Documents}
-\input applicable_documents
+\input common_tables/applicable_to_all_documents
 
 
 
@@ -164,17 +160,17 @@ See the various comment blocks in the text. The definition of the file format it
 
 \subsection{Conventions}
 
-\input types
+\input common_tables/types
 
-\input notation
+\input common_tables/notation
 
 
 \subsection{Data Structure}
 
-A LOFAR TBB Times-series data file will adhere to the following guidelines:\\
+A LOFAR TBuf Times-series data file will adhere to the following guidelines:\\
 
-A LOFAR TBB Times-series data file will be defined within the context
-of the HDF5 file format.  A LOFAR TBB Time-series HDF5 file structure
+A LOFAR TBuf Times-series data file will be defined within the context
+of the HDF5 file format.  A LOFAR TBuf Time-series HDF5 file structure
 will comprise a primary group, a "root group" in HDF5 nomenclature,
 which may be considered equivalent to a primary header/data unit (HDU)
 of a standard multi-extension FITS file.  This primary group will
@@ -297,7 +293,7 @@ Raw Voltage Mode:
 \section{Detailed Data Specification}
 \label{sec:detailed structure}
 
-\input metadata_intro
+\input common_tables/metadata_intro
 
 \subsection{The Root Group}
 \label{sec:root group}
@@ -375,7 +371,7 @@ maybe used in its place.
   \label{tab:group types}
 \end{table}
 
-\input lofar_common_metadata
+\input common_tables/lofar_common_metadata
 
 
 \subsubsection{Additional TBB Time-series Root Attributes}
@@ -634,12 +630,12 @@ With LOFAR 2.0, both the LBA and HBA antenna fields can be active at the same ti
     \hline
     \hline
     \small {\texttt{GROUPTYPE}} & Attr & \verb|string| & DAL v4.0 & LOFAR group type, \texttt{StationGroup}. \\
-    \small {\texttt{STATION\_POSITION}} & Attr & \verb|array<double,1>| & DAL v4.0 & [3] Numerical value of the station position coordinates of this antenna field. \\
-    \small {\texttt{STATION\_POSITION\_UNIT}}  & Attr & \verb|string| & DAL v4.0 & Physical units associated with the numerical values for the station position. \\
-    \small {\texttt{STATION\_POSITION\_FRAME}} & Attr & \verb|string| & DAL v4.0 & Identifier for the reference frame within which the station position is provided. \\
-    \small {\texttt{BEAM\_DIRECTION}} & Attr & \verb|array<double,1>| & DAL v4.0 & [2] Numercial value of the station-beam direction for this antenna field. \\
-    \small {\texttt{BEAM\_DIRECTION\_UNIT}}  & Attr & \verb|string| & DAL v4.0 & Physical units associated with the numerical value of the station-beam direction. Mandatory for \verb|HBA| station data.\\
-    \small {\texttt{BEAM\_DIRECTION\_FRAME}} & Attr & \verb|string| & DAL v4.0 & Identifier for the reference frame within which the station-beam direction is provided. Mandatory for \verb|HBA| station data.\\
+    \small {\texttt{ANTENNAFIELD\_POSITION}} & Attr & \verb|array<double,1>| & DAL v4.0 & [3] Numerical value of the station position coordinates of this antenna field. \\
+    \small {\texttt{ANTENNAFIELD\_POSITION\_UNIT}}  & Attr & \verb|string| & DAL v4.0 & Physical units associated with the numerical values for the station position. \\
+    \small {\texttt{ANTENNAFIELD\_POSITION\_FRAME}} & Attr & \verb|string| & DAL v4.0 & Identifier for the reference frame within which the station position is provided. \\
+    \small {\texttt{BEAM\_DIRECTION}} & Attr & \verb|array<double,1>| & DAL v4.0 & [2] Numercial value of the analog beam direction for this antenna field. \\
+    \small {\texttt{BEAM\_DIRECTION\_UNIT}}  & Attr & \verb|string| & DAL v4.0 & Physical units associated with the numerical value of the analog beam direction. Mandatory for \verb|HBA| and \verb|NenuFar| station data.\\
+    \small {\texttt{BEAM\_DIRECTION\_FRAME}} & Attr & \verb|string| & DAL v4.0 & Identifier for the reference frame within which the analog beam direction is provided. Mandatory for \verb|HBA| and \verb|NenuFar| station data.\\
     \small {\texttt{CLOCK\_OFFSET}} & Attr & \verb|double| & DAL v4.0 & (Relative) Station clock offset. \\
     \small {\texttt{CLOCK\_OFFSET\_UNIT}} & Attr & \verb|string| & DAL v4.0 & Physical unit for the station clock offset. \\
     % \small \textit{\texttt{TRIGGER\_OFFSET}} & Attr & \verb|double| & DAL v2.0 & Trigger time -- in seconds -- relative to the reference time. \\
@@ -921,7 +917,7 @@ per 10 minutes. With 32 stations active this would amount to 110 GB per day of o
 \label{sec:glossary}
 \addcontentsline{toc}{section}{\glossaryname}
 
-\input lofar_common_glossary
+\input common_tables/lofar_common_glossary
 
 
 \subsection{Data Types}

@@ -5,13 +5,13 @@
 \begin{tabular}{|llllll|}
 \toprule
 \textbf{keyword} & \textbf{type} & \textbf{default value} &  \textbf{example value} & \textbf{version} & \textbf{description} \\ \midrule
-\JSONParseArrayMapInline{\myJSONdata}{.}{%
-       
-    \JSONParseValue{\myJSONdata}{[#1].keyword} &
+\JSONParseArrayMapInline{\myJSONdata}{.}{
+    \texttt{\JSONParseValue{\myJSONdata}{[#1].keyword}} &
     \JSONParseValue{\myJSONdata}{[#1].type} & 
     \JSONParseValue{\myJSONdata}{[#1].default-value} &
     \JSONParseValue{\myJSONdata}{[#1].example-value} &
     \JSONParseValue{\myJSONdata}{[#1].version} & 
     \JSONParseValue{\myJSONdata}{[#1].description} \\
-} \bottomrule
+}
+\bottomrule
 \end{tabular}

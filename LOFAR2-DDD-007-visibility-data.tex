@@ -1,0 +1,224 @@
+%% $Id$
+
+\documentclass[a4paper,10pt,bibtotoc]{scrartcl}
+\usepackage{a4wide,usg,supertabular}
+\usepackage{jsonparse, booktabs}
+
+\begin{document}
+
+%%_______________________________________________________________________________
+%%                                                                      Titlepage
+
+\title{LOFAR2 Data Definition Document 007\\ Visibility Data \\
+{\normalsize Document ID: LOFAR2-DDD-007-visibility-data} \\ 
+{\normalsize Version 0.0} \\
+}
+\author{Tim Shimwell, Frits Sweijen}
+\date{\small{Compilation Date: \today}}
+\maketitle
+
+\section{Table of contents}
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\clearpage
+
+
+
+%%_______________________________________________________________________________
+%%                                                                   Introduction
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Purpose and Scope}
+\label{sec:purpose and scope}
+Correlated visibility data will be the primary output of LOFAR in the interferometric mode. This document sets the formal data specification for visibility data products to be archived for LOFAR2. It should not be interpreted as a specification for any data structures that projects may use during in situ processing.
+
+LOFAR2 the visibility data will be stored in the Measurement Set format, which is a widely used format for radio-interferometric data.
+
+\subsection{Applicable Documents}
+
+\input common_tables/applicable_to_all_documents
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \textsc{Reference} & \textsc{Title} & \textsc{Description} \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{3}{r}{\small \textbf{Applicable documents}
+      \textsl{continued from previous page}} \\
+    \hline
+    \textsc{Reference} & \textsc{Title} & \textsc{Description} \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{3}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \bottomcaption[List of documents that apply specifically to this LOFAR2 Data Definition Document (DDD)]{List of documents that apply specifically to this LOFAR2 Data Definition Document (DDD)
+  \label{tab:applicable list}}
+  \begin{supertabular}{lp{5.8cm}p{7cm}}
+    \shrinkheight{-4.5em}
+    \texttt{+++REFERENCE+++} \cite{+++CITATION+++} & +++DESCRIPTION+++ \\
+    \hline
+  \end{supertabular}
+\end{center}
+
+\subsection{Reference applications}
+
+---/---
+
+\subsection{Overview}
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                  High Level Data Specification
+\newpage
+\section{Organisation of the data}
+\label{sec:structure}
+
+\subsection{Conventions}
+The following conventions apply to this LOFAR data definition document.
+
+\input common_tables/types
+
+\input common_tables/notation
+
+\subsection{Data Structure}
+
+Visibility data and associated metadata shall be stored in the Measurement Set format as described by the Measurement Set Description for LOFAR version 2 \footnote{\url{https://www.astron.nl/lofarwiki/lib/exe/fetch.php?media=public:documents:ms2_description_for_lofar_2.08.01.pdf}}. The internal structure of a Measurment Set is a series of tables, that each contain fields or columns for storing data and metadata. Examples of these are visibility data, antenna positions, observing frequencies, target(s) etc. For a detailed description of the structure of a Measurement Set (hereafter MS), the reader is referred to the MS description document. Reading and writing data to and from MSes is standardised via the casacore library.
+%%_______________________________________________________________________________
+%%                                                    Detailed Data Specification
+\newpage
+\section{Detailed Data Specification}
+\subsection{Visibility data}
+ Storing data in and retrieving it from MSes is facilitated via "Storage Managers" which dictate the structure and compression (if applicable) of the data stored in a column. For LOFAR2, the following Storage Managers are supported:
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{p{0.2\linewidth}|p{0.7\linewidth}}
+         Storage Manager & Description \\
+         \hline
+         AntennaStMan & A special storage manager that losslessly compresses the \texttt{ANTENNA1} and \texttt{ANTENNA2}. \\
+         DyscoStMan & A storage manager for visibility data that uses the lossy dysco compression  scheme (Offringa 2016) to reduce the data size. It must not be used for smooth model data or otherwise not noise-dominated signals. \\
+         LofarStMan & The standard LOFAR storage manager that stores visibility data without compression. \\
+         SiscoStMan & A storage manager for losslessly compressing simulated model data \textbf{(Offringa \& van Weeren 2025)}. \\
+         StokesIStMan & A storage manager for Stokes I model data that stores only one total intensity value instead of four values for each correlation.\\
+         UvwStMan & A storage manager to losslessly compress the UVW coordinates.
+    \end{tabular}
+    \caption{Storage Managers that are supported for LOFAR2 Measurement Sets.}
+    \label{tab:placeholder}
+\end{table}
+
+Software capable of reading or producing MSes should anticipate the following guidelines:
+
+\begin{enumerate}
+    \item Visibility data \textit{shall} be stored in valid Measurement Sets according to the MSv2 specification.
+    \item Visibility data columns \textit{shall} be compressed using the Dysco \textbf{(Offringa 2016)} or "Simulated Signal Compression" (SISCO) compression schemes if the nature of the data allows for it.
+    \item Model data columns \textit{shall} be compressed using the SISCO or Stokes I compression methods.
+    \item For LOFAR, all correlations have equal flags. Therefore, flags \textit{may} be stored as scalar flags, with one value for all correlations.
+    \item The \texttt{UVW} column \textit{may} be compressed using the special UvwStMan storage manager.
+    \item The \texttt{ANTENNA1} and \texttt{ANTENNA2} columns may be compressed using the AntennaStMan.
+\end{enumerate}
+
+\subsection{Baseline-based averaging}
+Visibility data can be compressed using a special averaging scheme called baseline-based (or baseline-dependent) averaging (BDA). The format in which DP3 and WSClean support this is outlined in the WSClean manual\footnote{\url{https://wsclean.readthedocs.io/en/latest/technical_bda_details.html}}. Data for which maintaining fine sampling along either the time or frequency axis, or both, is not required can be compressed this way.
+
+\subsection{Common LOFAR attributes}
+
+\input common_tables/lofar_common_metadata
+
+---/---
+\newpage
+
+\subsection{+++GROUP+SECTION+++}
+---/---
+
+%%_______________________________________________________________________________
+%%                                                    Data Discovery
+
+\newpage
+\section{Data Discovery}
+
+---/---
+
+%% ------------------------------------------------------------------- References
+\newpage
+\section{References}
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+
+%%_______________________________________________________________________________
+%%                                                    Discussion & open questions
+\newpage
+\appendix
+\section{Appendix}
+
+\subsection{Glossary}
+\label{sec:glossary}
+\addcontentsline{toc}{section}{\glossaryname}
+
+\input common_tables/lofar_common_glossary
+
+\subsection{FAQ/known issues}
+
+---/---
+
+\subsection{Discussion \& open questions - remove before publication}
+---/---
+
+\subsection{Requirements}
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                                  Change record
+
+\subsection{Document history}
+\addcontentsline{toc}{section}{Change record}
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \sc Issue & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{4}{r}{\small\sl continued from previous page} \\
+    \hline
+    \sc Issue & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{4}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \begin{supertabular}{lllp{10cm}}
+    0.1 & yyyy-mm-dd & all & Document creation \\
+  \end{supertabular}
+\end{center}
+
+%% ------------------------------------------------------------------------------
+%% References
+
+
+
+\end{document}
+

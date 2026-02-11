@@ -1,0 +1,199 @@
+%% $Id$
+
+\documentclass[a4paper,10pt,bibtotoc]{scrartcl}
+\usepackage{a4wide,usg,supertabular}
+\usepackage{jsonparse, booktabs}
+
+\begin{document}
+
+%%_______________________________________________________________________________
+%%                                                                      Titlepage
+
+\title{LOFAR2 Data Definition Document 004 \\ Image files (FITS) \\
+{\normalsize Document ID: LOFAR2-DDD-004-image} \\ 
+{\normalsize Version 0.1} \\
+{\normalsize Persistent DOI: XXXXXX} \\
+\author{A. Rowlinson, T. Shimwell, F. Sweijen and the LOFAR 2.0 DWG}
+\date{\small{Compilation Date: \today}}}
+\maketitle
+
+
+
+\section{Table of contents}
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\clearpage
+
+
+
+%%_______________________________________________________________________________
+%%                                                                   Introduction
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Purpose and Scope}
+\label{sec:purpose and scope}
+
+A standard output from LOFAR2.0 calibration and imaging pipelines are FITS format images. These images will be in the standard FITS format as defined by \cite{FITSv3.0}\footnote{For the most recent definition, currently v4, see \url{https://fits.gsfc.nasa.gov/fits_standard.html}}. In addition to the standard FITS format, these data products will be accompanied by various ancillary data or "metadata" that are relevant to radio FITS images and specifically LOFAR2.0 FITS images. This Data Definition Document lays out the formal data specification for LOFAR2.0 FITS images. 
+
+---/---
+
+\subsection{Applicable Documents}
+
+\input common_tables/applicable_to_all_documents
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \textsc{Reference} & \textsc{Title} & \textsc{Description} \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{3}{r}{\small \textbf{Applicable documents}
+      \textsl{continued from previous page}} \\
+    \hline
+    \textsc{Reference} & \textsc{Title} & \textsc{Description} \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{3}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \bottomcaption[List of documents that apply specifically to this LOFAR2 Data Definition Document (DDD)]{List of documents that apply specifically to this LOFAR2 Data Definition Document (DDD)
+  \label{tab:applicable list}}
+  \begin{supertabular}{lp{5.8cm}p{7cm}}
+    \shrinkheight{-4.5em}
+    \texttt{+++REFERENCE+++} \cite{FITSv3.0} & Definition of the Flexible Image Transport System (FITS) \\
+    \texttt{+++REFERENCE+++} \cite{+++CITATION+++} & +++DESCRIPTION+++ \\
+    \hline
+  \end{supertabular}
+\end{center}
+
+\subsection{Reference applications}
+
+---/---
+
+\subsection{Overview}
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                  High Level Data Specification
+\newpage
+\section{Organisation of the data}
+\label{sec:structure}
+
+\subsection{Conventions}
+The following conventions apply to this LOFAR data definition document.
+
+\input common_tables/types
+
+\input common_tables/notation
+
+\subsection{Data Structure}
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                    Detailed Data Specification
+\newpage
+\section{Detailed Data Specification}
+
+---/---
+
+\subsection{Common LOFAR attributes}
+
+\input common_tables/lofar_common_metadata
+
+---/---
+\newpage
+
+\subsection{+++GROUP+SECTION+++}
+---/---
+
+%%_______________________________________________________________________________
+%%                                                    Data Discovery
+
+\newpage
+\section{Data Discovery}
+
+---/---
+
+%% ------------------------------------------------------------------- References
+\newpage
+\section{References}
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+
+%%_______________________________________________________________________________
+%%                                                    Discussion & open questions
+\newpage
+\appendix
+\section{Appendix}
+
+\subsection{Glossary}
+\label{sec:glossary}
+\addcontentsline{toc}{section}{\glossaryname}
+
+\input common_tables/lofar_common_glossary
+
+\subsection{FAQ/known issues}
+
+---/---
+
+\subsection{Discussion \& open questions - remove before publication}
+---/---
+
+\subsection{Requirements}
+
+---/---
+
+%%_______________________________________________________________________________
+%%                                                                  Change record
+
+\subsection{Document history}
+\addcontentsline{toc}{section}{Change record}
+
+\begin{center}
+  %% Table head
+  \tablefirsthead{
+    \hline
+    \sc Issue & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  \tablehead{
+    \multicolumn{4}{r}{\small\sl continued from previous page} \\
+    \hline
+    \sc Issue & \sc Date & \sc Sections & \sc Description of changes \\
+    \hline
+  }
+  %% Table tail
+  \tabletail{
+    \hline
+    \multicolumn{4}{r}{\small\sl continued on next page} \\
+  }
+  \tablelasttail{\hline}
+  %% Table contents
+  \begin{supertabular}{lllp{10cm}}
+    0.1 & yyyy-mm-dd & all & Document creation \\
+  \end{supertabular}
+\end{center}
+
+%% ------------------------------------------------------------------------------
+%% References
+
+
+
+\end{document}
+

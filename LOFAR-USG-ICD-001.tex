@@ -971,7 +971,8 @@ another superstructure.
     \hline
     \small {\texttt{GROUPTYPE}} & Attr & \verb|string| & DAL v2.0 & LOFAR group type, \texttt{StationGroup}. \\
     \small {\texttt{STATION\_NAME}} & Attr & \verb|string| & DAL v2.0 & The name of the station, consisting of two characters (upper case) and three digits, e.g. \texttt{CS001} or \texttt{RS201}. \\
-    \small {\texttt{FIELD\_XBAX}} & Group & --- & DAL v4.0 & Container group for dipole datasets per antenna field; The name is either \texttt{FIELD\_LBA} for the low band antennas or \texttt{FIELD\_\HBA}, \texttt{FIELD\_\HBA0}, or \texttt{FIELD\_\HBA1} for the high band antennas. \\
+    \small {\texttt{CLOCK\_SOURCE}} & Attr & \verb|string| & DDD v1.0 & The origin of the clock. White Rabbit + source of clock or GPS\\
+    \small {\texttt{ANTENNA\_FIELD\_XBAX}} & Group & --- & DAL v4.0 & Container group for dipole datasets per antenna field; The name is either \texttt{ANTENNA\_FIELD\_LBA} for the low band antennas or \texttt{ANTENNA\_FIELD\_HBA}, \texttt{ANTENNA\_FIELD\_HBA0}, or \texttt{ANTENNA\_FIELD\_HBA1} for the high band antennas. \\
     \hline
   \end{tabular}
   \caption[Fields in the station data group (\texttt{StationGroup}).]{
@@ -999,19 +1000,21 @@ With LOFAR 2.0, both the LBA and HBA antenna fields can be active at the same ti
     \hline
     \hline
     \small {\texttt{GROUPTYPE}} & Attr & \verb|string| & DAL v4.0 & LOFAR group type, \texttt{StationGroup}. \\
-    \small {\texttt{STATION\_POSITION}} & Attr & \verb|array<double,1>| & DAL v4.0 & [3] Numerical value of the station position coordinates of this antenna field. \\
-    \small {\texttt{STATION\_POSITION\_UNIT}}  & Attr & \verb|string| & DAL v4.0 & Physical units associated with the numerical values for the station position. \\
-    \small {\texttt{STATION\_POSITION\_FRAME}} & Attr & \verb|string| & DAL v4.0 & Identifier for the reference frame within which the station position is provided. \\
-    \small {\texttt{BEAM\_DIRECTION}} & Attr & \verb|array<double,1>| & DAL v4.0 & [2] Numercial value of the station-beam direction for this antenna field. \\
-    \small {\texttt{BEAM\_DIRECTION\_UNIT}}  & Attr & \verb|string| & DAL v4.0 & Physical units associated with the numerical value of the station-beam direction. Mandatory for \verb|HBA| station data.\\
-    \small {\texttt{BEAM\_DIRECTION\_FRAME}} & Attr & \verb|string| & DAL v4.0 & Identifier for the reference frame within which the station-beam direction is provided. Mandatory for \verb|HBA| station data.\\
+    \small {\texttt{ANTENNA\_FIELD\_POSITION}} & Attr & \verb|array<double,1>| & DAL v4.0 & [3] Numerical value of the station position coordinates of this antenna field. \\
+    \small {\texttt{ANTENNA\_FIELD\_POSITION\_UNIT}}  & Attr & \verb|string| & DAL v4.0 & Physical units associated with the numerical values for the station position. \\
+    \small {\texttt{ANTENNA\_FIELD\_POSITION\_FRAME}} & Attr & \verb|string| & DAL v4.0 & Identifier for the reference frame within which the station position is provided. \\
+    \small {\texttt{BEAM\_DIRECTION}} & Attr & \verb|array<double,1>| & DAL v4.0 & [2] Numercial value of the analog beamformer direction for this antenna field. The analog beamformer is used for HBA and NenuFar.\\
+    \small {\texttt{BEAM\_DIRECTION\_UNIT}}  & Attr & \verb|string| & DAL v4.0 & Physical units associated with the numerical value of the beam direction. Mandatory for \verb|HBA| station data.\\
+    \small {\texttt{BEAM\_DIRECTION\_FRAME}} & Attr & \verb|string| & DAL v4.0 & Identifier for the reference frame within which the beam direction is provided. Mandatory for \verb|HBA| station data.\\
     \small {\texttt{CLOCK\_OFFSET}} & Attr & \verb|double| & DAL v4.0 & (Relative) Station clock offset. \\
     \small {\texttt{CLOCK\_OFFSET\_UNIT}} & Attr & \verb|string| & DAL v4.0 & Physical unit for the station clock offset. \\
     % \small \textit{\texttt{TRIGGER\_OFFSET}} & Attr & \verb|double| & DAL v2.0 & Trigger time -- in seconds -- relative to the reference time. \\
+    \small\verb|ANTENNA_SET| & \small\verb|string| & ---  & DDD v1.0.0 & Antenna set specification (see Table~\ref{tab:antenna-set}) \\
+    \small \verb|FILTER_SELECTION| & \small\verb|string| & ---  & DDD v1.0.0 & Filter selection (see Table~\ref{tab:filter-selection}) \\
     \small {\texttt{NOF\_DIPOLES}} & Attr & \verb|unsigned int| & DAL v4.0 & The number of dipoles, for which data are embedded within this group. \\
     \hline
     \small \textit{\texttt{STATION\_CALIBRATION}} & Group & --- & DAL v4.0 & Calibration information as delivered through the online (station) calibration. \\
-    \small {\texttt{DIPOLE\_\{NNNMMMLLL\}\}}} & Dataset & \verb|array<short,1>| & DAL v4.0 & Dataset containing the actual raw samples read out from the transient buffer; the name of the dataset is constructed from the \small \textit{\texttt{STATION\_ID}} (NNN), \verb|RSP_ID| (MMM) and \verb|RCU_ID| (LLL) \\
+    \small {\texttt{DIPOLE\_\{SSSSSFFFAAP\}\}}} & Dataset & \verb|array<short,1>| & DAL v4.0 & Dataset containing the actual raw samples read out from the transient buffer; the name of the dataset is constructed from the \small \textit{\texttt{STATION\_NAME}} (SSSSS), \verb|ANTENNA_TYPE| (FFF) (LBA or HBA), \verb|ANTENNA_ID| (AA) and \verb|POLATIZATION| (P) (X or Y). \\
   \end{tabular}
   \caption[Fields in the field data group (\texttt{FieldGroup}).]{
     Fields in the field data group (\texttt{FieldGroup}). The
@@ -1043,12 +1046,11 @@ The following entries will be found in the station group (Table~\ref{tab:station
 \item The \textbf{direction of the Tile Beam} on top of which the observation
   potentially has been running in piggy-back mode:
   \begin{itemize} \parskip 0pt
-  \item \verb|BEAM_DIRECTION| -- numerical value of the Tile Beam
-    direction. This is the same as the direction of the first Sub Array Pointing and Station Beam. \footnote{Please note that as of writing in 2018, the Tile Beam, SAP0 and the Station Beam will all have the same pointing/direction, but LOFAR might become more flexible in the future with LOFAR 2}
+  \item \verb|BEAM_DIRECTION| -- numerical value of the analog beam direction. This is the Tile Beam direction for HBA and the analog beam direction for NenuFar. For LBA there is no analog beam direction.
   \item \verb|BEAM_DIRECTION_UNIT| -- physical units associated with the numerical
-    value of the Tile Beam direction
+    value of the analog beam direction
   \item \verb|BEAM_DIRECTION_FRAME| -- identifier for the reference frame within
-    which the Tile Beam direction is provided
+    which the analog beam direction is provided
   \end{itemize}
 \item \verb|NOF_DIPOLES| is a counter for the number of dipoles, for which data
   are embedded within this group.
@@ -1110,16 +1112,15 @@ position of each antenna feed.
     in the description.}
   \begin{supertabular}{|lllp{4.25cm}|}
     \small {\texttt{GROUPTYPE}} & \texttt{string} & DAL v2.0 & The type of this group, \textsl{DipoleDataset}. \\
-    \small {\texttt{STATION\_ID}} & \texttt{unsigned} & DAL v2.0 & Data source station identifier. \\
-    \small {\texttt{RSP\_ID}} & \verb|unsigned| & DAL v2.0 & Data source RSP board identifier. \\
-    \small {\texttt{RCU\_ID}} & \verb|unsigned| & DAL v2.0 & Data source RCU board identifier. \\
+    \small {\texttt{STATION\_NAME}} & \texttt{unsigned} & DAL v2.0 & Data source station identifier. \\
+    \small {\texttt{ANTENNA\_ID}} & \verb|unsigned| & DAL v2.0 & Antenna identifier. \\
+    \small {\texttt{POLARIZATION}} & \verb|string| & DDD v1.0 & Polarization of this dipole. X or Y.\\
     \small {\texttt{SAMPLE\_FREQUENCY}} & \verb|double| & DAL v2.0 & Sample frequency in MHz of the RCU boards. \\
     \small {\texttt{SAMPLE\_FREQUENCY\_UNIT}} & \verb|string| & DAL v2.0 & Physical units of the sample frequency. \\
     \small {\texttt{TIME}} & \verb|unsigned| & DAL v2.0 & Time instance in seconds of the first sample in the payload. \\
     \small {\texttt{SAMPLE\_NUMBER}} & \verb|unsigned| & DAL v2.0 & Sample number of the first payload sample in current seconds interval in transient mode. \\
     \small \textit{\texttt{SAMPLES\_PER\_FRAME}} & \verb|unsigned| & DAL v2.0 & Total number of samples in the payload of the original TBB--RSP frame structure. \\
     \small {\texttt{DATA\_LENGTH}} & \verb|unsigned long long| & DAL v2.0 & The number of samples per dipole which actually stored into the data set; this might as well be different from the number of samples in a data frame. \\
-    \small {\texttt{FLAG\_OFFSETS}} & \verb|array<unsigned long long,1>| & DAL v2.0 & [2] Offset consisting of start and exclusive end position of the data range.\\
     \small {\texttt{NYQUIST\_ZONE}} & \verb|unsigned| & DAL v2.0 & Nyquist zone in which the data are sampled. \\
     %\small {\textit{\texttt{ADC2VOLTAGE}}} & \verb|double| & DAL v3.3 & Conversion factor from raw ADC sample values to voltages \\
     \small \textit{\texttt{CABLE\_DELAY}} & \verb|double| & DAL v2.0 & Delay the length of the cable connected to the RCU adds to the signal path. \\
@@ -1132,12 +1133,15 @@ position of each antenna feed.
     \small {\texttt{ANTENNA\_POSITION\_FRAME}} & \verb|string| & DAL v2.0 & Reference frame of the antenna position. \\
     \small {\texttt{ANTENNA\_NORMAL\_VECTOR}} & \verb|array<double,1>| & DAL v2.0 & [3] Antenna normal vector as specified in AntennaFields.conf files. Used to convert ITRF coordinates to local frame.\\
     \small {\texttt{ANTENNA\_ROTATION\_MATRIX}} & \verb|array<double,1>| & DAL v2.0 & [9] Antenna rotation matrix as specified in AntennaFields.conf files. Used to convert ITRF coordinates to local frame. It is stored in row-minor order.\\
-    \small \textit{\texttt{TILE\_BEAM}} & \verb|array<double,1>| & DAL v2.0 & Numerical value of the tile beam direction. \\
+    \small \textit{\texttt{TILE\_BEAM}} & \verb|array<double,1>| & DDD v1.0 & Numerical value of the tile beam direction. \\
     \small \textit{\texttt{TILE\_BEAM\_UNIT}} & \verb|string| & DAL v2.0 & Physical units of the tile beam orientation. \\
-    \small \textit{\texttt{TILE\_BEAM\_FRAME}} & \texttt{string} & DAL v2.0 & Reference frame of the tile beam.  \\
-    \small \textit{\texttt{TILE\_DIPOLES\_ENABLED}} & \texttt{array<bool,16>} & DAL v4.0 & Antennas within the tile on or off.  \\
-    \small \textit{\texttt{DISPERSION\_MEASURE}} & \verb|double| & DAL v2.0 & Value used for coherent dedispersion of the data. \\
-    \small \textit{\texttt{DISPERSION\_MEASURE\_UNIT}} & \verb|string| & DAL v2.0 & Unit of dispersion measure.\\
+    \small \textit{\texttt{TILE\_BEAM\_FRAME}} & \texttt{string} & DDD v1.0 & Reference frame of the tile beam.  \\
+    \small \textit{\texttt{TILE\_ANTENNAS\_ENABLED}} & \texttt{array<bool,16>} & DDD v1.0 & Antennas within the tile on or off.  \\
+    \small \textit{\texttt{TILE\_ANTENNA\_POSITION\_OFFSET}} & \texttt{array<bool,16>} & DDD v1.0 & Antenna offset relative  to the tile center and in the same frame as the tile center as given by \texttt{ANTENNA\_POSITION}.  \\
+    \small \textit{\texttt{TILE\_ANTENNA\_POSITION\_OFFSET\_UNIT}} & \texttt{array<bool,16>} & DDD v1.0 & Unit of the tile dipoles position offset.  \\
+    \small \textit{\texttt{TILE\_BEAMFORMER\_DELAYS}} & \texttt{array<float,16>} & DDD v1.0 & Delays for the different antennas in the tile beamformer.   \\
+    \small \textit{\texttt{TILE\_BEAMFORMER\_DELAYS\_UNIT}} & \texttt{string} & DAL v4.0 & Unit of tile beamformer delays. Default nanosecond.  \\
+    \small \textit{\texttt{ADC2VOLTAGE}} & \verb|double| & DAL v2.0 & Value for converting ADC value to voltages. \\
     \hline
   \end{supertabular}
   \label{tab:antenna table}
