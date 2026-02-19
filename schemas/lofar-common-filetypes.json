@@ -1,9 +1,9 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "http://yourdomain.com/schemas/lofar-common-filetypes.json",
+    "$id": "schemas/lofar-common-filetypes.json",
     "title": "LOFAR Common File Types",
     "description": "LOFAR common file types",
-    "version": 1,
+    "type": "object",
     "properties": {
         "filetype": {
             "type": "string",

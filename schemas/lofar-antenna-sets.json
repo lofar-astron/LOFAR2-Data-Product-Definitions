@@ -1,9 +1,9 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "http://yourdomain.com/schemas/lofar-antenna-sets.json",
+    "$id": "schemas/lofar-antenna-sets.json",
     "title": "LOFAR Antenna Sets",
     "description": "LOFAR Antenna set specification",
-    "version": 1,
+    "type": "object",
     "properties": {
         "antenna_set": {
             "type": "string",
