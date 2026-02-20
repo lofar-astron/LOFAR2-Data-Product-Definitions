@@ -5,7 +5,7 @@ We can use **AJV** (Another JSON Schema Validator) to validate the JSON schemas 
 ## Installation
 
 ```bash
-npm install ajv
+npm install -g ajv-cli
 ```
 
 ## Running
