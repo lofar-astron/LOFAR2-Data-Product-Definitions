@@ -1,75 +1,75 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "schemas/lofar-antenna-sets.json",
-    "title": "LOFAR Antenna Sets",
-    "description": "LOFAR Antenna set specification",
-    "type": "object",
-    "properties": {
-        "antenna_set": {
-            "type": "string",
-            "oneOf": [
-                {
-                    "const": "LBA_ALL",
-                    "description": "All 96 LBA antennas"
-                },
-                {
-                    "const": "LBA_INNER",
-                    "description": "48 antennas of the INNER LBA configuration"
-                },
-                {
-                    "const": "LBA_OUTER",
-                    "description": "48 antennas of the OUTER LBA configuration"
-                },
-                {
-                    "const": "LBA_SPARSE_EVEN",
-                    "description": "Intersection of INNER-SPARSE configurations"
-                },
-                {
-                    "const": "LBA_SPARSE_ODD",
-                    "description": "Intersection of OUTER-SPARSE configurations"
-                },
-                {
-                    "const": "LBA_X",
-                    "description": "X component, ALL LBA antennas"
-                },
-                {
-                    "const": "LBA_Y",
-                    "description": "Y component, ALL LBA antennas"
-                },
-                {
-                    "const": "HBA_ZERO",
-                    "description": "HBA antennas 0-23 in Core stations, and all HBA’s in the other stations"
-                },
-                {
-                    "const": "HBA_ONE",
-                    "description": "HBA antennas 24-47 in Core stations, and all HBA’s in the other stations"
-                },
-                {
-                    "const": "HBA_DUAL",
-                    "description": "Both HBA antenna (sub)fields in the Core stations, which set up an identical beam/pointing on each of those (sub)fields. On CEP, those (sub)fields are treated as seperate stations. On non-core stations, the whole HBA field is used and one beam is made."
-                },
-                {
-                    "const": "HBA_JOINED",
-                    "description": "ALL HBA antennas in ALL stations types"
-                },
-                {
-                    "const": "HBA_ZERO_INNER",
-                    "description": "Similar to HBA ZERO, but with the inner half of the HBA antennas in use."
-                },
-                {
-                    "const": "HBA_ONE_INNER",
-                    "description": "Similar to HBA ONE, but with the inner half of the HBA antennas in use."
-                },
-                {
-                    "const": "HBA_DUAL_INNER",
-                    "description": "Similar to HBA DUAL, but with the inner half of the HBA antennas in use."
-                },
-                {
-                    "const": "HBA_JOINED_INNER",
-                    "description": "Similar to HBA JOINED, but with the inner half of the HBA antennas in use."
-                }
-            ]
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/lofar-antenna-sets.json",
+  "title": "LOFAR Antenna Sets",
+  "description": "LOFAR Antenna set specification",
+  "type": "object",
+  "properties": {
+    "antenna_set": {
+      "type": "string",
+      "oneOf": [
+        {
+          "description": "All 96 LBA antennas",
+          "const": "LBA_ALL"
+        },
+        {
+          "description": "48 antennas of the INNER LBA configuration",
+          "const": "LBA_INNER"
+        },
+        {
+          "description": "48 antennas of the OUTER LBA configuration",
+          "const": "LBA_OUTER"
+        },
+        {
+          "description": "Intersection of INNER-SPARSE configurations",
+          "const": "LBA_SPARSE_EVEN"
+        },
+        {
+          "description": "Intersection of OUTER-SPARSE configurations",
+          "const": "LBA_SPARSE_ODD"
+        },
+        {
+          "description": "X component, ALL LBA antennas",
+          "const": "LBA_X"
+        },
+        {
+          "description": "Y component, ALL LBA antennas",
+          "const": "LBA_Y"
+        },
+        {
+          "description": "HBA antennas 0-23 in Core stations, and all HBA’s in the other stations",
+          "const": "HBA_ZERO"
+        },
+        {
+          "description": "HBA antennas 24-47 in Core stations, and all HBA’s in the other stations",
+          "const": "HBA_ONE"
+        },
+        {
+          "description": "Both HBA antenna (sub)fields in the Core stations, which set up an identical beam/pointing on each of those (sub)fields. On CEP, those (sub)fields are treated as seperate stations. On non-core stations, the whole HBA field is used and one beam is made.",
+          "const": "HBA_DUAL"
+        },
+        {
+          "description": "ALL HBA antennas in ALL stations types",
+          "const": "HBA_JOINED"
+        },
+        {
+          "description": "Similar to HBA ZERO, but with the inner half of the HBA antennas in use.",
+          "const": "HBA_ZERO_INNER"
+        },
+        {
+          "description": "Similar to HBA ONE, but with the inner half of the HBA antennas in use.",
+          "const": "HBA_ONE_INNER"
+        },
+        {
+          "description": "Similar to HBA DUAL, but with the inner half of the HBA antennas in use.",
+          "const": "HBA_DUAL_INNER"
+        },
+        {
+          "description": "Similar to HBA JOINED, but with the inner half of the HBA antennas in use.",
+          "const": "HBA_JOINED_INNER"
         }
-    },
-    "additionalProperties": false
+      ]
+    }
+  },
+  "additionalProperties": false
 }

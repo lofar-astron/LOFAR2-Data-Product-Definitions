@@ -1,155 +1,155 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "schemas/lofar-common-metadata.json",
-    "title": "Common LOFAR Attributes",
-    "type": "object",
-    "properties": {
-        "grouptype": {
-            "description": "LOFAR Group type",
-            "type": "string",
-            "const": "Root"
-        },
-        "filename":{
-            "description": "File name",
-            "type" : "string"
-        },
-        "filedate" : {
-            "description": "File creation date",
-            "type": "string"
-        },
-        "filetype": {
-            "description": "Standard LOFAR data products and the corresponding file type ",
-            "$ref": "lofar-common-filetypes.json"
-        },
-        "telescope": {
-            "description": "Name of the telescope",
-            "type": "string",
-            "const": "LOFAR"
-        },
-        "project_id": {
-            "description": "Project unique identifier",
-            "type": "string"
-        },
-        "project_title": {
-            "description": "Title of the project",
-            "type": "string"
-        },
-        "project_pi": {
-            "description": "Name of the Principal Investigator",
-            "type": "string"
-        },
-        "project_co_i": {
-            "description": "Name(s) of the of Co-Investigator(s)",
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "project_contact": {
-            "description": "Project contact details",
-            "type": "string"
-        },
-        "observation_id": {
-            "description": "Observation unique identifier",
-            "type": "string"
-        },
-        "observation_start_utc": {
-            "description": "Observation start time in UTC",
-            "type": "string",
-            "format": "date-time"
-        },
-        "observation_start_mjd": {
-            "description": "Observation start time in Modified Julian Date (MJD)",
-            "type": "number"
-        },
-        "observation_end_utc": {
-            "description": "Observation end time in UTC",
-            "type": "string",
-            "format": "date-time"
-        },
-        "observation_end_mjd": {
-            "description": "Observation end time in Modified Julian Date (MJD)",
-            "type": "number"
-        },
-        "observation_nof_stations": {
-            "description": "Number of stations used during the observation",
-            "type": "integer"
-        },
-        "observation_stations_list": {
-            "description": "List of stations used during the observation",
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "observation_frequency_min": {
-            "description": "Observation minimum frequency",
-            "type": "number"
-        },
-        "observation_frequency_center": {
-            "description": "Observation center frequency (weighted)",
-            "type": "number"
-        },
-        "observation_frequency_max": {
-            "description": "Observation maximum frequency",
-            "type": "number"
-        },
-        "observation_frequency_unit": {
-            "description": "Frequency unit",
-            "const": "MHz"
-        },
-        "observation_nof_bits_per_sample": {
-            "description": "Number of bits per sample in the incoming data stream from the stations to CEP",
-            "type": "integer"
-        },
-        "clock_frequency": {
-            "description": "Clock frequency (160MHz or 200MHz)",
-            "enum": [160, 200]
-        },
-        "clock_frequency_unit": {
-            "description": "Frequency unit",
-            "const": "MHz"
-        },
-        "antenna_set": {
-            "description": "Antenna set specification",
-            "$ref": "lofar-antenna-sets.json"
-        },
-        "filter_selection": {
-            "description": "Filter band (MHz)",
-            "$ref": "lofar-filter-selection.json"
-        },
-        "targets": {
-            "description": "List of observation targets/sources",
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "system_version": {
-            "description": "Processing system name/version",
-            "type": "string"
-        },
-        "pipeline_name": {
-            "description": "Pipeline processing name",
-            "type": "string"
-        },
-        "pipeline_version": {
-            "description": "Pipeline processing version",
-            "type": "string"
-        },
-        "doc_name": {
-            "description": "Interface Control Document name",
-            "type": "string"
-        },
-        "doc_version": {
-            "description": "Interface Control Document version/issue number",
-            "type": "string"
-        },
-        "notes": {
-            "description": "Notes or comments",
-            "type": "string"
-        }
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/lofar-common-metadata.json",
+  "title": "Common LOFAR Attributes",
+  "type": "object",
+  "required": [],
+  "properties": {
+    "grouptype": {
+      "description": "LOFAR Group type",
+      "type": "string",
+      "const": "Root"
     },
-    "additionalProperties": false,
-    "required": []
+    "filename": {
+      "description": "File name",
+      "type": "string"
+    },
+    "filedate": {
+      "description": "File creation date",
+      "type": "string"
+    },
+    "filetype": {
+      "description": "Standard LOFAR data products and the corresponding file type ",
+      "$ref": "lofar-common-filetypes.json"
+    },
+    "telescope": {
+      "description": "Name of the telescope",
+      "type": "string",
+      "const": "LOFAR"
+    },
+    "project_id": {
+      "description": "Project unique identifier",
+      "type": "string"
+    },
+    "project_title": {
+      "description": "Title of the project",
+      "type": "string"
+    },
+    "project_pi": {
+      "description": "Name of the Principal Investigator",
+      "type": "string"
+    },
+    "project_co_i": {
+      "description": "Name(s) of the of Co-Investigator(s)",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "project_contact": {
+      "description": "Project contact details",
+      "type": "string"
+    },
+    "observation_id": {
+      "description": "Observation unique identifier",
+      "type": "string"
+    },
+    "observation_start_utc": {
+      "description": "Observation start time in UTC",
+      "type": "string",
+      "format": "date-time"
+    },
+    "observation_start_mjd": {
+      "description": "Observation start time in Modified Julian Date (MJD)",
+      "type": "number"
+    },
+    "observation_end_utc": {
+      "description": "Observation end time in UTC",
+      "type": "string",
+      "format": "date-time"
+    },
+    "observation_end_mjd": {
+      "description": "Observation end time in Modified Julian Date (MJD)",
+      "type": "number"
+    },
+    "observation_nof_stations": {
+      "description": "Number of stations used during the observation",
+      "type": "integer"
+    },
+    "observation_stations_list": {
+      "description": "List of stations used during the observation",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "observation_frequency_min": {
+      "description": "Observation minimum frequency",
+      "type": "number"
+    },
+    "observation_frequency_center": {
+      "description": "Observation center frequency (weighted)",
+      "type": "number"
+    },
+    "observation_frequency_max": {
+      "description": "Observation maximum frequency",
+      "type": "number"
+    },
+    "observation_frequency_unit": {
+      "description": "Frequency unit",
+      "const": "MHz"
+    },
+    "observation_nof_bits_per_sample": {
+      "description": "Number of bits per sample in the incoming data stream from the stations to CEP",
+      "type": "integer"
+    },
+    "clock_frequency": {
+      "description": "Clock frequency (160MHz or 200MHz)",
+      "enum": [ 160, 200 ]
+    },
+    "clock_frequency_unit": {
+      "description": "Frequency unit",
+      "const": "MHz"
+    },
+    "antenna_set": {
+      "description": "Antenna set specification",
+      "$ref": "lofar-antenna-sets.json"
+    },
+    "filter_selection": {
+      "description": "Filter band (MHz)",
+      "$ref": "lofar-filter-selection.json"
+    },
+    "targets": {
+      "description": "List of observation targets/sources",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "system_version": {
+      "description": "Processing system name/version",
+      "type": "string"
+    },
+    "pipeline_name": {
+      "description": "Pipeline processing name",
+      "type": "string"
+    },
+    "pipeline_version": {
+      "description": "Pipeline processing version",
+      "type": "string"
+    },
+    "doc_name": {
+      "description": "Interface Control Document name",
+      "type": "string"
+    },
+    "doc_version": {
+      "description": "Interface Control Document version/issue number",
+      "type": "string"
+    },
+    "notes": {
+      "description": "Notes or comments",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
 }
