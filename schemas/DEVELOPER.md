@@ -2,7 +2,7 @@
 
 ## [AJV](https://ajv.js.org/)
 
-AJV (Another JSON Schema Validator) can be used to validate JSON Schemas. The best way to do so it to compile your schema. This will trigger any warning or error in your schema or in one of the schemas that your schema references by using `$ref`.
+**AJV** (Another JSON Schema Validator) can be used to validate JSON Schemas. The best way to do so it to compile your schema. This will trigger any warning or error in your schema or in one of the schemas that your schema references (by using `$ref`).
 
 ### Install
 
@@ -12,11 +12,11 @@ AJV (Another JSON Schema Validator) can be used to validate JSON Schemas. The be
 
     ajv compile -s <source> [-r <requirement>] -spec=draft2020 --validate-formats=false
 
-Every `$ref` in your `<source>` needs to be specified as `<requirement>`, because AJV will not resolve by itself. Because AJV cannot validate formats like `date-time`, it is best to disable validation of `format` fields.
+Every `$ref` in your `<source>` needs to be specified as `<requirement>`, because AJV will not resolve by itself. Since AJV cannot validate formats like `date-time`, it is best to disable validation of `format` fields.
 
 ## [JSON Schema](https://github.com/sourcemeta/jsonschema)
 
-JSON Schema by Sourcemeta can be used for formatting and linting your JSON Schemas. It can also validate your schema, but it is much less strict than AJV.
+**JSON Schema** by Sourcemeta can be used for formatting and linting your JSON Schemas. It can also validate your schema, but it is much less strict than **AJV**.
 
 ### Install
 
