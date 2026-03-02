@@ -3,6 +3,7 @@
 \documentclass[a4paper,10pt,bibtotoc]{scrartcl}
 \usepackage{a4wide,usg,supertabular}
 \usepackage{jsonparse, booktabs}
+\usepackage{natbib}
 
 \begin{document}
 
@@ -39,9 +40,26 @@
 \subsection{Purpose and Scope}
 \label{sec:purpose and scope}
 
-A standard output from LOFAR2.0 calibration and imaging pipelines are FITS format images. These images will be in the standard FITS format as defined by \cite{FITSv3.0}\footnote{For the most recent definition, currently v4, see \url{https://fits.gsfc.nasa.gov/fits_standard.html}}. In addition to the standard FITS format, these data products will be accompanied by various ancillary data or "metadata" that are relevant to radio FITS images and specifically LOFAR2.0 FITS images. This Data Definition Document lays out the formal data specification for LOFAR2.0 FITS images. 
+A standard output from LOFAR2.0 calibration and imaging pipelines are FITS format images. These images will be in the standard FITS format as defined by \cite{FITSv3.0}\footnote{For the most recent definition, currently v4, see \url{https://fits.gsfc.nasa.gov/fits_standard.html}}. In addition to the standard FITS format, these data products will be accompanied by various ancillary data or "metadata" that are relevant to radio FITS images and specifically LOFAR2.0 FITS images. This Data Definition Document (DDD) lays out the formal data specification for LOFAR2.0 FITS images. 
 
----/---
+This scope includes:
+\begin{itemize}
+    \item File format following the FITS standard
+    \item File metadata relating to the LOFAR2.0 observation
+\end{itemize}
+
+This DDD does not describe the specific tools required to produce these FITS images.
+
+
+\subsection{Context and Motivation}
+\label{sec:context and motivation}
+
+Images are the key output of LOFAR2.0 interferometric imaging observations. These images may be in the format of image cubes, containing different frequency bands or different Stokes parameters. There may be one or many images output per observation depending upon the science case.
+
+As the core output, users will need to process these images using their favourite astronomical visualisation tools such as CARTA\footnote{\url{https://cartavis.org}} or dedicated python libraries such as Astropy\footnote{\url{https://www.astropy.org}}. By utilising the standard FITS format, we ensure compatibility with a wide range of astronomy tools.
+
+The FITS format can store image cubes and existing standard tools are available for compressing the FITS files efficiently.
+
 
 \subsection{Applicable Documents}
 
@@ -72,19 +90,22 @@ A standard output from LOFAR2.0 calibration and imaging pipelines are FITS forma
   \label{tab:applicable list}}
   \begin{supertabular}{lp{5.8cm}p{7cm}}
     \shrinkheight{-4.5em}
-    \texttt{+++REFERENCE+++} \cite{FITSv3.0} & Definition of the Flexible Image Transport System (FITS) \\
-    \texttt{+++REFERENCE+++} \cite{+++CITATION+++} & +++DESCRIPTION+++ \\
+    \texttt{Pence et al. 2010} \cite{FITSv3.0} & Definition of the Flexible Image Transport System (FITS) & The formal document from the Commission 5: Documentation and Astronomical Data of the International Astronomical Union. \\
+    %\texttt{+++REFERENCE+++} \cite{+++CITATION+++} & +++DESCRIPTION+++ \\
     \hline
   \end{supertabular}
 \end{center}
 
 \subsection{Reference applications}
-
----/---
+Here, we refer to the existing LOFAR2.0 applications which make use of the FITS format;
+\begin{itemize}
+    \item \href{https://wsclean.readthedocs.io/en/latest/}{wsclean}: Imager that produces  FITS images or image cubes.
+    \item {\bf add others...}
+\end{itemize}
 
 \subsection{Overview}
 
----/---
+This document is structured as follows. In Sect...
 
 %%_______________________________________________________________________________
 %%                                                  High Level Data Specification
@@ -93,7 +114,7 @@ A standard output from LOFAR2.0 calibration and imaging pipelines are FITS forma
 \label{sec:structure}
 
 \subsection{Conventions}
-The following conventions apply to this LOFAR data definition document.
+The following conventions apply to this LOFAR2.0 data definition document. The FITS format file conventions are outlined extensively in \cite{FITSv3.0}\footnote{For the most recent definition, currently v4, see \url{https://fits.gsfc.nasa.gov/fits_standard.html}} and are not repeated here unless directly related to LOFAR2.0 data definitions.
 
 \input common_tables/types
 
@@ -101,24 +122,69 @@ The following conventions apply to this LOFAR data definition document.
 
 \subsection{Data Structure}
 
----/---
+The image data are stored in the FITS standard format as determined in section 3 of  \cite{FITSv3.0}\footnote{\url{https://fits.gsfc.nasa.gov/fits_standard.html}}, namely there is a primary header and data unit (HDU) plus other optional conforming extensions.
+
+
 
 %%_______________________________________________________________________________
 %%                                                    Detailed Data Specification
 \newpage
 \section{Detailed Data Specification}
 
----/---
+\subsection{FITS image}
+
+The FITS images or image cubes produced by LOFAR2.0 pipelines will contain the images and all associated metadata in the primary header and data unit (HDU). It is not necessary to add another conforming extension as the existing data structure can handle the additions required for LOFAR2.0 data.
+
+\subsection{FITS headers}
+
+There are extensive requirements placed on the structure, content and mandatory keywords for FITS headers, which are outlined in Section 4 of \cite{FITSv3.0}. 
+
+FITS keywords are limited to 80 characters, including the keyword name, an optional value and an optional comment. The format is described in Section 4.1 of \cite{FITSv3.0}. {\color{red} FITS keyword names are strictly limited to 8 characters}. This is in direct conflict with many of the LOFAR2.0 keywords given in Section \ref{sec:CLA}. {\bf Suggestion: create 8 character versions of LOFAR2.0 CLA and give the full name in the description column. Second option is to investigate adding a table to the FITS file (see section 7 of the FITS documentation), but this is least favourable for users (e.g. headers is simpler for pipelines to use and enables users to see all header information using their favourite visualisation tools).}
+
+The required formats of the values of FITS keywords and the relevant units are outlined in Sections 4.2 and 4.3 of \cite{FITSv3.0}. 
+
+In order for FITS images to be supported by various FITS tools, there are mandatory FITS header keywords that {\bf must} be used only as in the FITS standard documentation \citep[Section 4.4;][]{FITSv3.0} and need to be in the primary header.
+
+These keywords need specifying and {\bf must} be in this order:
+\begin{itemize}
+    \item SIMPLE
+    \item BITPIX
+    \item NAXIS
+    \item NAXISn (n is an integer, one for each number in NAXIS)
+    \item END (given at the end of the FITS header)
+\end{itemize}
+
+Other ``reserved'' keywords are optional but need including in the standard FITS format if they are present in the FITS header. The keywords in this catagory that are specific to LOFAR2.0 are:
+\begin{itemize}
+    \item ORIGIN (e.g. LOFAR ERIC)
+    \item DATE-OBS
+    \item DATExxxx (e.g. from Section 9.5 of \cite{FITSv3.0}, DATE-BEG, DATE-END, MJD-BEG, MJD-END)
+    \item TELESCOP
+    \item INSTRUME
+    \item OBSERVER
+    \item OBJECT
+\end{itemize}
+
+There are also extensive requirements for WCS keywords that require following \citep[Section 8;][]{FITSv3.0}.
+
+\subsection{Standard extensions}
+
+The FITS format allows for a file to contain multiple extensions giving the option for image cubes and other data formats. The currently defined extensions are IMAGE, TABLE (ASCII format) and BINTABLE (binary format). These extensions, their required formats and their mandatory keywords are outlined in Section 7 of \cite{FITSv3.0}.
+
+\subsection{Compression}
+
+FITS images can be compressed and there are specific requirements and keywords defined in the FITS standard \citep[Section 10;][]{FITSv3.0}. The LOFAR2.0 FITS images will be compressed with the standard fpack tool\footnote{fpack/funpack, \url{https://heasarc.gsfc.nasa.gov/fitsio.fpack}} that follows the FITS compression requirements.
 
 \subsection{Common LOFAR attributes}
+\label{sec:CLA}
+
+Note, these will require an associated 8 character keyword for in the FITS header.
 
 \input common_tables/lofar_common_metadata
 
----/---
 \newpage
 
-\subsection{+++GROUP+SECTION+++}
----/---
+%\subsection{+++GROUP+SECTION+++}
 
 %%_______________________________________________________________________________
 %%                                                    Data Discovery
@@ -150,10 +216,19 @@ The following conventions apply to this LOFAR data definition document.
 
 \subsection{FAQ/known issues}
 
----/---
+\begin{itemize}
+    \item The FITS standard requires 8 character keywords which is in conflict with the LOFAR2.0 common attributes.
+\end{itemize}
 
 \subsection{Discussion \& open questions - remove before publication}
----/---
+
+\subsubsection{FITS keywords}
+AR suggestions:
+\begin{enumerate}
+    \item (strongly preferred) create 8 character versions of the LOFAR2.0 common attribute keywords using the FITS standard version where appropriate (e.g. {\sc OBSERVATION\_START\_UTC} $\rightarrow$ {\sc DATE-BEG}) and give the LOFAR2.0 common attribute keyword in the description section.
+    \item Include an ASCII table using the standard extensions formats containing the LOFAR2.0 common attribute keywords and values. Disadvantage - more complex to extract these common attributes and not visible when displaying the FITS header in visualisation tools.
+    \item Do both of these options.
+\end{enumerate}
 
 \subsection{Requirements}
 
@@ -186,7 +261,7 @@ The following conventions apply to this LOFAR data definition document.
   \tablelasttail{\hline}
   %% Table contents
   \begin{supertabular}{lllp{10cm}}
-    0.1 & yyyy-mm-dd & all & Document creation \\
+    0.1 & 2026-02-17 & all & Document creation based on the FITS standard format as applied to LOFAR2.0 data.\\
   \end{supertabular}
 \end{center}
 

@@ -1,0 +1,17 @@
+{
+    "properties" :  {
+        "grouptype": {
+            "description": "LOFAR Group type",
+            "type": "string",
+            "const": "Root"
+        },
+        "filename":{
+            "description": "File name",
+            "type" : "string"
+        },
+        "filedate" : {
+            "description": "File creation date",
+            "type": "string"
+        }
+    }
+}    

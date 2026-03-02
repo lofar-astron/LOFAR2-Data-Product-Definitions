@@ -1,0 +1,296 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "http://yourdomain.com/schemas/lofar-common-metadata.json",
+    "title": "Common LOFAR Attributes",
+    "type": "object",
+    "version": 1,
+    "properties": {
+        "grouptype": {
+            "description": "LOFAR Group type",
+            "type": "string",
+            "const": "Root"
+        },
+        "filename":{
+            "description": "File name",
+            "type" : "string"
+        },
+        "filedate" : {
+            "description": "File creation date",
+            "type": "string"
+        },
+        "filetype": {
+            "description": "Standard LOFAR data products and the corresponding file type ",
+            "oneOf": [
+                {
+                    "title": "UV Vis",
+                    "const": "uv",
+                    "description": "LOFAR visibility file w/correlation UV information."
+                },
+                {
+                    "title": "Sky cube",
+                    "const": "sky",
+                    "description": "LOFAR Image cube w/RA, Dec, frequency and polarization."
+                },
+                {
+                    "title": "RM cube",
+                    "const": "rm",
+                    "description": "Rotation Measure Synthesis Cube w/ axes of RA, Dec, Faraday Depth, polarization."
+                },
+                {
+                    "title": "Near-field image",
+                    "const": "nfi",
+                    "description": "Near Field Sky Image w/ axes of position on the sky (x, y, z), frequency time, polarization."
+                },
+                {
+                    "title": "Dynamic Spectra",
+                    "const": "dynspec",
+                    "description": "Dynamic Spectra w/ axes of time, frequency, polarization."
+                },
+                {
+                    "title": "Beamformed data",
+                    "const": "bf",
+                    "description": "Beam-Formed file w/ time series data with axes of frequency vs time."
+                },
+                {
+                    "title": "TBB dump",
+                    "const": "tbb",
+                    "description": "TBB dump file, raw time-series: (1) raw voltage mode: voltage vs time (baseband data) (2) subband mode: complex voltage vs time for selected frequency channels."
+                },
+                {
+                    "title": "Instrument Model",
+                    "const": "inst",
+                    "description": "Parameters describing gain and other instrument characteristics for calibration."
+                },
+                {
+                    "title": "Sky Model",
+                    "const": "lsm",
+                    "description": "List of sources, either point sources or shapelets."
+                }
+            ]
+        },
+        "telescope": {
+            "description": "Name of the telescope",
+            "type": "string",
+            "const": "LOFAR"
+        },
+        "project_id": {
+            "description": "Project unique identifier",
+            "type": "string"
+        },
+        "project_title": {
+            "description": "Title of the project",
+            "type": "string"
+        },
+        "project_pi": {
+            "description": "Name of the Principal Investigator",
+            "type": "string"
+        },
+        "project_co_i": {
+            "description": "Name(s) of the of Co-Investigator(s)",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "project_contact": {
+            "description": "Project contact details",
+            "type": "string"
+        },
+        "observation_id": {
+            "description": "Observation unique identifier",
+            "type": "string"
+        },
+        "observation_start_utc": {
+            "description": "Observation start time in UTC",
+            "type": "string",
+            "format": "date-time"
+        },
+        "observation_start_mjd": {
+            "description": "Observation start time in Modified Julian Date (MJD)",
+            "type": "number"
+        },
+        "observation_end_utc": {
+            "description": "Observation end time in UTC",
+            "type": "string",
+            "format": "date-time"
+        },
+        "observation_end_mjd": {
+            "description": "Observation end time in Modified Julian Date (MJD)",
+            "type": "number"
+        },
+        "observation_nof_stations": {
+            "description": "Number of stations used during the observation",
+            "type": "integer"
+        },
+        "observation_stations_list": {
+            "description": "List of stations used during the observation",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "observation_frequency_min": {
+            "description": "Observation minimum frequency",
+            "type": "number"
+        },
+        "observation_frequency_center": {
+            "description": "Observation center frequency (weighted)",
+            "type": "number"
+        },
+        "observation_frequency_max": {
+            "description": "Observation maximum frequency",
+            "type": "number"
+        },
+        "observation_frequency_unit": {
+            "description": "Frequency unit",
+            "const": "MHz"
+        },
+        "observation_nof_bits_per_sample": {
+            "description": "Number of bits per sample in the incoming data stream from the stations to CEP",
+            "type": "integer"
+        },
+        "clock_frequency": {
+            "description": "Clock frequency (160MHz or 200MHz)",
+            "enum": [160, 200]
+        },
+        "clock_frequency_unit": {
+            "description": "Frequency unit",
+            "const": "MHz"
+        },
+        "antenna_set": {
+            "description": "Antenna set specification",
+            "oneOf": [
+                {
+                    "const": "LBA_ALL",
+                    "description": "All 96 LBA antennas"
+                },
+                {
+                    "const": "LBA_INNER",
+                    "description": "48 antennas of the INNER LBA configuration"
+                },
+                {
+                    "const": "LBA_OUTER",
+                    "description": "48 antennas of the OUTER LBA configuration"
+                },
+                {
+                    "const": "LBA_SPARSE_EVEN",
+                    "description": "Intersection of INNER-SPARSE configurations"
+                },
+                {
+                    "const": "LBA_SPARSE_ODD",
+                    "description": "Intersection of OUTER-SPARSE configurations"
+                },
+                {
+                    "const": "LBA_X",
+                    "description": "X component, ALL LBA antennas"
+                },
+                {
+                    "const": "LBA_Y",
+                    "description": "Y component, ALL LBA antennas"
+                },
+                {
+                    "const": "HBA_ZERO",
+                    "description": "HBA antennas 0-23 in Core stations, and all HBA’s in the other stations"
+                },
+                {
+                    "const": "HBA_ONE",
+                    "description": "HBA antennas 24-47 in Core stations, and all HBA’s in the other stations"
+                },
+                {
+                    "const": "HBA_DUAL",
+                    "description": "Both HBA antenna (sub)fields in the Core stations, which set up an identical beam/pointing on each of those (sub)fields. On CEP, those (sub)fields are treated as seperate stations. On non-core stations, the whole HBA field is used and one beam is made."
+                },
+                {
+                    "const": "HBA_JOINED",
+                    "description": "ALL HBA antennas in ALL stations types"
+                },
+                {
+                    "const": "HBA_ZERO_INNER",
+                    "description": "Similar to HBA ZERO, but with the inner half of the HBA antennas in use."
+                },
+                {
+                    "const": "HBA_ONE_INNER",
+                    "description": "Similar to HBA ONE, but with the inner half of the HBA antennas in use."
+                },
+                {
+                    "const": "HBA_DUAL_INNER",
+                    "description": "Similar to HBA DUAL, but with the inner half of the HBA antennas in use."
+                },
+                {
+                    "const": "HBA_JOINED_INNER",
+                    "description": "Similar to HBA JOINED, but with the inner half of the HBA antennas in use."
+                }
+            ]
+        },
+        "filter_selection": {
+            "description": "Filter band (MHz)",
+            "oneOf": [
+                {
+                    "const": "LBA_10_70",
+                    "description": "LBA filter 10-70 MHz"
+                },
+                {
+                    "const": "LBA_30_70",
+                    "description": "LBA filter 30-70 MHz"
+                },
+                {
+                    "const": "LBA_10_90",
+                    "description": "LBA filter 10-90 MHz"
+                },
+                {
+                    "const": "LBA_30_90",
+                    "description": "LBA filter 30-90 MHz"
+                },
+                {
+                    "const": "HBA_110_190",
+                    "description": "HBA filter 110-190 MHz"
+                },
+                {
+                    "const": "HBA_110_170",
+                    "description": "HBA filter 110-170 MHz"
+                },
+                {
+                    "const": "HBA_170_230",
+                    "description": "HBA filter 170-230 MHz"
+                },
+                {
+                    "const": "HBA_210_250",
+                    "description": "HBA filter 210-250 MHz"
+                }
+            ]
+        },
+        "targets": {
+            "description": "List of observation targets/sources",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "system_version": {
+            "description": "Processing system name/version",
+            "type": "string"
+        },
+        "pipeline_name": {
+            "description": "Pipeline processing name",
+            "type": "string"
+        },
+        "pipeline_version": {
+            "description": "Pipeline processing version",
+            "type": "string"
+        },
+        "doc_name": {
+            "description": "Interface Control Document name",
+            "type": "string"
+        },
+        "doc_version": {
+            "description": "Interface Control Document version/issue number",
+            "type": "string"
+        },
+        "notes": {
+            "description": "Notes or comments",
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "required": []
+}

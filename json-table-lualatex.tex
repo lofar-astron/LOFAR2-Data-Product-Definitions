@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{luacode}
+\usepackage{booktabs}
+
+\begin{document}
+
+\begin{luacode}
+local json = require("lualibs-util-json")
+
+-- Your JSON schema (as a string)
+local schema_json = [[
+{
+  "title": "Person",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "age": { "type": "integer" },
+    "email": { "type": "string" }
+  }
+}
+]]
+
+local schema = json.decode(schema_json)
+
+tex.print("\\begin{tabular}{lll}")
+tex.print("\\toprule")
+tex.print("Property & Type & Required \\\\")
+tex.print("\\midrule")
+
+for key, value in pairs(schema.properties) do
+  local typ = value.type or "-"
+  tex.print(key .. " & " .. typ .. " & -- \\\\")
+end
+
+tex.print("\\bottomrule")
+tex.print("\\end{tabular}")
+\end{luacode}
+
+\end{document}

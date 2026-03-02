@@ -1,0 +1,33 @@
+\documentclass{article}
+\usepackage{luatextra}
+\usepackage{booktabs}
+\newcommand{\dataPath}{path/to/folder}
+
+% load the data file supposedly containing 'title' and 'numbers'
+
+
+\begin{document}
+
+\begin{tabular}{|lll|}
+\toprule
+\textbf{keyword} & \textbf{type} & \textbf{description} \\ \midrule
+
+\begin{luacode}
+  require("lualibs.lua")
+  local f = io.open('schemas/lofar-common-metadata-small.json', 'r')
+  local s = f:read('*a')
+  f:close()
+  data =  utilities.json.tolua(s)
+  for key,value in pairs(data.properties) do
+        local typ = value.type or ""
+        local desc = value.description or ""
+        tex.print(key .. " & " .. typ .. " & " .. desc .. " \\\\")
+   end
+\end{luacode}
+
+\bottomrule
+
+\end{tabular}
+
+
+\end{document}
