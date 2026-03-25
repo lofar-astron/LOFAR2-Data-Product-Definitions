@@ -25,7 +25,7 @@
     \verb|`HBA_ONE_INNER'| & Similar to HBA\_ONE, but with the inner half of the HBA antennas in use.  \\
     \verb|`HBA_DUAL_INNER'| & Similar to HBA\_DUAL, but with the inner half of the HBA antennas in use.  \\
     \verb|`HBA_JOINED_INNER'| & Similar to HBA\_JOINED, but with the inner half of the HBA antennas in use.   \\
-
+    \verb|`NULL`| & In case multiple antenna sets are used and they are specified at a lower level, for example in a transient buffer time-series file. \\
     \hline
   \end{tabular}
   \caption{Overview of antenna set configurations.}
@@ -46,6 +46,7 @@
     110 -- 170 & \verb|`HBA_110_170'| \\
     170 -- 230 & \verb|`HBA_170_230'| \\
     210 -- 250 & \verb|`HBA_210_250'| \\
+    Multiple in Tbuf   & \verb|`NULL'| \\
     \hline
   \end{tabular}
   \caption{Overview of filter-band selections and corresponding
