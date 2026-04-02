@@ -295,6 +295,22 @@ Raw Voltage Mode:
 
 \input common_tables/metadata_intro
 
+\subsection{Naming}
+The Transient Buffer Time-series files are named as follows:\\\,\\
+\verb|L<ID>_D<date>T<time>Z_<stationname>_<fieldname>_R<part>_tbb.h5|\\\,\\
+Example:\\
+\verb|L123456789_D20140123T134448.920Z_CS002_LBA_R000_tbb.h5|\\\,\\
+
+In this 
+\begin{itemize}
+    \item L is an identifier for LOFAR. If used for different instrument, this can change.
+    \item \verb|<ID>| is the subtaskID of the LOFAR TMSS process managing the data acquisition process.
+    \item The \verb|<date>| and \verb|<time>| is either the requested start and end time of the data or the actual start and end time of the data. The actual start time of the data may be later then the requested start time and is annotated in the metadata of the file. 
+    \item The \verb|<stationname>| is the name of the first station in the file.
+    \item \verb|<fieldname>| is the name of the first antenna field in the file. One of (LBA, HBA, HBA0, HBA1, NNF). 
+\end{itemize}
+The lengths of the filename may vary because of the \verb|<ID>| and the \verb|<fieldname>|.
+
 
 \subsection{The Root Group}
 \label{sec:root group}
@@ -696,7 +712,7 @@ position of each antenna feed.
     \small {\texttt{STATION\_NAME}} & \texttt{unsigned} & DAL v2.0 & Data source station identifier. \\
     \small {\texttt{ANTENNA\_ID}} & \verb|unsigned| & DAL v2.0 & Antenna identifier. \\
     \small {\texttt{POLARIZATION}} & \verb|string| & DDD v1.0 & Polarization of this dipole. X or Y.\\
-    \small {\texttt{FILTER\_SELECTION}} & \small\verb|string| & ---  & DDD v1.0.0 & Filter selection (see Table~\ref{tab:filter-selection}) \\
+    \small {\texttt{FILTER\_SELECTION}} & \small\verb|string| & DDD v1.0.0 & Filter selection (see Table~\ref{tab:filter-selection}) \\
     \small {\texttt{TIME}} & \verb|unsigned| & DAL v2.0 & Time instance in seconds of the first sample in the payload. \\
     \small {\texttt{CLOCK\_OFFSET\_DELAY}} & \verb|double| & DAL v4.0 & (Relative) Station clock offset. \\
     \small {\texttt{CLOCK\_OFFSET\_DELAY\_UNIT}} & \verb|string| & DAL v4.0 & Physical unit for the station clock offset. \\
@@ -736,16 +752,6 @@ position of each antenna feed.
   \label{tab:antenna table}
 \end{center}
 
-\begin{center}
-\begin{supertabular}{|lllp{4.25cm}|}
-
-
-
-
-    \hline
-  \end{supertabular}
-  \label{tab:antenna table}
-\end{center}
 
 \begin{list}{\textbf{--}}{}
 \item \verb|STATION_NAME|, \verb|ANTENNA_ID| and \verb|POLARIZATION| are translated from the frame structure used in the communication between the station and the Tbuf datawriter into the names and antenna IDs used within LOFAR \cite{poiesz.2006}. This is different than the previous data format, see \cite{lofar.icd.001}
@@ -816,8 +822,8 @@ Specific parameters for data discovery for the Tbuf data
 \begin{itemize}
     \item numberOfSamples - length of the data, in number of samples. 
     \item TimeStamp - timestamp of the data.
-    \item triggerType - Type of the trigger, from the trigger table. e.g. LORA.
-    \item triggerValue - Value of the the trigger, from the trigger table.
+    \item triggerType - Type of the trigger, from the trigger table. e.g. Lightning, Cosmic Rays.
+    \item triggerValue - Value of the the trigger, this is the Trigger ID of the Trigger group.
 \end{itemize}
 
 Generic parameters for data discovery
