@@ -4,28 +4,31 @@
 
 \begin{table}[ht]
   \centering
-  \begin{tabular}{|lp{10cm}|}
+  \begin{tabular}{|llp{9cm}|}
     \hline
-    \textsc{Antenna set} & \textsc{Description} \\
+    \textsc{Antenna set}  & \textsc{LOFAR version} & \textsc{Description}\\
     \hline \hline
-    \verb|`LBA_ALL'| &  All 96 LBA antennas.\\
-    \verb|`LBA_INNER'| &  48 antennas of the \verb|INNER| LBA configuration.\\
-    \verb|`LBA_OUTER'|  & 48 antennas of the \verb|OUTER|  LBA configuration.\\
-    \verb|`LBA_SPARSE_EVEN'| & Intersection of \verb|INNER-SPARSE| configurations. \\
-    \verb|`LBA_SPARSE_ODD'|  &  Intersection of \verb|OUTER-SPARSE| configurations. \\
-    \verb|`LBA_X'| &   X component, ALL LBA antennas. \\
-    \verb|`LBA_Y'| &   Y component, ALL LBA antennas.\\
-    \verb|`HBA_ZERO'| &  HBA antennas 0-23 in Core stations, and all HBA's in the other stations. \\
-    \verb|`HBA_ONE'|   & HBA antennas 24-47 in Core stations, and all HBA's in the other stations. \\
-    \verb|`HBA_DUAL'| & Both HBA antenna (sub)fields in the Core stations, which set up an identical
+    \verb|`LBA_ALL'| & 2 &  All 96 LBA antennas. \\
+    \verb|`LBA_INNER'| & 1 &  48 antennas of the \verb|INNER| LBA configuration. \\
+    \verb|`LBA_OUTER'| & 1 & 48 antennas of the \verb|OUTER|  LBA configuration. \\
+    \verb|`LBA_SPARSE_EVEN'| & 1 & Intersection of \verb|INNER-SPARSE| configurations. \\
+    \verb|`LBA_SPARSE_ODD'| & 1 &  Intersection of \verb|OUTER-SPARSE| configurations. \\
+    \verb|`LBA_X'| & 1 &   X component, ALL LBA antennas.   \\
+    \verb|`LBA_Y'| & 1 &   Y component, ALL LBA antennas.  \\
+    \verb|`HBA_ZERO'| & 1 and 2 &  HBA antennas 0-23 in Core stations, and all HBA's in the other stations. \\
+    \verb|`HBA_ONE'| & 1 and 2  & HBA antennas 24-47 in Core stations, and all HBA's in the other stations. \\
+    \verb|`HBA_DUAL'| & 1 and 2 & Both HBA antenna (sub)fields in the Core stations, which set up an identical 
     beam/pointing on each of those (sub)fields. On CEP, those (sub)fields are treated as seperate stations. On non-core
     stations, the whole HBA field is used and one beam is made. \\
-    \verb|`HBA_JOINED'| & \textsc{all} HBA antennas in \textsc{all} stations types. \\
-    \verb|`HBA_ZERO_INNER'| & Similar to HBA\_ZERO, but with the inner half of the HBA antennas in use. \\
-    \verb|`HBA_ONE_INNER'| & Similar to HBA\_ONE, but with the inner half of the HBA antennas in use.  \\
-    \verb|`HBA_DUAL_INNER'| & Similar to HBA\_DUAL, but with the inner half of the HBA antennas in use.  \\
-    \verb|`HBA_JOINED_INNER'| & Similar to HBA\_JOINED, but with the inner half of the HBA antennas in use.   \\
-    \verb|`NULL`| & In case multiple antenna sets are used and they are specified at a lower level, for example in a transient buffer time-series file. \\
+    \verb|`HBA_JOINED'| & 1 & \textsc{all} HBA antennas in \textsc{all} stations types.  \\
+    \verb|`HBA_ZERO_INNER'| & 1 and 2 & Similar to HBA\_ZERO, but with the inner half of the HBA antennas in use.  \\
+    \verb|`HBA_ONE_INNER'| & 1 and 2 & Similar to HBA\_ONE, but with the inner half of the HBA antennas in use.   \\
+    \verb|`HBA_DUAL_INNER'| & 1  and 2 & Similar to HBA\_DUAL, but with the inner half of the HBA antennas in use \\
+    \verb|`HBA_JOINED_INNER'| & 1 & Similar to HBA\_JOINED, but with the inner half of the HBA antennas in use. \\
+    \verb|`ALL'| & 2 & For use of data per antenna field, for example with transient buffer time-series data. Short name for \verb|`HBA_DUAL'|, \verb|`HBA_ZERO'|, \verb|`HBA_ONE'| or \verb|`LBA_ALL'|, depending on \verb|`ANTENNA_FIELD_TYPE`| \\
+    \verb|`INNER'| & 2 &  For use of data per antenna field. Short name for \verb|`HBA_DUAL_INNER'|, \verb|`HBA_ZERO_INNER'|, \verb|`HBA_ONE_INNER'| or \verb|`LBA_INNER'|, depending on \verb|`ANTENNA_FIELD_TYPE`| \\
+    \verb|`OUTER`| & 2 & For use of data per antenna field. Short name for \verb|`LBA_OUTER'|, depending on \verb|`ANTENNA_FIELD_TYPE`| \\
+    \verb|`NULL`| & 2 & In case multiple antenna sets are used and they are specified at a lower level, for example in a transient buffer time-series file. \\
     \hline
   \end{tabular}
   \caption{Overview of antenna set configurations.}
@@ -42,11 +45,11 @@
     30 -- 70   & \verb|`LBA_30_70'| \\
     10 -- 90   & \verb|`LBA_10_90'| \\
     30 -- 90   & \verb|`LBA_30_90'| \\
-    110 -- 190 & \verb|`HBA_110_190'| \\
     110 -- 170 & \verb|`HBA_110_170'| \\
+    110 -- 190 & \verb|`HBA_110_190'| \\
     170 -- 230 & \verb|`HBA_170_230'| \\
     210 -- 250 & \verb|`HBA_210_250'| \\
-    Multiple in Tbuf   & \verb|`NULL'| \\
+    Multiple  & \verb|`NULL'| \\
     \hline
   \end{tabular}
   \caption{Overview of filter-band selections and corresponding

@@ -100,12 +100,11 @@ The FITS format can store image cubes and existing standard tools are available 
 Here, we refer to the existing LOFAR2.0 applications which make use of the FITS format;
 \begin{itemize}
     \item \href{https://wsclean.readthedocs.io/en/latest/}{wsclean}: Imager that produces  FITS images or image cubes.
-    \item {\bf add others...}
 \end{itemize}
 
 \subsection{Overview}
 
-This document is structured as follows. In Sect...
+This document is structured as follows. In Section 3 we outline the key conventions and data structure of FITS images. Section 4 outlines the detailed specifications for FITS images, including LOFAR specific attributes. Finally, we outline how FITS images can be identified in the LOFAR archives.
 
 %%_______________________________________________________________________________
 %%                                                  High Level Data Specification
@@ -139,7 +138,8 @@ The FITS images or image cubes produced by LOFAR2.0 pipelines will contain the i
 
 There are extensive requirements placed on the structure, content and mandatory keywords for FITS headers, which are outlined in Section 4 of \cite{FITSv3.0}. 
 
-FITS keywords are limited to 80 characters, including the keyword name, an optional value and an optional comment. The format is described in Section 4.1 of \cite{FITSv3.0}. {\color{red} FITS keyword names are strictly limited to 8 characters}. This is in direct conflict with many of the LOFAR2.0 keywords given in Section \ref{sec:CLA}. {\bf Suggestion: create 8 character versions of LOFAR2.0 CLA and give the full name in the description column. Second option is to investigate adding a table to the FITS file (see section 7 of the FITS documentation), but this is least favourable for users (e.g. headers is simpler for pipelines to use and enables users to see all header information using their favourite visualisation tools).}
+FITS keyword fields are limited to 80 characters, including the keyword name, an optional value and an optional comment. The format is described in Section 4.1 of \cite{FITSv3.0}. FITS keywords are restricted to eight characters, so longer keywords will be stored using the \texttt{HIERARCH} keyword convention\footnote{\url{https://fits.gsfc.nasa.gov/registry/hierarch_keyword.html}} in order to work around this limit. This convention is transparent to the commonly used FITS libraries, requiring no explicit action of the user when these longer keywords are present.
+% {\color{red} FITS keyword names are strictly limited to 8 characters}. This is in direct conflict with many of the LOFAR2.0 keywords given in Section \ref{sec:CLA}. {\bf Suggestion: create 8 character versions of LOFAR2.0 CLA and give the full name in the description column. Second option is to investigate adding a table to the FITS file (see section 7 of the FITS documentation), but this is least favourable for users (e.g. headers is simpler for pipelines to use and enables users to see all header information using their favourite visualisation tools).}
 
 The required formats of the values of FITS keywords and the relevant units are outlined in Sections 4.2 and 4.3 of \cite{FITSv3.0}. 
 
@@ -178,7 +178,24 @@ FITS images can be compressed and there are specific requirements and keywords d
 \subsection{Common LOFAR attributes}
 \label{sec:CLA}
 
-Note, these will require an associated 8 character keyword for in the FITS header.
+The common LOFAR attributes will be included in the FITS header with {\sc HIERARCH}. For example:
+
+\begin{itemize}
+    \item HIERARCH TELESCOPE = 'LOFAR   '
+    \item HIERARCH PROJECT\_ID = 'PRJ12345'
+    \item HIERARCH PROJECT\_TITLE = 'Dummy Project'
+    \item HIERARCH OBSERVATION\_ID = 'OBS12345'
+    \item HIERARCH OBSERVATION\_START\_UTC = '2026-03-17T00:00:00'
+    \item ...
+\end{itemize}
+
+These LOFAR common attributes are accessed in the standard FITS header method using the relevant keyword without the preceding `HIERARCH', e.g. hdu0.header[``PROJECT\_ID''].
+
+{\bf Suggestion for images made of multiple observations:}\\
+{\it FITS images can be created using multiple observation ids. In this scenario, the OBSERVATION\_ID field will contain a list of the relevant observation ids, and the associated start and end times will be the start of the first observation and the end of the last observation (n.b. these fields are important for the use of these FITS images for time domain astronomy). The frequency information will match the frequency range from the input measurement sets. The remaining observation specific information will not be included in the FITS header but can be recovered from the associated observations using the list of observation ids.
+}
+
+%Note, these will require an associated 8 character keyword for in the FITS header.
 
 \input common_tables/lofar_common_metadata
 
@@ -217,7 +234,7 @@ Note, these will require an associated 8 character keyword for in the FITS heade
 \subsection{FAQ/known issues}
 
 \begin{itemize}
-    \item The FITS standard requires 8 character keywords which is in conflict with the LOFAR2.0 common attributes.
+    \item The FITS standard requires 8 character keywords which is in conflict with the LOFAR2.0 common attributes. {\color{red} RESOLVED - using ESO standard}
 \end{itemize}
 
 \subsection{Discussion \& open questions - remove before publication}
@@ -229,6 +246,7 @@ AR suggestions:
     \item Include an ASCII table using the standard extensions formats containing the LOFAR2.0 common attribute keywords and values. Disadvantage - more complex to extract these common attributes and not visible when displaying the FITS header in visualisation tools.
     \item Do both of these options.
 \end{enumerate}
+{\color{red} RESOLVED - using ESO standard}
 
 \subsection{Requirements}
 

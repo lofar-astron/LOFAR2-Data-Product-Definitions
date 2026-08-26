@@ -76,9 +76,9 @@ Here, we refer to existing documents and applications which make use of the H5pa
 
  \subsection{Overview}
 
-This document is structured as follows: In Sect...
+This document is structured as follows: In \autoref{sec:organization}, we introduce conventions and the structure of the data format, in \autoref{sec:details}, we provide details on the structure, and in \autoref{sec:interfaces}, we discuss the requirements for interfaces related to the h5parm format.
 
-\section{Organization of the Data}
+\section{Organization of the Data}\label{sec:organization}
 
 \subsection{Conventions}
 The following conventions apply to this LOFAR data definition document.
@@ -102,7 +102,7 @@ The following conventions apply to this LOFAR data definition document.
     soltab (solution-table) & HDF5 group storing one type of solution (e.g. phase, amlitude) with its axes, values, and weights.  \\
     axis & One dimension along which solutions are defined (e.g. time, freq, ant, dir, pol). \\
     vals & Chunked array containing solution values. \\
-    weight & Values between $0$ and $1$ used when applying calibration solutions. A weight of $0$ results in the corresponding data being flagged.\\
+    weight & Values between $0$ and $1$ used when applying calibration solutions. A weight of $0$ results in the corresponding data being flagged upon application of the solutions.\\
     NaN & Missing solution sample, represented by NaN in vals. All NaN values MUST have weight=0. \\
     \hline
   \end{tabular}
@@ -111,7 +111,7 @@ The following conventions apply to this LOFAR data definition document.
 \subsection{Philosophy}
 The H5parm format for calibration solutions follows a hierarchical format containing multiple solution-sets (solset, e.g. one for the calibrator and one for the target). Each solset supports an arbitrary number of solution tables (soltabs) including standard solution types such as amplitude, phase, rotation, rotationmeasure, clock, TEC, and customized user-defined types. 
 Each soltab defines its own flexible axis set and axis ordering, via an attribute on the values (and weight) arrays (e.g., one soltab can be direction-dependent, with a 'direction' axis, while another is direction-independent / has no direction axis). 
-H5parms are designes such that solution value arrays are stored as chunked arrays (CArray-equivalent) suitable for
+H5parms are designed such that solution value arrays are stored as chunked arrays (CArray-equivalent) suitable for
 efficient slicing without loading full arrays into memory. 
 The format further supports missing samples and flagging
 
@@ -146,7 +146,7 @@ If producers do not provide explicit names:
 %%_______________________________________________________________________________
 %%                                                    Detailed Data Specification
 
-\section{Detailed Data Specification}
+\section{Detailed Data Specification}\label{sec:details}
 
 \subsection{HDF5 node types}
 The H5Parm convention uses three node types:
@@ -160,21 +160,37 @@ These node types are explicitly described in the specification.
 \subsection{Root structure}
 At the HDF5 root level:
 \begin{itemize}
-  \item One or more solset groups exist, each representing a distinct dataset/context.
+  \item One or more solset groups exist (e.g. 'sol000', or 'calibrator'), each representing a distinct dataset/context.
 \end{itemize}
 
 \subsection{Solution-set (solset) group}
 Each solset group shall contain, at minimum, the following nodes:
 
-\begin{comment}
-   For LOFAR 2.0, we should add the common metadata on the solset level, e.g. when was the h5parm created, which pipeline version... The attributes of the solset group might be a nice solution.
-\end{comment}
 
-\subsubsection*{Required metadata attributes: \texttt{<solset>.attrs}}
-%\item Required attributes:
+\subsubsection{Metadata attributes: \texttt{<solset>.attrs}}
+The solset contains required metadata attributes, which are either commong LOFAR attributes or h5parm solution-specific attributes.
+
+\begin{verse}
+\verb|Metadata Attributes = Common LOFAR Attributes + H5parm specific Attributes.|
+\end{verse}
+
+
+\subsubsection*{Common LOFAR Attributes: \texttt{<solset>.attrs}}
+The Common LOFAR Attributes are the first attributes of any solset attributes. They are common to all LOFAR science data products.  
+Table~\ref{tab:lofar common metadata} lists the Common LOFAR Attributes which all also apply to the h5parm solution data definition. These attributes are required to be attributes of the solset group: \texttt{<solset>.attrs}; if a value is not available for an Attribute, a \verb|`NULL'| maybe used in its place.
+There are scenarios where multiple LOFAR observations map to a single h5parm file (e.g., deriving a bandpass, combining solutions across multiple epochs). In these cases, observation-level common attributes can be mapped to lists.
+\input common_tables/lofar_common_metadata
+
+\subsubsection*{Additional h5parm solution Root Attributes: \texttt{<solset>.attrs}}
+The h5parm comes with the additional Root Attributes:
 \begin{itemize}
-\item \textbf{LINK TO COMMON LOFAR 2.0 ATTRIBUTES}
+  \item Type: bytestring
+  \item Required attributes:
+  \begin{itemize}
+    \item \texttt{<solset>.attrs["h5parm\_version"]}: Version of the h5parm solution format, e.g. `1.0'
+  \end{itemize}
 \end{itemize}
+
 
 \subsubsection*{Antenna table: \texttt{<solset>/antenna}}
 \begin{itemize}
@@ -216,14 +232,7 @@ For each axis used by the soltab, an HDF5 Array node shall exist:
   \item \texttt{dir}: string; direction/source identifiers (as listed in table \texttt{<solset>/source}). 
   \item \texttt{pol}: string; polarization identifiers (e.g. \texttt{XX}, \texttt{XY} or \texttt{RR}, \texttt{RL}). \end{itemize}
 
-\begin{comment}
-    The Virtual axes below are to my best knowledge not used - can we remove that part?. Also, the h5parm soltab contains attributes: axesNames, a list of the axes names, and 'selection', 'useCache', 'fullyFlaggedAnts', 'cacheAutoRefAnt'. Do we need to define any of those here?
-\end{comment}
 
-\paragraph{Virtual axes}
-The H5Parm specification describes a virtual axis \texttt{time\_w} (and analogously \texttt{freq\_w})
-to maintain compatibility with parmdb conventions. If present, it shall match the length
-of the corresponding axis. 
 
 \subsubsection*{Values array: \texttt{<soltab>/vals}}
 \begin{itemize}
@@ -238,6 +247,7 @@ of the corresponding axis.
   \item Missing data: may be stored as \texttt{NaN}. \texttt{NaN} values must have weight equal to zero (see below).
 \end{itemize}
 \subsubsection*{HISTORY attribute : \texttt{<soltab>/attrs/HISTORY000 (or ..001, ..002, ...}}
+
 
 \subsubsection*{Weights array: \texttt{<soltab>/weight}}
 \begin{itemize}
@@ -319,6 +329,7 @@ This data product typically interfaces with:
 \subsection{Open questions}
 \label{sec:open-questions}
 \begin{itemize}
+  \item The h5parm version currently is "1.0" (pre-LOFAR2), we might want to bump up that number to 1.1 and/or sync it to version of this DDD once the LOFAR2 changes are introduced.
   \item Coordinate frames and units for:
     \begin{itemize}
       \item \texttt{antenna.position} (ECRS?)
@@ -332,7 +343,8 @@ This data product typically interfaces with:
 \label{sec:future-enhancements}
 \begin{itemize}
   \item Define a LOFAR 2.0 ``minimal metadata'' attribute set (pipeline name, software version, observation ID, station set, band, etc.).
-  \item Define recommended compression/chunking settings for typical LOFAR 2.0 solution volumes.
+  \item Define recommended compression and chunking settings for typical LOFAR 2.0 solution volumes.
+  \item h5repack to reduce file size
 \end{itemize}
 
 %% ------------------------------------------------------------------------------
