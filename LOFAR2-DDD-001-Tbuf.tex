@@ -40,7 +40,7 @@
 
 \title{LOFAR Data Description Document:\\ Transient Buffer Time-Series Data\\
   {\normalsize Document ID: LOFAR2-DDD-001} \\
-  {\normalsize Version 1.00.00} \\
+  {\normalsize Version 0.03.00} \\
    {\normalsize Persistent DOI: XXXXXX} \\
 \author{ \parbox{\linewidth}{\centering S.~ter~Veen,  K. Mulrey, H.~Holties} }
 \date{\small{Compile Date: \today}} 
@@ -240,7 +240,7 @@ The structure of the file is subdivided into the following four HDF5 group level
   The part first part between \verb|{...}| represents the station name and consists of 2
   characters (upper case) and three digits (e.g. 'CS001' or 'RS106'). The second part between \verb|{...}| represents the antenna field type and consists of 3 characters (upper case) and 0 or 1 digits (e.g. 'LBA' or 'HBA0'). 
   See section \ref{sec:antenna field group} for further details.
-\item \textbf{Dipole Dataset} (\verb|DIPOLE_{SSSSSTTTAAP}|). This group
+\item \textbf{Dipole Dataset} (\verb|DIPOLE_{SSSSS_TTTAAP}|). This group
   collects data on a per-dipole basis starting from the identifiers required for
   the unambiguous identification of an individual dipole within the full LOFAR
   network to the actual sampled wave-form of the EM-field at the position of
@@ -274,7 +274,7 @@ The structure of the file is subdivided into the following four HDF5 group level
 /                                          ...  Root Group
 |-- TRIGGER                                ...  Group
 |-- ANTENNA_FIELD_XS123_XBA                ...  Group (Station name + antenna field (LBA, HBA, HBA0 or HBA1) )
-|   |-- DIPOLE_{NNNMMMLLL}                 ...  Dataset     [1D, short]
+|   |-- DIPOLE_{SSSSS_TTTAAP}                 ...  Dataset     [1D, short]
 \end{verbatim}
 }
 
@@ -285,28 +285,28 @@ Raw Voltage Mode:
 /
 /TRIGGER
 /ANTENNA_FIELD_CS002_LBA/
-/ANTENNA_FIELD_CS002_LBA/DIPOLE_CS002LBA00X
-/ANTENNA_FIELD_CS002_LBA/DIPOLE_CS002LBA00Y
-/ANTENNA_FIELD_CS002_LBA/DIPOLE_CS002LBA01X
-/ANTENNA_FIELD_CS002_LBA/DIPOLE_CS002LBA01Y
-/ANTENNA_FIELD_CS002_LBA/DIPOLE_CS002LBA...
+/ANTENNA_FIELD_CS002_LBA/DIPOLE_CS002_LBA00X
+/ANTENNA_FIELD_CS002_LBA/DIPOLE_CS002_LBA00Y
+/ANTENNA_FIELD_CS002_LBA/DIPOLE_CS002_LBA01X
+/ANTENNA_FIELD_CS002_LBA/DIPOLE_CS002_LBA01Y
+/ANTENNA_FIELD_CS002_LBA/DIPOLE_CS002_LBA...
 /ANTENNA_FIELD_CS002_HBA0
-/ANTENNA_FIELD_CS002_HBA0/DIPOLE_CS002HBA00X
-/ANTENNA_FIELD_CS002_HBA0/DIPOLE_CS002HBA00Y
-/ANTENNA_FIELD_CS002_HBA0/DIPOLE_CS002HBA01X
-/ANTENNA_FIELD_CS002_HBA0/DIPOLE_CS002HBA01Y
-/ANTENNA_FIELD_CS002_HBA0/DIPOLE_CS002HBA...
+/ANTENNA_FIELD_CS002_HBA0/DIPOLE_CS002_HBA00X
+/ANTENNA_FIELD_CS002_HBA0/DIPOLE_CS002_HBA00Y
+/ANTENNA_FIELD_CS002_HBA0/DIPOLE_CS002_HBA01X
+/ANTENNA_FIELD_CS002_HBA0/DIPOLE_CS002_HBA01Y
+/ANTENNA_FIELD_CS002_HBA0/DIPOLE_CS002_HBA...
 /ANTENNA_FIELD_CS002_HBA1
-/ANTENNA_FIELD_CS002_HBA1/DIPOLE_CS002HBA24X
-/ANTENNA_FIELD_CS002_HBA1/DIPOLE_CS002HBA24Y
-/ANTENNA_FIELD_CS002_HBA1/DIPOLE_CS002HBA25X
-/ANTENNA_FIELD_CS002_HBA1/DIPOLE_CS002HBA...
+/ANTENNA_FIELD_CS002_HBA1/DIPOLE_CS002_HBA24X
+/ANTENNA_FIELD_CS002_HBA1/DIPOLE_CS002_HBA24Y
+/ANTENNA_FIELD_CS002_HBA1/DIPOLE_CS002_HBA25X
+/ANTENNA_FIELD_CS002_HBA1/DIPOLE_CS002_HBA...
 /ANTENNA_FIELD_RS305_LBA
-/ANTENNA_FIELD_RS305_LBA/DIPOLE_RS305LBA00X
-/ANTENNA_FIELD_RS305_LBA/DIPOLE_RS305LBA...
+/ANTENNA_FIELD_RS305_LBA/DIPOLE_RS305_LBA00X
+/ANTENNA_FIELD_RS305_LBA/DIPOLE_RS305_LBA...
 /ANTENNA_FIELD_RS305_HBA
-/ANTENNA_FIELD_RS305_HBA/DIPOLE_RS305HBA00X
-/ANTENNA_FIELD_RS305_HBA/DIPOLE_RS305HBA...
+/ANTENNA_FIELD_RS305_HBA/DIPOLE_RS305_HBA00X
+/ANTENNA_FIELD_RS305_HBA/DIPOLE_RS305_HBA...
 ...
 \end{verbatim}
 
@@ -540,7 +540,7 @@ another superstructure.
 \begin{landscape}
 \begin{table}[htbp]
   \centering
-  \begin{tabular}{|lllllp{4.5cm}|}
+  \begin{tabular}{|lllllp{5.5cm}|}
     \hline
     \textsc{Field/Keyword} & \textsc{H5Type} & \textsc{Type} & (Example) Value & \textsc{Software} & \textsc{Description} \\
                            &                 &               &                 & \textsc{Version}  &                      \\
@@ -554,10 +554,10 @@ another superstructure.
     \small {\texttt{ANTENNA\_FIELD\_POSITION\_UNIT}}  & Attr & \verb|string| & "m" & DDD v1.0.0 & Physical units associated with the numerical values for the station position. \\
     \small {\texttt{ANTENNA\_FIELD\_POSITION\_FRAME}} & Attr & \verb|string| & "ITRF" & DDD v1.0.0 & Identifier for the reference frame within which the station position is provided. \\
     \small {\texttt{ANTENNA\_FIELD\_POSITION\_EPOCH}} & Attr & \verb|string| & "2026.5" & DDD v1.0.0 & Epoch of the reference position frame. \\
-    \small {\texttt{CLOCK\_SOURCE}} & Attr & \verb|string| & White Rabbit (SURF) &  DDD v1.0.0& The origin of the clock. White Rabbit or GPS. For White Rabbit also indicate which source is used as the masterclock.\\
+    \small {\texttt{CLOCK\_SOURCE}} & Attr & \verb|string| & White Rabbit &  DDD v1.0.0& The origin of the clock.  "White Rabbit" (synchronised clock) or "GPS". Stations RS210, RS310, RS409 and also RS508, RS509 are not guaranteed to use the same source for their White Rabbit clock compared to the core and other remote stations. \\
     \small {\texttt{SAMPLE\_FREQUENCY}} & \verb|double| & Attr & 200 & DDD v1.0.0 & Sample frequency in MHz of the RCU boards. \\
     \small {\texttt{SAMPLE\_FREQUENCY\_UNIT}} & \verb|string| & Attr & MHz & DDD v1.0.0 & Physical units of the sample frequency. \\
-    \small {\texttt{DIPOLE\_\{SSSSSTTTAAP\}\}}} & Dataset & \verb|array<short,1>| & \texttt{DIPOLE\_CS001LBA25Y} & DDD v1.0.0 & Dataset containing the actual raw samples read out from the transient buffer; the name of the dataset is constructed from the \small \textit{\texttt{STATION\_NAME}} (SSSSS), \verb|ANTENNA_TYPE| (TTT) (LBA, HBA or NNF (NenuFar)), \verb|ANTENNA_ID| (AA) and \verb|POLATIZATION| (P) (X or Y). \\
+    \small {\texttt{DIPOLE\_\{SSSSS\_TTTAAP\}\}}} & Dataset & \verb|array<short,1>| & \texttt{DIPOLE\_CS001LBA25Y} & DDD v1.0.0 & Dataset containing the actual raw samples read out from the transient buffer; the name of the dataset is constructed from the \small \textit{\texttt{STATION\_NAME}} (SSSSS), \verb|ANTENNA_TYPE| (TTT) (LBA, HBA or NNF (NenuFar)), \verb|ANTENNA_ID| (AA) and \verb|POLATIZATION| (P) (X or Y). \\
      \hline
   \end{tabular}
   \caption[Fields in the antenna field data group (\texttt{AntennaFieldGroup}).]{
@@ -654,9 +654,10 @@ position of each antenna feed.
     \small {\texttt{DATA\_LENGTH}} & \verb|unsigned long long| & 20002000 &DDD v1.0.0 & The number of samples per dipole which actually stored into the data set; this might as well be different from the number of samples in a data frame. \\
     \small {\texttt{NYQUIST\_ZONE}} & \verb|unsigned| & 2 & DDD v1.0.0  & Nyquist zone in which the data are sampled. \\
     %\small {\textit{\texttt{ADC2VOLTAGE}}} & \verb|double| & DAL v3.3 & Conversion factor from raw ADC sample values to voltages \\
-    \small \textit{\texttt{CABLE\_DELAY}} & \verb|double| & 110 &  DDD v1.0.0 & Delay the length of the cable connected to the RCU adds to the signal path. \\
-    \small \textit{\texttt{CABLE\_DELAY\_UNIT}} & \verb|string| & m & DDD v1.0.0 & Physical unit associated with \verb|CABLE_DELAY|. \\
-    \small \textit{\texttt{CABLE\_ATTENUATION}} & \verb|double| & 0.3 & DDD v1.0.0 & Attenuation that the cable connected to the RCU adds to the signal path. \\
+    \small \textit{\texttt{CABLE\_MODEL}} & \verb|string| & '115m' &  DDD v1.0.0 & Model used for calculating \texttt{CABLE\_DELAY} and \texttt{CABLE\_LOSS}. \\
+    \small \textit{\texttt{CABLE\_DELAY}} & \verb|double| & 3.26964e-7 &  DDD v1.0.0 & Delay that the cable connected to the RCU adds to the signal path. This is already corrected in the data, relative to the other antennas, up to 5 ns. \\
+    \small \textit{\texttt{CABLE\_DELAY\_UNIT}} & \verb|string| & s & DDD v1.0.0 & Physical unit associated with \verb|CABLE_DELAY|. \\
+    \small \textit{\texttt{CABLE\_LOSS}} & \verb|double| & 0.3 & DDD v1.0.0 & Attenuation that the cable connected to the RCU adds to the signal path. This is the already applied value, relative to other antennas in the antenna field and rounded to 0.25 dB. The remaining correction is in the  \texttt{DIPOLE\_CALIBRATION\_GAIN\_CURVE}. \\
     \small \textit{\texttt{CABLE\_ATTENUATION\_UNIT}} & \verb|string| & dB & DDD v1.0.0 & Physical unit associated with \verb|CABLE_ATTENUATION|. \\
     %\small \textit{\texttt{DIPOLE\_CALIBRATION\_DELAY}} & \verb|double| & DDD v1.0.0 & Remaining delay to be applied to calibrate dipole up to station level.\\
     %\small \textit{\texttt{DIPOLE\_CALIBRATION\_DELAY\_UNIT}} & \verb|string| & DDD v1.0.0 & Physical unit associated with \small{\verb|DIPOLE_CALIBRATION_DELAY|}. \\ 
@@ -708,7 +709,7 @@ position of each antenna feed.
   \end{equation}
   where $n$ is the index for a sample in the \verb|DATA| vector.
 \item Definition of \verb|NYQUISTZONE|.
-  The \verb|NYQUISTZONE| determines the frequency range of the data. In the common definition, and the one used in the older LOFAR TBB files, the frequency range of the data goes from (N-1)(f/2) to N(f/2) where N is the \texttt{NYQUIST\_ZONE} and f is the \texttt{SAMPLE\_FREQUENCY}. The early station version definition started counting at zero, but the convention is to start at 1. LBA observations are recorded in zone 1. HBA in zone 2 (110-170 and 110-190 MHz filter) or zone 3 (170-230 and 210-250 MHz filter).
+  The \verb|NYQUISTZONE| determines the frequency range of the data. In the common definition, and the one used in the older LOFAR TBB files, the frequency range of the data goes from (N-1)(f/2) to N(f/2) where N is the \texttt{NYQUIST\_ZONE} and f is the \texttt{SAMPLE\_FREQUENCY}. The station definition starts counting at zero, but the convention is to start at 1. LBA observations are recorded in zone 1. HBA in zone 2 (110-170 and 110-190 MHz filter) or zone 3 (170-230 and 210-250 MHz filter).
 \item Each frame of data transferred between RSP and TBB has the same fixed
   length (\verb|SAMPLES_PER_FRAME|), but a frame may hold any number of samples
   that will fit in the payload area of the frame. As typically the
