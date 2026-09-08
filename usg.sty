@@ -13,16 +13,8 @@
 \usepackage{pstricks, pst-node}
 \usepackage[colorlinks=true,urlcolor=cyan]{hyperref}
 \usepackage[today,nofancy]{svninfo}
-
-% Check if we're running pdflatex; if so, convert eps on the fly.
-% NB: need to invoke pdflatex with --shell-escape.
-\usepackage{ifpdf}
-\ifpdf
-  \usepackage[pdftex]{graphicx}
-  \usepackage{epstopdf}
-\else
-  \usepackage{graphicx}
-\fi
+\usepackage{graphicx}
+\usepackage{epstopdf}
 
 %% Handling of program code
 
