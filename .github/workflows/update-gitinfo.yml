@@ -1,0 +1,34 @@
+name: Update gitinfo
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  update-gitinfo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate gitHeadLocal.gin
+        run: ./scripts/update-gitinfo.sh
+
+      - name: Commit updated gitinfo
+        run: |
+          if git diff --quiet -- gitHeadLocal.gin; then
+            echo "gitHeadLocal.gin is already up to date"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add gitHeadLocal.gin
+          git commit -m "Update gitinfo"
+          git push
