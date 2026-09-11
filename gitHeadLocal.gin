@@ -1,17 +1,17 @@
 \usepackage[%
-        shash={f00d094},
-        lhash={f00d094d99ac6d3a4ee70504b23223f0dc0c870a},
+        shash={ed3ed61},
+        lhash={ed3ed61ab4808e0fbe49be20fb194e4b4d18279e},
         authname={Marcel Loose},
         authemail={loose@astron.nl},
         authsdate={2026-09-11},
-        authidate={2026-09-11 18:09:44 +0200},
-        authudate={1789142984},
+        authidate={2026-09-11 18:14:05 +0200},
+        authudate={1789143245},
         commname={Marcel Loose},
         commemail={loose@astron.nl},
         commsdate={2026-09-11},
-        commidate={2026-09-11 18:09:44 +0200},
-        commudate={1789142984},
+        commidate={2026-09-11 18:14:05 +0200},
+        commudate={1789143245},
         refnames={ (HEAD -> gitinfo, origin/gitinfo)},
-        firsttagdescribe={v0.0-25-gf00d094},
-        reltag={v0.0-25-gf00d094}
+        firsttagdescribe={v0.0-27-ged3ed61},
+        reltag={v0.0-27-ged3ed61}
     ]{gitexinfo}
