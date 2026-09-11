@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eux
 # Copyright 2015 Brent Longborough
 # Part of gitinfo2 package Version 2
 # Release 2.0.7 2015-11-22
