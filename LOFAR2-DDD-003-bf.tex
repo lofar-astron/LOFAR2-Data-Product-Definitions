@@ -39,7 +39,7 @@
 
 \title{LOFAR Data Description Document:\\ Beam-Formed Data\\
   {\normalsize Document ID: LOFAR2-DDD-003} \\
-  {\normalsize Version 0.77.00} \\
+  {\normalsize Version 0.78.01} \\
    {\normalsize Persistent DOI: XXXXXX} \\
 \author{ \parbox{\linewidth}{\centering V.~Kondratiev, S.~ter~Veen, C.~Bassa, and \\the LOFAR2.0 Data Working Group} }
 \date{\small{Compilation Date: \today}}
@@ -429,7 +429,9 @@ Table~\ref{tab:root attributes} lists additional attributes for the Beam-Formed 
  VK: instead of SUB\_ARRAY\_POINTING\_DIAMETER here, we can add OPTIONAL SUB\_ARRAY\_POINTING\_DIAMETER\_RA and \_DEC to every Sub-Array Pointing Group
 \end{comment}
 \begin{comment}
- VK: this CREATE\_OFFLINE\_ONLINE attribute which was never implemented, should we have it thinking long-term of running beamformer offline on raw UDP data??
+ VK: this CREATE\_OFFLINE\_ONLINE attribute which was never implemented, should we have it thinking long-term of running beamformer offline on raw UDP data?? \\
+ StV: was this used for the 8-bit redigitization pipeline for XXYY data? \\
+ VK: No, as far as I'm aware. This attribute is not set in the digitize.py.
 \end{comment}
 \begin{comment}
  VK: PROCESS\_HISTORY group was already implemented before, but was never part of the old ICD-003 definition in the ROOT group. In the definition this group were only within corresponding groups for SAPs and BEAMs.
@@ -525,6 +527,15 @@ Table~\ref{tab:antenna attributes} lists the attributes and groups stored within
 
 Table~\ref{tab:antenna field attributes} lists the Attributes of the \verb|ANTENNA_FIELD_{STATION}{FIELD}| group.
 
+\begin{comment}
+ StV: Re POSITION. I would do the same as the TBUF Antenna Field Group and add unit, frame and epoch explicitly. \\
+ VK: I would agree about POSITION\_EPOCH, but is there a reason to believe that POSITION\_UNITS here can be anything else than ``meters``, and for the POSITION\_FRAME it can be anything else than ``ITRF``? I will add POSITION\_EPOCH for now and lets discuss about other two.
+\end{comment}
+\begin{comment}
+ StV: Re TIME\_FAILURE. is this an array of failure times or the first time it failed? \\
+ VK: this is the array of all times of failures for all elements in the antenna field. Both arrays TIME\_FAILURE and ELEMENT\_FAILURE should be used together to know to what element the failure corresponds to. If the same elements failed 10 times during the observations, the ELEMENT\_FAILURE array will have 10 same integer values which is the ELEMENT\_ID in the ELEMENT\_OFFSET array. The TIME\_FAILURE will have 10 times when these failures occurred.
+\end{comment}
+
 \vspace{15pt}
 \tablefirsthead{%
 }
@@ -549,9 +560,10 @@ Table~\ref{tab:antenna field attributes} lists the Attributes of the \verb|ANTEN
     \sc H5Type == Attribute & \sc & \sc & \\
     \hline
     \verb|GROUPTYPE|   & \verb|string|          & \verb|`AntennaField'| & Group type  \\
-    \verb|POSITION|    & \verb|array<double,1,3>| & ---                   & Position of the antenna field in absolute ITRF coordinates (in meters). Same as \verb|POSITION| in the \verb|LOFAR_ANTENNA_FIELD| table in the Measurement Sets (MS).\\
+    \verb|POSITION|    & \verb|array<double,1,3>| & --- & Position of the antenna field in absolute ITRF coordinates (in meters). Same as \verb|POSITION| in the \verb|LOFAR_ANTENNA_FIELD| table in the Measurement Sets (MS).\\
+    \verb|POSITION_EPOCH| & \verb|string| & \verb|'2026.5'| & Epoch of the reference position frame (same as \verb|ANTENNA_FIELD_POSITION_EPOCH| for Tbuf data) \\
     \verb|PHASE_REFERENCE| & \verb|array<double,1,3>| & --- & Beamforming phase reference position (in meters). Same as \verb|LOFAR_PHASE_REFERENCE| in the \verb|ANTENNA| table in the Measurement Sets (MS).\\
-    \verb|COORDINATE_SYSTEM| & \verb|array<double,3,3>| & --- & P, Q, R (in meters). The cartesian direction vectors in ITRF (or measure defined) describing the local field coordinate system (see ``LOFAR reference plane and reference direction'', Michiel Brentjens). This is the up direction of the antennas, and is supposed to be the normal direction to the antenna field plane. Note that in general this is not the zenith direction, and can be many degrees away from zenith for some antenna fields. You need to know this direction in order to do the antenna beam pattern directions. This also contains the information needed to determine the +X and +Y polarization directions. Same as \verb|COORDINATE_SYSTEM| in the \verb|LOFAR_ANTENNA_FIELD| table in the Measurement Sets (MS). \\
+    \verb|COORDINATE_SYSTEM| & \verb|array<double,3,3>| & --- & The cartesian direction vectors in ITRF (or measure defined) describing the local field coordinate system PQR in meters (see ``LOFAR reference plane and reference direction'', Michiel Brentjens). This is the up direction of the antennas, and is supposed to be the normal direction to the antenna field plane. Note that in general this is not the zenith direction, and can be many degrees away from zenith for some antenna fields. You need to know this direction in order to do the antenna beam pattern directions. This also contains the information needed to determine the +X and +Y polarization directions. Same as \verb|COORDINATE_SYSTEM| in the \verb|LOFAR_ANTENNA_FIELD| table in the Measurement Sets (MS). \\
     \verb|TILE_ROTATION| & \verb|double| & --- & This is the angle at which the antenna pattern is pointing, in the ground plane of the antenna field (in radians). This affects where the HBA tile grating lobes will appear on the sky among other things. In principle this is redundant if all tile/dipole positions are known, but that's non-trivial and therefore this is included as a useful reference. Only filled in for antenna fields of type HBA. Same as \verb|TILE_ROTATION| in the \verb|LOFAR_ANTENNA_FIELD| table in the Measurement Sets (MS).\\
     \verb|TILE_ELEMENT_OFFSET| & \verb|array<double,3,16>| & --- & Position offsets in ITRF (or measure defined) of the dual dipole elements inside a tile (in meters), with respect to the centre of the tile. Only valid for antenna fields of type HBA. Same as \verb|TILE_ELEMENT_OFFSET| in the \verb|LOFAR_ANTENNA_FIELD| table in the Measurement Sets (MS).\\
     \verb|ELEMENT_OFFSET| & \verb|array<double,3,N_elements>| & --- & Relative offsets of each element from \verb|POSITION| (in meters). The \verb|N_elements| is the number of elements in the antenna field. Same as \verb|ELEMENT_OFFSET| in the \verb|LOFAR_ANTENNA_FIELD| table in the Measurement Sets (MS). \\
@@ -604,6 +616,14 @@ Table~\ref{tab:beamformer pipelines attributes} lists the attributes and groups 
 
 Table~\ref{tab:beamformer pipeline attributes} lists the Attributes of the \verb|BF_PIPELINE_{NNN}| group.
 
+\begin{comment}
+ StV: You prefer to have this information separate, rather than as a grouping between SAP and BEAM? \\
+ VK: yes, because the BF pipeline is for the whole SAP (not TAB) or even a set of SAPs, so in case of 100+ TABs the same info would be duplicated between all TABs, not efficient. I agree that currently there are settings in the Beam group that could be removed when we introduce this Group (e.g. CHANNELS\_PER\_SUBBAND, STATIONS\_LIST, etc), but I would like to keep them as they are for backwords compatibility.
+\end{comment}
+\begin{comment}
+ VK: I think we should also add BANDWIDTH (and \_UNIT) and FREQUENCY\_CENTER (and \_UNIT) attributes just to quickly get the values, instead of calculating based on subbands
+\end{comment}
+
 \begin{small}
 \begin{table}[h]
 \begin{small}
@@ -630,6 +650,10 @@ Table~\ref{tab:beamformer pipeline attributes} lists the Attributes of the \verb
     \verb|SUBBANDS_PER_FILE| & \verb|int| & --- & Maximum number of subbands per output HDF5 file. \\
     \verb|SUBBANDS| & \verb|array<int,1>| & --- & List of subband numbers to be used by this Beamformer Pipeline \\
     \verb|NOF_SUBBANDS| & \verb|int| & --- & Number of subbands to be used in this Beamformer Pipeline \\
+    \verb|BANDWIDTH| & \verb|double| & --- & Bandwidth related to subbands used, total width of all subbands of this beam \\
+    \verb|BANDWIDTH_UNIT|  & \verb|string| & \verb|`MHz'| &  \\
+    \small{\verb|FREQUENCY_CENTER|}  & \verb|double| & --- & Center frequency - the middle frequency of used subbands' range \\
+    \small{\verb|FREQUENCY_CENTER_UNIT|}  & \verb|string| & \verb|`MHz'| & \\
     \verb|NOF_TAB_RINGS| & \verb|int| & --- & Number of tied-array rings in this Beamformer Pipeline \\
     \verb|TAB_RING_RADIUS| & \verb|double| & --- & Radius (in radians) of tied-array ring in this Beamformer Pipeline \\
     \hline
@@ -730,6 +754,8 @@ The data definition for the \texttt{Processing History (PROCESS\_HISTORY)} Group
  - Cobalt.delayCompensation \\
  - Cobalt.correctClocks \\
  - Cobalt.BeamFormer.inputPPF \\
+ StV: we can put the JSON specification for COBALT in, if we move to that. The tricky thing is how to deal with COBALT overrides. Keywords that you need to interpret the data should just be in the metadata. delayCompensation and correctClocks are important to know if you can reprocess fly's eye data with Cobalt. \\
+ VK: Parset override files should be already available before the observation, so this override file can be added to HDF5 metadata already at the time of creation.
 \end{comment}
 \begin{comment}
  VK: shall we add Parset override files as optional PARSET\_OVERRIDE attribute if such file existed at the type of observation and was used?
@@ -773,7 +799,9 @@ Each Sub-Array Pointing Group contains one or more Beam Groups. Table~\ref{tab:b
  VK: PROCESS\_HISTORY was defined in the old ICD-003 but was never implemented. Instead we are using now PROCESS\_HISTORY group in the ROOT level
 \end{comment}
 \begin{comment}
- VK: POINT\_DIRECTION\_TYPE is already implemented, but was not part of the old ICD-003, thus I put it in blue. However, there is already TRACKING attribute here also with the J2000 value. Aren't they the same? Do we need both? Why POINT\_DIRECTION\_TYPE was added? Maybe TRACKING was overlooked? If so, then we need to remove POINT\_DIRECTION\_TYPE from the definition.
+ VK: POINT\_DIRECTION\_TYPE is already implemented, but was not part of the old ICD-003, thus I put it in blue. However, there is already TRACKING attribute here also with the J2000 value. Aren't they the same? Do we need both? Why POINT\_DIRECTION\_TYPE was added? Maybe TRACKING was overlooked? If so, then we need to remove POINT\_DIRECTION\_TYPE from the definition. \\
+ StV: We need only one POINT\_DIRECTION\_TYPE or TRACKING. Tbuf data uses BEAM\_DIRECTION (with \_UNIT and \_FRAME). If we used POINT\_DIRECTION\_TYPE before I would just use that and remove TRACKING. \\
+ VK: I think neither TRACKING nor POINT\_DIRECTION\_TYPE were used before
 \end{comment}
 \begin{comment}
  VK: BEAM\_START\_UTC, ..\_MJD, BEAM\_END\_UTC, ..\_MJD  are already implemented to allow start/stop of the TABs at different times. However, these attributes were never added to the ICD definition. This is why I've put them in blue.
@@ -787,6 +815,10 @@ Each Sub-Array Pointing Group contains one or more Beam Groups. Table~\ref{tab:b
  - DISPERSION\_MEASURE \\
  - DISPERSION\_MEASURE\_UNIT \\
  - BARYCENTERED \\
+ StV: For Central COBALT I think you are correct. We can re-add them if at some point this will be implemented. But do check with the EuroFlash team as the dataformat could potentially be used for data snippets for which this would be interesting.
+\end{comment}
+\begin{comment}
+ VK: I think we should also add BEAM\_BANDWIDTH (and \_UNIT) as number of subbands in a given SAP (and thus BEAM) can be different from the total in Observation. We already have BEAM\_FREQUENCY\_CENTER, so it's logical to add BANDWIDTH as well.
 \end{comment}
 
 
@@ -851,6 +883,8 @@ Each Sub-Array Pointing Group contains one or more Beam Groups. Table~\ref{tab:b
   \small{\verb|BEAM_DIAMETER_DEC_UNIT|}  & \verb|string| & \verb|`arcmin'| & \\
   \small{\verb|BEAM_FREQUENCY_CENTER|}  & \verb|double| & --- & Beam center frequency - the middle frequency of all the channel frequencies. \\
   \small{\verb|BEAM_FREQUENCY_CENTER_UNIT|}  & \verb|string| & \verb|`MHz'| & \\
+  \small{\textcolor{blue}{\texttt{BEAM\_BANDWIDTH}}}  & \verb|double| & --- & Beam bandwidth, total width of all subbands of this beam \\
+  \small{\textcolor{blue}{\texttt{BEAM\_BANDWIDTH\_UNIT}}}  & \verb|string| & \verb|`MHz'| &  \\
   \small{\textcolor{red}{\texttt{FOLDED\_DATA}}}  & \verb|bool| & --- & Are the data folded within this Beam? \\
   \small{\textcolor{red}{\texttt{FOLD\_PERIOD}}}     & \verb|double| & --- & The fold period if the data were folded. \\
   \small{\textcolor{red}{\texttt{FOLD\_PERIOD\_UNIT}}}     & \verb|string| & \verb|`s'| & \\

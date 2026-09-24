@@ -61,7 +61,7 @@ These properties are essential for scalable processing over many frequency chann
   \item LOFAR 2.0 pipeline / archive conventions (TBD; to be linked by document ID when available).
 %  \item LOFAR 2.0 world coordinate conventions (for antenna locations)
   \item LOFAR 2.0 celestial coordinate conventions (for source directions)
-  \item Original H5Parm specifications: \href{https://docs.google.com/document/d/1pjDxRywhRO5HRuqciGYO2TWD-Ufu_5nxwFA3b_YnJJg/edit?tab=t.0#heading=h.uae9zka4fdfd}{HDF5 solutions tables for LOFAR (H5parm)}, v1.0 (26/07/13).
+  \item Old H5Parm specifications: \href{https://docs.google.com/document/d/1pjDxRywhRO5HRuqciGYO2TWD-Ufu_5nxwFA3b_YnJJg/edit?tab=t.0#heading=h.uae9zka4fdfd}{HDF5 solutions tables for LOFAR (H5parm)}, v1.0 (26/07/13).
 \end{itemize}
 
 \subsection{Reference Applications}
@@ -219,8 +219,8 @@ A soltab group stores a single solution type (e.g. phase, amplitude, TEC) and it
 \subsubsection*{Soltab attributes}
 Each soltab group shall define:
 \begin{itemize}
-  \item Attribute \texttt{type}: a string describing solution type (e.g., \texttt{phase}, \texttt{amplitude}, \texttt{clock}, \texttt{TEC}). 
-  \item Optional attribute \texttt{default}: scalar default value for missing data (commonly 0. for phase-like, 1. for amplitude-like), as used in examples. 
+  \item Attribute \texttt{type}: a string describing solution type. While this is in principle flexible, the following strings are used for standard solution types: \texttt{phase}, \texttt{amplitude}, \texttt{clock}, \texttt{tec}, \texttt{rotationmeasure}.
+  \item Optional attribute \texttt{default}: scalar default value for missing data (typically 0 for phase-, tec-, clock- or rotation-like, 1 for scalar or diagonal-amplitude-like, diag(1,1) for fulljones), as used in examples. 
 \end{itemize}
 
 \subsubsection*{Axes arrays}
@@ -229,16 +229,17 @@ For each axis used by the soltab, an HDF5 Array node shall exist:
   \item \texttt{time}: float64; seconds (or time system) as stored; axis values may be non-uniform. 
   \item \texttt{freq}: float64; frequency in Hz; axis values may be non-uniform.
   \item \texttt{ant}: string; antenna/station identifiers (as listed in table \texttt{<solset>/ant}).
-  \item \texttt{dir}: string; direction/source identifiers (as listed in table \texttt{<solset>/source}). 
-  \item \texttt{pol}: string; polarization identifiers (e.g. \texttt{XX}, \texttt{XY} or \texttt{RR}, \texttt{RL}). \end{itemize}
+  \item \texttt{dir}: string (16 char); direction/source identifiers (as listed in table \texttt{<solset>/source}). 
+  \item \texttt{pol}: string (2 char); polarization identifiers (standard cases are \texttt{[I]} for scalar, \texttt{[XX,YY]} for linear-basis diagonal, \texttt{[RR,LL]} for circular basis diagonal, \texttt{[XX,XY,YX,YY]} for linear-basis full-Jones, \texttt{[RR,RL,LR,LL]} for circular-basis full-Jones). \end{itemize}
 
 
 
 \subsubsection*{Values array: \texttt{<soltab>/vals}}
 \begin{itemize}
   \item Type: Chunked array (CArray)
-  \item Element type: float64 (recommended; other numeric types allowed if documented)
+  \item Element type: float64 
   \item Shape: \texttt{(N\_axis1, N\_axis2, ...)} following the axis order defined below
+  \item Units: solution values do not explicitly record the unit, the following standard units are used for different \texttt{types}: dimensionless (\texttt{amplitude}), rad (\texttt{phase, rotation}), total electron content units / TECU (\texttt{tec}), rad/m$^2$ (\texttt{rotationmeasure}).
   \item Required attributes:
   \begin{itemize}
     \item \texttt{axes}: ordered list of axis names defining the dimensions (e.g. \texttt{[time,freq,pol,dir,ant]}).
@@ -252,7 +253,7 @@ For each axis used by the soltab, an HDF5 Array node shall exist:
 \subsubsection*{Weights array: \texttt{<soltab>/weight}}
 \begin{itemize}
   \item Type: Chunked array (CArray)
-  \item Element type: float32 (recommended)
+  \item Element type: float32 
   \item Shape: identical to \texttt{vals}
   \item Required attributes:
   \begin{itemize}
@@ -262,7 +263,7 @@ For each axis used by the soltab, an HDF5 Array node shall exist:
   \begin{itemize}
     \item \texttt{0} indicates flagged/invalid solutions;
     \item all \texttt{NaN} values must be flagged;
-    \item continuous values in \texttt{[0,1]} may represent data weights. 
+    \item continuous values in \texttt{[0,1]} are used to represent data weights. 
   \end{itemize}
 \end{itemize}
 
