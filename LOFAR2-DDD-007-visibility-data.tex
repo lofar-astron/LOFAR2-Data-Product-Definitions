@@ -138,6 +138,9 @@ Visibility data can be compressed using a special averaging scheme called baseli
 \subsection{Common LOFAR attributes}
 A Measurement Set shall define the common LOFAR attributes outlined in this section. Many of these are already defined in the MSv2 Description for LOFAR. Many of these attributes are already defined in the MS standard itself.
 
+\subsubsection{Changes from the LOFAR MS specification}
+In the LOFAR MSv2 specification the \texttt{PIPELINE\_NAME} is defined as the first pipeline that ran on the data. For LOFAR2 we define this keyword as the \textit{last} pipeline that ran on the data producing this Measurement Set.
+
 \input common_tables/lofar_common_metadata
 
 \begin{table}[htbp]
@@ -151,19 +154,16 @@ A Measurement Set shall define the common LOFAR attributes outlined in this sect
     \hline \hline
 
     %% Table main contents %%
-
-    \small \verb|GROUPTYPE| & N/A \\
     \small \verb|FILENAME| & ::OBSERVATION/LOFAR\_FILENAME \\
     \small \verb|FILEDATE| & ::OBSERVATION/LOFAR\_FILEDATE \\
     \small \verb|FILETYPE| & ::OBSERVATION/LOFAR\_FILETYPE \\
     \small \verb|TELESCOPE| & ::OBSERVATION/TELECSOPE\_NAME \\
-    \small \verb|TELESCOPE_VERSION| & /LOFAR\_VERSION?\\
+    \small \verb|TELESCOPE_VERSION| & LOFAR\_VERSION\\
     \small \verb|PROJECT_ID| & ::OBSERVATION/LOFAR\_PROJECT\\
-    \small \verb|PROJECT_PID| & ::OBSERVATION/LOFAR_PROJECT_PID\\
+    \small \verb|PROJECT_PID| & \textbf{::OBSERVATION/LOFAR\_PROJECT\_PID}\\
     \small \verb|PROJECT_TITLE| & ::OBSERVATION/LOFAR\_PROJECT\_TITLE \\
-    \small \verb|PROJECT_PI| & LOFAR\_PROJECT\_PI \\
     \small \verb|OBSERVATION_ID| & ::OBSERVATION/LOFAR\_OBSERVATION\_ID \\
-    \small \verb|OBSERVATION_PID| & N/A \\
+    \small \verb|OBSERVATION_PID| & \textbf{::OBSERVATION/LOFAR\_OBSERVATION\_ID} \\
     \small \verb|OBSERVATION_START_UTC| & N/A\\
     \small{\textit{OBSERVATION\_START\_MJD}} & ::OBSERVATION/LOFAR\_OBSERVATION\_START\\
     \small{\texttt{OBSERVATION\_END\_UTC}} & N/A\\
@@ -173,24 +173,24 @@ A Measurement Set shall define the common LOFAR attributes outlined in this sect
     \small{\texttt{OBSERVATION\_FREQUENCY\_MIN}} & ::OBSERVATION/LOFAR\_OBSERVATION\_FREQUENCY\_MAX\\
     \small{\texttt{OBSERVATION\_FREQUENCY\_CENTER}} & ::OBSERVATION/LOFAR\_OBSERVATION\_FREQUENCY\_CENTER \\
     \small{\texttt{OBSERVATION\_FREQUENCY\_MAX}} &  ::OBSERVATION/LOFAR\_OBSERVATION\_FREQUENCY\_MIN\\
-    \small\verb|OBSERVATION_FREQUENCY_UNIT| & N/A\\
+    \small\verb|OBSERVATION_FREQUENCY_UNIT| & \textbf{::OBSERVATION/FREQUENCY\_UNIT}\\
     \small\verb|OBSERVATION_NOF_BITS_PER_SAMPLE| & ::OBSERVATION/LOFAR\_NOF\_BITS\_PER\_SAMPLE\\
     \small\verb|CLOCK_FREQUENCY| & ::OBSERVATION/LOFAR\_CLOCK\_FREQUENCY\\
-    \small{\verb|CLOCK_FREQUENCY_UNIT|} & N/A\\
+    \small{\verb|CLOCK_FREQUENCY_UNIT|} & \textbf{::OBSERVATION/LOFAR\_CLOCK\_FREQUENCY\_UNIT}\\
     \small\verb|ANTENNA_SET| & ::OBSERVATION/LOFAR\_ANTENNA\_SET\\
     \small \verb|FILTER_SELECTION| & ::OBSERVATION/LOFAR\_FILTER\_SELECTION\\
     \small \verb|TARGETS| & ::OBSERVATION/LOFAR\_TARGET\\
-    \small \verb|SYSTEM_NAME| & N/A\\
+    \small \verb|SYSTEM_NAME| & \textbf{::OBSERVATION/SYSTEM\_NAME}\\
     \small \verb|SYSTEM_VERSION| & ::OBSERVATION/LOFAR\_SYSTEM\_VERSION\\
     \small{\textit{PIPELINE\_NAME}}  & ::OBSERVATION/LOFAR\_PIPELINE\_NAME\\
     \small{\textit{PIPELINE\_VERSION}} & ::OBSERVATION/LOFAR\_PIPELINE\_VERSION\\
-    \small \verb|DOC_NAME| & N/A\\
-    \small \verb|DOC_VERSION| & N/A\\
+    \small \verb|DOC_NAME| & \textbf{DOC\_NAME}\\
+    \small \verb|DOC_VERSION| & \textbf{DOC\_VERSION}\\
     \small \verb|DOC_PID| & N/A\\
-    \small \verb|NOTES| & N/A\\
+    \small \verb|NOTES| & ::OBSERVATION/LOG\\
    \hline
   \end{tabular}
-  \caption{Mapping describing Common LOFAR Attributes correspond to which MS keywords. The table uses :: to denote a subtable and / to denote a column in it; e.g. ::OBSERVATION/TELESCOPE\_NAME is equivalent to \texttt{taql 'select TELESCOPE\_NAME from my\_ms.ms::OBSERVATION}.}
+  \caption{Mapping describing Common LOFAR Attributes correspond to which MS keywords. The table uses :: to denote a subtable and / to denote a column in it; e.g. ::OBSERVATION/TELESCOPE\_NAME is equivalent to \texttt{taql 'select TELESCOPE\_NAME from my\_ms.ms::OBSERVATION}. Entries marked in bold are new compared to LOFAR1.}
   \label{tab:mapping_cla_ms}
 \end{table}
 

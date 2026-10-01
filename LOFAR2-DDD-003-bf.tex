@@ -39,7 +39,7 @@
 
 \title{LOFAR Data Description Document:\\ Beam-Formed Data\\
   {\normalsize Document ID: LOFAR2-DDD-003} \\
-  {\normalsize Version 0.78.01} \\
+  {\normalsize Version 0.78.02} \\
    {\normalsize Persistent DOI: XXXXXX} \\
 \author{ \parbox{\linewidth}{\centering V.~Kondratiev, S.~ter~Veen, C.~Bassa, and \\the LOFAR2.0 Data Working Group} }
 \date{\small{Compilation Date: \today}}
@@ -427,11 +427,13 @@ Table~\ref{tab:root attributes} lists additional attributes for the Beam-Formed 
 \end{comment}
 \begin{comment}
  VK: instead of SUB\_ARRAY\_POINTING\_DIAMETER here, we can add OPTIONAL SUB\_ARRAY\_POINTING\_DIAMETER\_RA and \_DEC to every Sub-Array Pointing Group
+ StV: Let's do that.
 \end{comment}
 \begin{comment}
  VK: this CREATE\_OFFLINE\_ONLINE attribute which was never implemented, should we have it thinking long-term of running beamformer offline on raw UDP data?? \\
  StV: was this used for the 8-bit redigitization pipeline for XXYY data? \\
- VK: No, as far as I'm aware. This attribute is not set in the digitize.py.
+ VK: No, as far as I'm aware. This attribute is not set in the digitize.py. \\
+ StV: I think we can remove this. SYSTEM_NAME and PIPELINE_NAME should be sufficient information.
 \end{comment}
 \begin{comment}
  VK: PROCESS\_HISTORY group was already implemented before, but was never part of the old ICD-003 definition in the ROOT group. In the definition this group were only within corresponding groups for SAPs and BEAMs.
@@ -530,6 +532,7 @@ Table~\ref{tab:antenna field attributes} lists the Attributes of the \verb|ANTEN
 \begin{comment}
  StV: Re POSITION. I would do the same as the TBUF Antenna Field Group and add unit, frame and epoch explicitly. \\
  VK: I would agree about POSITION\_EPOCH, but is there a reason to believe that POSITION\_UNITS here can be anything else than ``meters``, and for the POSITION\_FRAME it can be anything else than ``ITRF``? I will add POSITION\_EPOCH for now and lets discuss about other two.
+ StV: To make the document interpretable by software packages, I think it's good practice to add the UNITs (as is required) and the FRAME. Else you will need to tell each software package that it is 'meters' and 'ITRF' and keep track if this ever changes in the DDD.
 \end{comment}
 \begin{comment}
  StV: Re TIME\_FAILURE. is this an array of failure times or the first time it failed? \\
@@ -619,9 +622,11 @@ Table~\ref{tab:beamformer pipeline attributes} lists the Attributes of the \verb
 \begin{comment}
  StV: You prefer to have this information separate, rather than as a grouping between SAP and BEAM? \\
  VK: yes, because the BF pipeline is for the whole SAP (not TAB) or even a set of SAPs, so in case of 100+ TABs the same info would be duplicated between all TABs, not efficient. I agree that currently there are settings in the Beam group that could be removed when we introduce this Group (e.g. CHANNELS\_PER\_SUBBAND, STATIONS\_LIST, etc), but I would like to keep them as they are for backwords compatibility.
+ StV: They can be a group with all the relevant TABs below it so the information would not be duplicated. That is more hierarchical, but would break compatability with the previous data formats.
 \end{comment}
 \begin{comment}
  VK: I think we should also add BANDWIDTH (and \_UNIT) and FREQUENCY\_CENTER (and \_UNIT) attributes just to quickly get the values, instead of calculating based on subbands
+ StV: Agreed.
 \end{comment}
 
 \begin{small}
@@ -759,6 +764,7 @@ The data definition for the \texttt{Processing History (PROCESS\_HISTORY)} Group
 \end{comment}
 \begin{comment}
  VK: shall we add Parset override files as optional PARSET\_OVERRIDE attribute if such file existed at the type of observation and was used?
+ StV: Let's discuss with Jan David what is best. They should either be stored separately or in the file.
 \end{comment}
 
 \begin{small}

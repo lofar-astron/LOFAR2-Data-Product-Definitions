@@ -566,10 +566,11 @@ Specific parameters for data discovery for the lightning data
 
 \begin{itemize}
     \item numberOfSources - number of good individual sources of emission - int
-    \item duration - duration of the flash, in seconds - float
+    \item duration - time between first and last located VHF source, in seconds - float
+    \item LightningDurations - List of duration of each flash - (list of float)
     \item numberOfLargeFlashes - number of large flashes - int
     \item numberOfSmallFlashes - number of small flashes - int
-    \item lightningFlashArea - list of area for lightning flash, maximum radius in meters - (list of float)
+    \item lightningFlashArea  = list of area for lightning flash. Area of convex hull around flash in horizontal plane. - (list of float)
     \item lightningLocationXYZ - list of XYZ locations per flash, relative to LOFAR Superterp - alternatively could be split in lightningLocationX , lightningLocationY, lightningLocationZ - (list of float)
     \item lightningLocationLonLat - list of lat,lons per flash in degrees - alternatively could be split in lightningLocationLon , lightningLocationLat - (list of float)
     \item lightningType - list of type per flash (list of strings)
