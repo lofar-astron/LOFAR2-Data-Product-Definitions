@@ -961,6 +961,10 @@ Creating a snapshot of multiple stations, or even the full LOFAR array, thus wil
 result in a set of station groups -- which in turn might be collected into
 another superstructure.
 
+\begin{comment}
+    The footnote on White Rabbit from the table does not show in the PDF.
+\end{comment}
+
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|llllp{4.5cm}|}
@@ -971,7 +975,7 @@ another superstructure.
     \hline
     \small {\texttt{GROUPTYPE}} & Attr & \verb|string| & DAL v2.0 & LOFAR group type, \texttt{StationGroup}. \\
     \small {\texttt{STATION\_NAME}} & Attr & \verb|string| & DAL v2.0 & The name of the station, consisting of two characters (upper case) and three digits, e.g. \texttt{CS001} or \texttt{RS201}. \\
-    \small {\texttt{CLOCK\_SOURCE}} & Attr & \verb|string| & DDD v1.0 & The origin of the clock. White Rabbit + source of clock or GPS\\
+    \small {\texttt{CLOCK\_SOURCE}} & Attr & \verb|string| & DDD v1.0 & The origin of the clock. White Rabbit\footnote{The White Rabbit clocks should be synced, but some might be configured with a different clock source. This cannot be determined currently.} or GPS. \\
     \small {\texttt{ANTENNA\_FIELD\_XBAX}} & Group & --- & DAL v4.0 & Container group for dipole datasets per antenna field; The name is either \texttt{ANTENNA\_FIELD\_LBA} for the low band antennas or \texttt{ANTENNA\_FIELD\_HBA}, \texttt{ANTENNA\_FIELD\_HBA0}, or \texttt{ANTENNA\_FIELD\_HBA1} for the high band antennas. \\
     \hline
   \end{tabular}
@@ -1014,7 +1018,7 @@ With LOFAR 2.0, both the LBA and HBA antenna fields can be active at the same ti
     \small {\texttt{NOF\_DIPOLES}} & Attr & \verb|unsigned int| & DAL v4.0 & The number of dipoles, for which data are embedded within this group. \\
     \hline
     \small \textit{\texttt{STATION\_CALIBRATION}} & Group & --- & DAL v4.0 & Calibration information as delivered through the online (station) calibration. \\
-    \small {\texttt{DIPOLE\_\{SSSSSFFFAAP\}\}}} & Dataset & \verb|array<short,1>| & DAL v4.0 & Dataset containing the actual raw samples read out from the transient buffer; the name of the dataset is constructed from the \small \textit{\texttt{STATION\_NAME}} (SSSSS), \verb|ANTENNA_TYPE| (FFF) (LBA or HBA), \verb|ANTENNA_ID| (AA) and \verb|POLATIZATION| (P) (X or Y). \\
+    \small {\texttt{DIPOLE\_\{SSSSS}\_{FFFAAP\}\}}} & Dataset & \verb|array<short,1>| & DAL v4.0 & Dataset containing the actual raw samples read out from the transient buffer; the name of the dataset is constructed from the \small \textit{\texttt{STATION\_NAME}} (SSSSS), \verb|ANTENNA_TYPE| (FFF) (LBA or HBA), \verb|ANTENNA_ID| (AA) and \verb|POLATIZATION| (P) (X or Y). \\
   \end{tabular}
   \caption[Fields in the field data group (\texttt{FieldGroup}).]{
     Fields in the field data group (\texttt{FieldGroup}). The

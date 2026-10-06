@@ -40,7 +40,7 @@
 
 \title{LOFAR Data Description Document:\\ Transient Buffer Time-Series Data\\
   {\normalsize Document ID: LOFAR2-DDD-001} \\
-  {\normalsize Version 0.03.00} \\
+  {\normalsize Version 0.04.00} \\
    {\normalsize Persistent DOI: XXXXXX} \\
 \author{ \parbox{\linewidth}{\centering S.~ter~Veen,  K. Mulrey, H.~Holties} }
 \date{\small{Compile Date: \today}} 
@@ -210,8 +210,8 @@ of a standard multi-extension FITS file.  This primary group will
 consist only of header keywords (“attributes” in HDF5 nomenclature)
 describing general properties of an observation, along with pointers
 to contained subgroups.  Those subgroups will comprise an arbitrary
-number of ``AntennaFieldGroups'' (see sec~\ref{sec:antenna field group}), where a
-Antenna Field will contain data and meta-data produced by an
+number of ``AntennaFieldGroups'' (see sec~\ref{sec:antenna field group}), where an
+Antenna Field Group will contain data and meta-data produced by an
 individual Antenna Field of an indvididual LOFAR station. Each antenna field group contains one or more ``Dipole Datasets``.
 
 Figure~\ref{fig:TBB_highlevel} shows the basic organisation of the dataset within
@@ -332,12 +332,16 @@ Example:\\
 In this 
 \begin{itemize}
     \item L is an identifier for LOFAR. If used for different instrument, this can change.
-    \item \verb|<ID>| is the subtaskID of the LOFAR TMSS process managing the data acquisition process. For this version that are the \verb|tbuf_dump| subtasks
+    \item \verb|<ID>| is the subtaskID of the LOFAR TMSS process managing the data acquisition process. For this version that are the \verb|tbuf_dump| subtasks. Note that it is possible that a dataset is taken with different \verb|tbuf_dump| subtasks, resulting in a different \verb|<ID>|, but a same or similar start timestamp.
     \item The \verb|<date>| and \verb|<time>| is either the requested start and end time of the data or the actual start and end time of the data. The actual start time of the data may be later then the requested start time and is annotated in the metadata of the file. The time is specified up till millisecond precision. The time is indicated in UTC, as also denoted by the Z.
-    \item The \verb|<stationname>| is the name of the first station in the file.
-    \item \verb|<fieldname>| is the name of the first antenna field in the file. One of (LBA, HBA, HBA0, HBA1, NNF). 
-\end{itemize}
+    \item The \verb|<stationname>| is the name of the first station in the file. The Tbuf file supports storing one or more stations.
+    \item \verb|<fieldname>| is the name of the first antenna field in the file. One of (LBA, HBA, HBA0, HBA1, NNF).  The Tbuf file supports storing one or more antenna fields.
+\end{itemize} 
 The lengths of the filename may vary because of the \verb|<ID>| and the \verb|<fieldname>|. The "h5" file contains the header information, as described in this document. The ".raw" file contains the actual data. This split is motivated to easily be able to read the "h5" file, for example to gather feedback. The end user should make sure both the "h5" and the "raw" file are copied over. 
+
+\begin{comment}
+    Check concerns about linking "h5" files to "raw files" when copying to different directories.
+\end{comment}
 
 
 \subsection{The Root Group}
@@ -371,15 +375,21 @@ The \cla\ are the first attributes of any LOFAR file root group.
 This section will specify a set of attributes that will be common to
 LOFAR science data products.  These ``common LOFAR metadata'' will
 appear as attributes at the root level of all LOFAR data files.
-\textit{All} LOFAR data products, including TBuf Time-series
-\textit{inter alia,} will share a common set of metadata root-level
+\textit{All} LOFAR data products, including TBuf Time-series,
+will share a common set of metadata root-level
 attributes.  These common LOFAR metadata are to be the first set of
 attributes of any LOFAR file root group.
 
 Table~\ref{tab:lofar common metadata} lists the {\cla} (CLA) which can
 be found in LOFAR observation mode data types. These Attributes are required to be in the Root
 Group; if a value is not available for an Attribute, a \verb|`NULL'|
-will be used in its place. Special considerations for these keywords: \texttt{OBSERVATION\_ID} contains the subtask ID of the data acquisition specific for this trigger. Other \texttt{OBSERVATION...} keywords consider the data for this trigger/file, for example the \texttt{OBSERVATION\_START\_UTC} is the start of the data dump. The \texttt{OBSERVATION\_FREQUENCY...} keywords refer to the whole band for this filter, or for all filters used. For example the \texttt{110\_190 MHz} filter will provide a min,center,max frequency of 100, 150, 200 Mhz, respectively. \texttt{OBSERVATION\_NOF\_BITS\_PER\_SAMPLE} is 12 for TBuf data. \texttt{FILTER\_SELECTION} and \texttt{ANTENNA\_SET} are usually set to \texttt{NULL}. They are repeated at lower levels. They can be set to the actual value, if and only if a single value is used at lower level within this file, but this is not obligatory as pipelines should better rely on the value per dipole.
+will be used in its place. Special considerations for these keywords:
+\begin{itemize}
+    \item \texttt{OBSERVATION\_ID} contains the subtask ID of the data acquisition specific for this trigger. \item Other \texttt{OBSERVATION...} keywords consider the data for this triggerfile, for example the\\ \texttt{OBSERVATION\_START\_UTC} is the start of the data dump. 
+    \item The \texttt{OBSERVATION\_FREQUENCY...} keywords refer to the whole band for this filter, or for all filters used. For example the \texttt{110\_190 MHz} filter will provide a min,center,max frequency of 100, 150, 200 Mhz, respectively. 
+    \item \texttt{OBSERVATION\_NOF\_BITS\_PER\_SAMPLE} is 12 for TBuf data. 
+    \item \texttt{FILTER\_SELECTION} and \texttt{ANTENNA\_SET} are usually set to \texttt{NULL}. They are repeated at lower levels. They can be set to the actual value, if and only if a single value is used at lower level within this file, but this is not obligatory as pipelines should better rely on the value per dipole.
+\end{itemize}
 
 \begin{table}[tbp]
   \centering
@@ -495,7 +505,7 @@ The \verb|TRIGGER| group collects the parameters that caused the TBB to be froze
   \label{tab:trigger group}
 \end{center}
 
-The type of trigger is given by the keyword \verb|TRIGGER_TYPE| and \verb|TRIGGER_SUBTYPE|. They contain keywords from Table~\ref{tab:trigger_types}.
+The type of trigger is given by the keyword \verb|TRIGGER_TYPE| and \verb|TRIGGER_SUBTYPE|. They contain keywords from Table~\ref{tab:trigger_types}. Future trigger types can be added, when they become available.
 
 \begin{table}[htb]
   \centering
@@ -505,7 +515,7 @@ The type of trigger is given by the keyword \verb|TRIGGER_TYPE| and \verb|TRIGGE
     \hline
     \hline
     \verb|`Unknown'| & Unknown/unrecognised reason for data return. \\
-    \verb|`LORA'| & Trigger to capture a cosmic ray. \verb|TRIGGER_SUBTYPE|  = 'LORA' when triggered from the LORA particle detector.\\
+    \verb|`CosmicRay'| & Trigger to capture a cosmic ray. \verb|TRIGGER_SUBTYPE|  = 'LORA' when triggered from the LORA particle detector.\\
     \verb|`Lightning'| & Triggered in order to capture a lightning strike. \verb|TRIGGER_SUBTYPE| = 'blitzortung' or 'magnetic loop' \\
     \verb|`Manual'| & Manually triggered. \verb|TRIGGER_SUBTYPE| = 'User Portal' or 'test script'\\
    \hline
@@ -533,8 +543,10 @@ structure can be perceived as a table, the HDF5 internal data model is that
 of a group; in order to stick as closely as possible to the libraries naming
 conventions, we therefore use the name \textsl{group} instead of \textsl{table}.}
 Creating a snapshot of multiple stations, or even the full LOFAR array, thus will
-result in a set of antenna field groups -- which in turn might be collected into
-another superstructure.
+result in a set of antenna field groups -- which can either be distributed as individual files,
+ or be collected in a superstructure.
+
+
 
 \newpage
 \begin{landscape}
@@ -554,7 +566,7 @@ another superstructure.
     \small {\texttt{ANTENNA\_FIELD\_POSITION\_UNIT}}  & Attr & \verb|string| & "m" & DDD v1.0.0 & Physical units associated with the numerical values for the station position. \\
     \small {\texttt{ANTENNA\_FIELD\_POSITION\_FRAME}} & Attr & \verb|string| & "ITRF" & DDD v1.0.0 & Identifier for the reference frame within which the station position is provided. \\
     \small {\texttt{ANTENNA\_FIELD\_POSITION\_EPOCH}} & Attr & \verb|string| & "2026.5" & DDD v1.0.0 & Epoch of the reference position frame. \\
-    \small {\texttt{CLOCK\_SOURCE}} & Attr & \verb|string| & White Rabbit &  DDD v1.0.0& The origin of the clock.  "White Rabbit" (synchronised clock) or "GPS". Stations RS210, RS310, RS409 and also RS508, RS509 are not guaranteed to use the same source for their White Rabbit clock compared to the core and other remote stations. \\
+    \small {\texttt{CLOCK\_SOURCE}} & Attr & \verb|string| & White Rabbit &  DDD v1.0.0& The origin of the clock.  "White Rabbit" (synchronised clock) or "GPS". \\
     \small {\texttt{SAMPLE\_FREQUENCY}} & \verb|double| & Attr & 200 & DDD v1.0.0 & Sample frequency in MHz of the RCU boards. \\
     \small {\texttt{SAMPLE\_FREQUENCY\_UNIT}} & \verb|string| & Attr & MHz & DDD v1.0.0 & Physical units of the sample frequency. \\
     \small {\texttt{DIPOLE\_\{SSSSS\_TTTAAP\}\}}} & Dataset & \verb|array<short,1>| & \texttt{DIPOLE\_CS001LBA25Y} & DDD v1.0.0 & Dataset containing the actual raw samples read out from the transient buffer; the name of the dataset is constructed from the \small \textit{\texttt{STATION\_NAME}} (SSSSS), \verb|ANTENNA_TYPE| (TTT) (LBA, HBA or NNF (NenuFar)), \verb|ANTENNA_ID| (AA) and \verb|POLATIZATION| (P) (X or Y). \\
@@ -571,7 +583,7 @@ another superstructure.
 \end{landscape}
 
 \newpage
-The following entries will be found in the antenna field group (Table~\ref{tab:antenna field group group}, p.~\pageref{tab:antennafield group}):
+Additional info is provided for the following entries, found in the antenna field group (Table~\ref{tab:antenna field group}, p.~\pageref{tab:antenna field group}):
 \begin{list}{\textbf{--}}{}
 \item \verb|GROUPTYPE| identifies the group as a \verb|AntennaFieldGroup|.
 \item The \textbf{position of the LOFAR station} is reconstructed from the three
@@ -584,7 +596,7 @@ The following entries will be found in the antenna field group (Table~\ref{tab:a
   \item \verb|ANTENNA_FIELD_POSITION_FRAME| -- identifier for the reference frame within
     which the station position is provided
   \end{itemize}
-
+\item \texttt{CLOCK\_SOURCE} - The origin of the clock.  "White Rabbit" (synchronised clock) or "GPS". The White Rabbit clock distributes the same clock to the different stations and should result in a stable clock. However, stations RS210, RS310, RS409 and also RS508, RS509 are not guaranteed to use the same source for their White Rabbit clock compared to the core and other remote stations and we currently cannot capture that. 
 \end{list}
 
 
@@ -658,7 +670,7 @@ position of each antenna feed.
     \small \textit{\texttt{CABLE\_DELAY}} & \verb|double| & 3.26964e-7 &  DDD v1.0.0 & Delay that the cable connected to the RCU adds to the signal path. This is already corrected in the data, relative to the other antennas, up to 5 ns. \\
     \small \textit{\texttt{CABLE\_DELAY\_UNIT}} & \verb|string| & s & DDD v1.0.0 & Physical unit associated with \verb|CABLE_DELAY|. \\
     \small \textit{\texttt{CABLE\_LOSS}} & \verb|double| & 0.3 & DDD v1.0.0 & Attenuation that the cable connected to the RCU adds to the signal path. This is the already applied value, relative to other antennas in the antenna field and rounded to 0.25 dB. The remaining correction is in the  \texttt{DIPOLE\_CALIBRATION\_GAIN\_CURVE}. \\
-    \small \textit{\texttt{CABLE\_ATTENUATION\_UNIT}} & \verb|string| & dB & DDD v1.0.0 & Physical unit associated with \verb|CABLE_ATTENUATION|. \\
+    \small \textit{\texttt{CABLE\_LOSS\_UNIT}} & \verb|string| & dB & DDD v1.0.0 & Physical unit associated with \verb|CABLE_LOSS|. \\
     %\small \textit{\texttt{DIPOLE\_CALIBRATION\_DELAY}} & \verb|double| & DDD v1.0.0 & Remaining delay to be applied to calibrate dipole up to station level.\\
     %\small \textit{\texttt{DIPOLE\_CALIBRATION\_DELAY\_UNIT}} & \verb|string| & DDD v1.0.0 & Physical unit associated with \small{\verb|DIPOLE_CALIBRATION_DELAY|}. \\ 
     \small {\texttt{ANTENNA\_POSITION}} & \verb|array<double,1>| & [40.312,20.542,0.010] & DDD v1.0.0 & [3] Antenna position, $\vec x = (x_1,x_2,x_3)$. \\
@@ -709,7 +721,7 @@ position of each antenna feed.
   \end{equation}
   where $n$ is the index for a sample in the \verb|DATA| vector.
 \item Definition of \verb|NYQUISTZONE|.
-  The \verb|NYQUISTZONE| determines the frequency range of the data. In the common definition, and the one used in the older LOFAR TBB files, the frequency range of the data goes from (N-1)(f/2) to N(f/2) where N is the \texttt{NYQUIST\_ZONE} and f is the \texttt{SAMPLE\_FREQUENCY}. The station definition starts counting at zero, but the convention is to start at 1. LBA observations are recorded in zone 1. HBA in zone 2 (110-170 and 110-190 MHz filter) or zone 3 (170-230 and 210-250 MHz filter).
+  The \verb|NYQUISTZONE| determines the frequency range of the data. In the common definition, and the one used in the older LOFAR TBB files, the frequency range of the data goes from (N-1)(f/2) to N(f/2) where N is the \texttt{NYQUIST\_ZONE} and f is the \texttt{SAMPLE\_FREQUENCY}. The LOFAR 2.0 station definition starts counting at zero, but the convention is to start at 1. LBA observations are recorded in zone 1. HBA in zone 2 (110-170 and 110-190 MHz filter) or zone 3 (170-230 and 210-250 MHz filter).
 \item Each frame of data transferred between RSP and TBB has the same fixed
   length (\verb|SAMPLES_PER_FRAME|), but a frame may hold any number of samples
   that will fit in the payload area of the frame. As typically the
@@ -755,6 +767,13 @@ position of each antenna feed.
 \section{Data Discovery}
 This section describes required/used data for discovery and related information.
 
+
+
+
+
+\subsection{Metadata for Discovery}
+The following metadata is used for discovery of data in the archive. %TODO is this not in the table?
+
 For the data discovery, the current parameters of the "TransientBufferBoardDataProduct" of the Long Term Archive are sufficient. 
 
 \begin{comment}
@@ -798,10 +817,37 @@ In addition, the generic observation and projectInformation discovery parameters
 How to deal with LBA + HBA observations in the observation table?
 \end{comment}
 
+The dataset is currently linked to the following data structure classes. We propose subArrayPointings to be made an optional field within the Observation so Tbuf data can be ingested without it as it is not required in the Tbuf Observation specificaiton. We also want to understand the difference between Observation and Observations to see what is needed.
+
+Currently, no AncillaryData is collected, but this may change in the future.
+
+\begin{itemize}
+    \item AncillaryData
+    \item Observation
+    \begin{itemize}
+        \item ancillary
+        \item parset
+        \item projectInformation
+        \item relations
+        \item stations
+        \item subArrayPointings - \textit{should be removed. Transient Buffers do not require subArrayPointings}
+    \end{itemize}
+    \item Observations - what is the difference between Observation and Observations here?
+    \begin{itemize}
+        \item ancillary
+        \item parset
+        \item projectInformation 
+        \item relations
+        \item stations
+        \item subArrayPointings - \textit{should be removed. Transient Buffers do not require subArrayPointings}
+    \end{itemize}
+    \item projectInformation
+    \item storageTicket
+\end{itemize}
 
 
-\subsection{Metadata for Discovery}
-The following metadata is used for discovery of data in the archive. %TODO is this not in the table?
+
+
 
 
 \subsection{Data size calculation}
@@ -993,8 +1039,8 @@ enhancements to reflect new insights and address noted short-comings.
   \tablelasttail{\hline}
   %% Table contents
   \begin{supertabular}{lllp{9.5cm}}
-    4.00.00 & 2025-06-13 & all   & Changes for LOFAR2.0 compared to LOFAR ICD: Removed Subband Groups. Introduced \texttt{AntennaFieldGroup}. Added keywords related to Tile beamformer. Renamed antenna IDs and adjusted appropriate ID keywords. Refined trigger group.   Moved \texttt{DIPOLE\_CALIBRATION} values to a separate group where calibration table can be stored. Adjusted document format to DDD template, including the common metadata group. Moved \texttt{ANTENNA\_SET} and \texttt{FILTER} to new \texttt{AntennaFieldGroup} \\
-    4.01.00 & 2018-10-24 & all   & Cleanup of the document. \\
+    0.04.00 & 2026-10-06 & all &  Updated document for LOFAR2.0. \texttt{AntennaFieldGroup} as replacement of the old \texttt{StationGroup}. \texttt{DIPOLE\_CALIBRATION} is captured in metadata again, rather than its own group. After approval of common attributes we can make it version 1.0. \\
+    0.01.00 & 2025-06-13 & all   & Changes for LOFAR2.0 compared to LOFAR ICD: Removed Subband Groups. Introduced \texttt{AntennaFieldGroup}. Added keywords related to Tile beamformer. Renamed antenna IDs and adjusted appropriate ID keywords. Refined trigger group.   Moved \texttt{DIPOLE\_CALIBRATION} values to a separate group where calibration table can be stored. Adjusted document format to DDD template, including the common metadata group. Moved \texttt{ANTENNA\_SET} and \texttt{FILTER} to new \texttt{AntennaFieldGroup} \\
  \end{supertabular}
 \end{center}
 

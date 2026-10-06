@@ -132,8 +132,9 @@ Software capable of reading or producing MSes should anticipate the following gu
     \item The \texttt{ANTENNA1} and \texttt{ANTENNA2} columns may be compressed using the AntennaStMan.
 \end{enumerate}
 
+
 \subsection{Baseline-based averaging}
-Visibility data can be compressed using a special averaging scheme called baseline-based (or baseline-dependent) averaging (BDA). The format in which DP3 and WSClean support this is outlined in the WSClean manual\footnote{\url{https://wsclean.readthedocs.io/en/latest/technical_bda_details.html}}. Data for which maintaining fine sampling along either the time or frequency axis, or both, is not required can be compressed this way.
+Visibility data can be compressed using a special averaging scheme called baseline-based (or baseline-dependent) averaging (BDA). The format in which DP3 and WSClean support this is outlined in the WSClean manual\footnote{\url{https://wsclean.readthedocs.io/en/latest/technical_bda_details.html}}. Data for which maintaining fine sampling along either the time and/or frequency axis is not required, can be compressed this way.
 
 \subsection{Common LOFAR attributes}
 A Measurement Set shall define the common LOFAR attributes outlined in this section. Many of these are already defined in the MSv2 Description for LOFAR. Many of these attributes are already defined in the MS standard itself.
@@ -160,13 +161,17 @@ In the LOFAR MSv2 specification the \texttt{PIPELINE\_NAME} is defined as the fi
     \small \verb|TELESCOPE| & ::OBSERVATION/TELECSOPE\_NAME \\
     \small \verb|TELESCOPE_VERSION| & LOFAR\_VERSION\\
     \small \verb|PROJECT_ID| & ::OBSERVATION/LOFAR\_PROJECT\\
-    \small \verb|PROJECT_PID| & \textbf{::OBSERVATION/LOFAR\_PROJECT\_PID}\\
+%% HAH 2026-10-05 PID attributes left out for CLA version 2.0 %%
+%%    \small \verb|PROJECT_PID| & \textbf{::OBSERVATION/LOFAR\_PROJECT\_PID}\\ %%
     \small \verb|PROJECT_TITLE| & ::OBSERVATION/LOFAR\_PROJECT\_TITLE \\
     \small \verb|OBSERVATION_ID| & ::OBSERVATION/LOFAR\_OBSERVATION\_ID \\
-    \small \verb|OBSERVATION_PID| & \textbf{::OBSERVATION/LOFAR\_OBSERVATION\_ID} \\
-    \small \verb|OBSERVATION_START_UTC| & N/A\\
+%% HAH 2026-10-05 PIPELINE_ID new in CLA Version 2.0 %%
+    \small{\textit{PIPELINE\_ID}} & TBC! ::OBSERVATION/LOFAR\_PIPELINE\_ID \\
+%% HAH 2026-10-05 PID attributes left out for CLA version 2.0 %%
+%%    \small \verb|OBSERVATION_PID| & \textbf{::OBSERVATION/LOFAR\_OBSERVATION\_ID} \\ %%
+    \small \verb|OBSERVATION_START_UTC| & Calculated from MJD value in ::OBSERVATION/LOFAR\_OBSERVATION\_START\\
     \small{\textit{OBSERVATION\_START\_MJD}} & ::OBSERVATION/LOFAR\_OBSERVATION\_START\\
-    \small{\texttt{OBSERVATION\_END\_UTC}} & N/A\\
+    \small{\texttt{OBSERVATION\_END\_UTC}} & Calculated from MJD value in ::OBSERVATION/LOFAR\_OBSERVATION\_END\\
     \small{\textit{OBSERVATION\_END\_MJD}} & ::OBSERVATION/LOFAR\_OBSERVATION\_END\\
     \small{\texttt{OBSERVATION\_NOF\_STATIONS}}  & derivable from ::LOFAR\_STATION\\
     \small{\texttt{OBSERVATION\_STATIONS\_LIST}} & ::LOFAR\_STATION/NAME \\
@@ -186,7 +191,8 @@ In the LOFAR MSv2 specification the \texttt{PIPELINE\_NAME} is defined as the fi
     \small{\textit{PIPELINE\_VERSION}} & ::OBSERVATION/LOFAR\_PIPELINE\_VERSION\\
     \small \verb|DOC_NAME| & \textbf{DOC\_NAME}\\
     \small \verb|DOC_VERSION| & \textbf{DOC\_VERSION}\\
-    \small \verb|DOC_PID| & N/A\\
+%% HAH 2026-10-05 PID attributes left out for CLA version 2.0 %%
+%%    \small \verb|DOC_PID| & N/A\\ %%
     \small \verb|NOTES| & ::OBSERVATION/LOG\\
    \hline
   \end{tabular}

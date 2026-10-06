@@ -11,7 +11,7 @@
 
 \title{LOFAR2 Data Definition Document 009: \\ H5parm Calibration Solution Files \\
 {\normalsize Document ID: LOFAR2-DDD-009-H5parm} \\
-{\normalsize Version 0.1} \\
+{\normalsize Version 1.1} \\
 {\normalsize Persistent DOI: XXXXXX} \\
 \author{H. Edler, F. Sweijen, D. Rafferty and the LOFAR 2.0 DWG}
 \date{\small{Compilation Date: \today}}}
@@ -31,7 +31,7 @@
 \label{sec:introduction}
 
 \subsection{Purpose and Scope}
-This Data Definition Document (DDD) defines the file format for {calibration solution} data products in LOFAR 2.0, stored in the \textbf{H5Parm} format. The goal of this document is to provide a  description of the required file structure, conventions, and metadata needed to exchange calibration solutions between the various LOFAR 2.0 pipelines and archives in the standard H5parm format.
+This Data Definition Document (DDD) defines the file format for {calibration solution} data products in LOFAR 2.0, stored in the \textbf{H5Parm} format. Within the context of LOFAR2.0, these data products are considered to represent the 'inst' filetype. The goal of this document is to provide a  description of the required file structure, conventions, and metadata needed to exchange calibration solutions between the various LOFAR 2.0 pipelines and archives in the standard H5parm format.
 
 The scope includes:
 \begin{itemize}
@@ -58,7 +58,7 @@ These properties are essential for scalable processing over many frequency chann
 
 \subsection{Applicable Documents}
 \begin{itemize}
-  \item LOFAR 2.0 pipeline / archive conventions (TBD; to be linked by document ID when available).
+  \item LOFAR2.0 File Naming Conventions 1.0 (Available on L2DWG Confluence space, document to be produced).
 %  \item LOFAR 2.0 world coordinate conventions (for antenna locations)
   \item LOFAR 2.0 celestial coordinate conventions (for source directions)
   \item Old H5Parm specifications: \href{https://docs.google.com/document/d/1pjDxRywhRO5HRuqciGYO2TWD-Ufu_5nxwFA3b_YnJJg/edit?tab=t.0#heading=h.uae9zka4fdfd}{HDF5 solutions tables for LOFAR (H5parm)}, v1.0 (26/07/13).
@@ -177,7 +177,7 @@ The solset contains required metadata attributes, which are either commong LOFAR
 
 \subsubsection*{Common LOFAR Attributes: \texttt{<solset>.attrs}}
 The Common LOFAR Attributes are the first attributes of any solset attributes. They are common to all LOFAR science data products.  
-Table~\ref{tab:lofar common metadata} lists the Common LOFAR Attributes which all also apply to the h5parm solution data definition. These attributes are required to be attributes of the solset group: \texttt{<solset>.attrs}; if a value is not available for an Attribute, a \verb|`NULL'| maybe used in its place.
+Table~\ref{tab:lofar common metadata} lists the Common LOFAR Attributes which all also apply to the h5parm solution data definition. These attributes are required to be attributes of the solset group: \texttt{<solset>.attrs}; if a value is not available for an Attribute, a \verb|`NULL'| maybe used in its place. The value for \verb|`FILETYPE'| is always \verb|`inst'| for H5parm Cailbration Solutions.
 There are scenarios where multiple LOFAR observations map to a single h5parm file (e.g., deriving a bandpass, combining solutions across multiple epochs). In these cases, observation-level common attributes can be mapped to lists.
 \input common_tables/lofar_common_metadata
 
