@@ -20,11 +20,17 @@ In this the individual fields are defined as follows:
       \hline
       \textbf{Description} & \textbf{Format} & \textbf{Example} \\
       \hline \hline
-      Beam number (B)   & 2 digits   & \verb|Bxx|   \\
+      COBALT Beamformer Pipeline (CP) & 3 digits & \verb|CPxxx|   \\
+      Sub-Array Pointing (SAP) & 3 digits & \verb|SAPxxx|   \\
+      (Tied-array) Beam number (B)   & 4 digits   & \verb|Bxxxx|   \\
       Subband (SB)      & 3 digits   & \verb|SBxxx| \\
-      Pencil Beam (PB)  & 3 digits   & \verb|PBxxx| \\
-      Date (D)          & 8 digits   & \verb|D<yyyymmdd>| \\
-      Date (D) \& Time  & 8+6 digits & \verb|D<yyyymmdd>T<hhmmss>| \\
+      Subband Group (SBG) & 3 digits & \verb|SBGxxx| \\
+      Frequency part (P) & 3 digits & \verb|Pxxx| \\
+      Stokes/Polarisation (S) & 1 digit & \verb|Sx| \\
+      Station (XX) & 3 digits & \verb|XXxxx|, \verb|XX| to be replaced by the station group label ('CS', 'RS', 'DE', etc.) \\
+      Field name (XXXX) & 3 or 4 characters & one of \verb|LBA|, \verb|HBA|, \verb|HBA0|, or \verb|HBA1|. Must follow station identiier. \\
+      Readout (R) & 3 digits & \verb|Rxxx| \\
+      Date (D) \& Time  & 8+6+3 digits & \verb|D<yyyymmdd>T<hhmmss.sss>Z| \\
       \hline
     \end{tabular}
   \end{verse}

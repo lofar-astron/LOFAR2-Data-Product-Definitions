@@ -11,7 +11,7 @@
 
 \title{LOFAR2 Data Definition Document 009: \\ H5parm Calibration Solution Files \\
 {\normalsize Document ID: LOFAR2-DDD-009-H5parm} \\
-{\normalsize Version 1.1} \\
+{\normalsize Version 1.01.00} \\
 {\normalsize Persistent DOI: XXXXXX} \\
 \author{H. Edler, F. Sweijen, D. Rafferty and the LOFAR 2.0 DWG}
 \date{\small{Compilation Date: \today}}}
@@ -61,7 +61,7 @@ These properties are essential for scalable processing over many frequency chann
   \item LOFAR2.0 File Naming Conventions 1.0 (Available on L2DWG Confluence space, document to be produced).
 %  \item LOFAR 2.0 world coordinate conventions (for antenna locations)
   \item LOFAR 2.0 celestial coordinate conventions (for source directions)
-  \item Old H5Parm specifications: \href{https://docs.google.com/document/d/1pjDxRywhRO5HRuqciGYO2TWD-Ufu_5nxwFA3b_YnJJg/edit?tab=t.0#heading=h.uae9zka4fdfd}{HDF5 solutions tables for LOFAR (H5parm)}, v1.0 (26/07/13).
+%  \item Old H5Parm specifications: \href{https://docs.google.com/document/d/1pjDxRywhRO5HRuqciGYO2TWD-Ufu_5nxwFA3b_YnJJg/edit?tab=t.0#heading=h.uae9zka4fdfd}{HDF5 solutions tables for LOFAR (H5parm)}, v1.0 (26/07/13).
 \end{itemize}
 
 \subsection{Reference Applications}
@@ -179,7 +179,7 @@ The solset contains required metadata attributes, which are either commong LOFAR
 The Common LOFAR Attributes are the first attributes of any solset attributes. They are common to all LOFAR science data products.  
 Table~\ref{tab:lofar common metadata} lists the Common LOFAR Attributes which all also apply to the h5parm solution data definition. These attributes are required to be attributes of the solset group: \texttt{<solset>.attrs}; if a value is not available for an Attribute, a \verb|`NULL'| maybe used in its place. The value for \verb|`FILETYPE'| is always \verb|`inst'| for H5parm Cailbration Solutions.
 There are scenarios where multiple LOFAR observations map to a single h5parm file (e.g., deriving a bandpass, combining solutions across multiple epochs). In these cases, observation-level common attributes can be mapped to lists.
-\input common_tables/lofar_common_metadata
+\input common_tables/lofar_common_metadata_2_0
 
 \subsubsection*{Additional h5parm solution Root Attributes: \texttt{<solset>.attrs}}
 The h5parm comes with the additional Root Attributes:
@@ -302,8 +302,10 @@ This matches the structure described in the reference document.
   \item Consumers {shall} interpret soltabs by reading the \texttt{axes} attribute to determine dimension
         meaning and order (must not assume a fixed axis order). 
   \item Consumers {shall} handle NaN values and \texttt{weight=0} as invalid/flagged samples. 
-  \item It is RECOMMENDED to use existing read/write libraries referenced in the H5Parm ecosystem (see LoSoTo for Python-based and DP3 for C++-based applications) . 
+  \item It is RECOMMENDED to use existing read/write libraries referenced in the H5Parm ecosystem (see LoSoTo for Python-based and DP3 for C++-based applications).
+  \item H5parm solutions that are intended to be archived should be compressed, unless there are compelling mitigating reasons. Suitable algorithms are e.g., the \texttt{zlib} algorithm and the \textbf{h5repack} command line interface  provided in the hdf5 library.
 \end{itemize}
+
 
 \subsection{Relation to other workpackages}
 This data product typically interfaces with:
@@ -315,12 +317,14 @@ This data product typically interfaces with:
 
 %% ------------------------------------------------------------------------------
 
-\section{Changelog}
-\label{sec:changelog}
+%% HAH 2026-10-09 commenting out the Changelog as it seems to be redundant in combination with the section 'Change record'
 
-\begin{itemize}
-  \item 0.1 (2025-12-17): Initial draft; based on published H5Parm specification, with LOFAR 2.0 calibration solution product framing. 
-\end{itemize}
+%% \section{Changelog}
+%% \label{sec:changelog}
+
+%% \begin{itemize}
+%%   \item 0.1 (2025-12-17): Initial draft; based on published H5Parm specification, with LOFAR 2.0 calibration solution product framing. 
+%% \end{itemize}
 
 %% ------------------------------------------------------------------------------
 
@@ -330,7 +334,6 @@ This data product typically interfaces with:
 \subsection{Open questions}
 \label{sec:open-questions}
 \begin{itemize}
-  \item The h5parm version currently is "1.0" (pre-LOFAR2), we might want to bump up that number to 1.1 and/or sync it to version of this DDD once the LOFAR2 changes are introduced.
   \item Coordinate frames and units for:
     \begin{itemize}
       \item \texttt{antenna.position} (ECRS?)
@@ -389,8 +392,9 @@ This data product typically interfaces with:
   \tablelasttail{\hline}
   %% Table contents
   \begin{supertabular}{lllp{10cm}}
+    1.01.00 & 2026-10-09 & all & First official release \\  
     0.1 & 2025-12-17 & all & Document creation based on existing H5Parm specification; scoped to formal LOFAR 2.0 DDD template \\
-  \end{supertabular}
+\end{supertabular}
 \end{center}
 
 \end{document}

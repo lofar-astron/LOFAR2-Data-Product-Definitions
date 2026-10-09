@@ -1,0 +1,70 @@
+\svnInfo $Id$
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|lp{1.5cm}rp{5cm}|}
+
+    %% Table header line with column descriptions %%
+
+    \hline
+    \textsc{Field/Keyword} & \textsc{Type} & \textsc{Example} & \textsc{Description} \\
+     &  &   & \\
+    \hline \hline
+
+    %% Table main contents %%
+
+    %% Deprecated
+    %% \small \verb|GROUPTYPE| & \small\verb|string| & \verb|`Root'| &  \small{\verb|LOFAR|} Group type \\
+    \small \verb|FILENAME| & \small\verb|string| & ---  &  File name \\
+    \small \verb|FILEDATE| & \small\verb|string| & ---  &  File creation date \\
+    \small \verb|FILETYPE| & \small\verb|string| & ---  &  File type (see Table~\ref{tab:file-type}) \\
+    \small \verb|TELESCOPE| & \small\verb|string| & \verb|`LOFAR'|  &  Name of the telescope \\
+    %% New in CLA 2.0
+    \small \verb|TELESCOPE_VERSION| & \small\verb|string| & \verb|`2.0'|  &  Name of the telescope \\
+    \small \verb|PROJECT_ID| & \small\verb|string| & \verb|LC2_003|  &  Project unique identifier \\
+    %% Consider later
+    %% \small \verb|PROJECT_PID| & \small\verb|string| & \verb|21.12136/LC2_003|  &  Project persistent identifier \\
+    \small \verb|PROJECT_TITLE| & \small\verb|string| & \verb|'Pulsar Timing'|  &  Title of the project \\
+    %% Deprecated
+    %% \small \verb|PROJECT_PI| & \small\verb|string| & ---  &  Name of Principal Investigator  \\
+    \small \verb|OBSERVATION_ID| & \small\verb|string| & ---  &  Observation unique identifier (may be a list) \\
+    %% Consider later
+    %% \small \verb|OBSERVATION_PID| & \small\verb|string| & \verb|'21.12136/L123456'|  &  Observation persistent identifier \\
+    %% New in CLA 2.0
+    \small{\textit{PIPELINE\_RUN\_ID}} & \small\verb|string| & ---  &  Pipeline run unique identifier \\
+    \small \verb|OBSERVATION_START_UTC| & \small\verb|string|& ---  &  (First) Observation start \verb|(UTC)| \\
+    %% Deprecated
+    %% \small{\textit{OBSERVATION\_START\_MJD}} & \small\verb|double| & ---  &  Observation start date \verb|(MJD)|\\
+    \small{\texttt{OBSERVATION\_END\_UTC}} & \small\verb|string| & ---  &  (Last) Observation end \verb|(UTC)| \\
+    %% Deprecated
+    %% \small{\textit{OBSERVATION\_END\_MJD}} & \small\verb|double| & ---  &  Observation end date \verb|(MJD)| \\
+    \small{\texttt{OBSERVATION\_NOF\_STATIONS}}  & \small\verb|unsigned|& \verb|50|  &  nof. stations used during the observation \\
+    \small{\texttt{OBSERVATION\_STATIONS\_LIST}} & \small\verb|array<string,1>| & \verb|'CS032,CS302'|  &  List of stations used during the observation \\
+    \small{\texttt{OBSERVATION\_FREQUENCY\_MIN}} & \small\verb|double| & \verb|180|  &  Observation minimum frequency \\
+    \small{\texttt{OBSERVATION\_FREQUENCY\_CENTER}} & \small\verb|double| & \verb|190|  &  Observation center frequency (weighted) \\
+    \small{\texttt{OBSERVATION\_FREQUENCY\_MAX}} & \small\verb|double| & \verb|200|  &  Observation maximum frequency\\
+    \small\verb|OBSERVATION_FREQUENCY_UNIT| & \small\verb|string| &
+    \verb|`MHz'|  &  \\
+    \small{\textit{OBSERVATION\_NOF\_BITS\_PER\_SAMPLE}} & \small\verb|int| & \verb|8|  & 
+    Number of bits per sample in the incoming data stream from the
+    stations to CEP \\
+    \small{\textit{CLOCK\_FREQUENCY}} & \small\verb|double| & \verb|200|  &  Clock
+    frequency ($160 \mathrm{MHz}$ or $200 \mathrm{MHz}$). \\
+    \small{\textit{CLOCK\_FREQUENCY\_UNIT}} & \small\verb|string| & \verb|`MHz'| &  \\
+    \small{\textit{ANTENNA\_SET}} & \small\verb|string| & \verb|'HBA DUAL'|  &  Antenna set specification (see Table~\ref{tab:antenna-set}). If multiple antenna sets are used, set value to NULL\\
+    \small{\textit{FILTER\_SELECTION}} & \small\verb|string| & \verb|'HBA_110_190'|  &  Filter selection (see Table~\ref{tab:filter-selection}).\\
+    \small{\textit{TARGETS}} & \small\verb|array<string,1>| & 'M99,M100'  &  List of observation targets/sources \\
+    \small{\textit{SYSTEM\_NAME}} & \small\verb|string| & 'COBALT'  &  Processing system name \\
+    \small{\textit{SYSTEM\_VERSION}} & \small\verb|string| & \verb|'2.5.3'|  &  Processing system version \\
+    \small{\textit{PIPELINE\_NAME}}  & \small\verb|string|  & \verb|'LINC'|  &  Pipeline processing name \\
+    \small{\textit{PIPELINE\_VERSION}} & \small\verb|string|  & \verb|'1.4.7'|  &  Pipeline processing version \\
+    \small \verb|DOC_NAME| & \small\verb|string|  & \verb|'LOFAR2-DDD-XXX'|  &  Interface Control Document name, where XXX is the number for this document \\
+    \small \verb|DOC_VERSION| & \small\verb|string|  & \verb|'1.0'|  &  Interface Control Document version/issue number \\
+    %% Consider later
+    %% \small \verb|DOC_PID| & \small\verb|string|  & see descr.  &  Interface Control Document persistent identifier. Example  \verb|'21.12136/LOFAR2-DDD-000-V10'| \\
+    \small \verb|NOTES| & \small\verb|string|  & ---  &  Notes or comments \\
+   \hline
+  \end{tabular}
+  \caption{Common LOFAR Attributes (CLA) version 2.0.}
+  \label{tab:lofar common metadata}
+\end{table}

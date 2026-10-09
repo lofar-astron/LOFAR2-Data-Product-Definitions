@@ -38,11 +38,11 @@
 
 \begin{document}
 
-\title{LOFAR Data Description Document:\\ Transient Buffer Time-Series Data\\
+\title{LOFAR2 Data Definition Document 001 \\ --- \\ Transient Buffer Time-Series Data \\
   {\normalsize Document ID: LOFAR2-DDD-001} \\
-  {\normalsize Version 0.04.00} \\
+  {\normalsize Version 1.00.00} \\
    {\normalsize Persistent DOI: XXXXXX} \\
-\author{ \parbox{\linewidth}{\centering S.~ter~Veen,  K. Mulrey, H.~Holties} }
+\author{ \parbox{\linewidth}{\centering S.~ter~Veen,  K. Mulrey, H.~Holties, and \\the LOFAR2.0 Data Working Group} }
 \date{\small{Compile Date: \today}} 
 }
 
@@ -323,11 +323,11 @@ Raw Voltage Mode:
 
 \subsection{Naming}
 The Transient Buffer Time-series files are named as follows:\\\,\\
-\verb|L<ID>_D<date>T<time>Z_<stationname>_<fieldname>_R<part>_tbb.h5|\\\,\\
-\verb|L<ID>_D<date>T<time>Z_<stationname>_<fieldname>_R<part>_tbb.raw|\\\,\\
+\verb|L<ID>_D<date>T<time>Z_<stationname>_<fieldname>_tbb.h5|\\\,\\
+\verb|L<ID>_D<date>T<time>Z_<stationname>_<fieldname>_tbb.raw|\\\,\\
 Example:\\
-\verb|L123456789_D20140123T134448.920Z_CS002_LBA_R000_tbb.h5|\\\,\\
-\verb|L123456789_D20140123T134448.920Z_CS002_LBA_R000_tbb.raw|\\\,\\
+\verb|L123456789_D20140123T134448.920Z_CS002_LBA_tbb.h5|\\\,\\
+\verb|L123456789_D20140123T134448.920Z_CS002_LBA_tbb.raw|\\\,\\
 
 In this 
 \begin{itemize}
@@ -387,7 +387,7 @@ will be used in its place. Special considerations for these keywords:
 \begin{itemize}
     \item \texttt{OBSERVATION\_ID} contains the subtask ID of the data acquisition specific for this trigger. \item Other \texttt{OBSERVATION...} keywords consider the data for this triggerfile, for example the\\ \texttt{OBSERVATION\_START\_UTC} is the start of the data dump. 
     \item The \texttt{OBSERVATION\_FREQUENCY...} keywords refer to the whole band for this filter, or for all filters used. For example the \texttt{110\_190 MHz} filter will provide a min,center,max frequency of 100, 150, 200 Mhz, respectively. 
-    \item \texttt{OBSERVATION\_NOF\_BITS\_PER\_SAMPLE} is 12 for TBuf data. 
+    \item \texttt{OBSERVATION\_NOF\_BITS\_PER\_SAMPLE} is 14 for TBuf data. 
     \item \texttt{FILTER\_SELECTION} and \texttt{ANTENNA\_SET} are usually set to \texttt{NULL}. They are repeated at lower levels. They can be set to the actual value, if and only if a single value is used at lower level within this file, but this is not obligatory as pipelines should better rely on the value per dipole.
 \end{itemize}
 
@@ -414,7 +414,7 @@ will be used in its place. Special considerations for these keywords:
 \end{table}
 
 
-\input common_tables/lofar_common_metadata
+\input common_tables/lofar_common_metadata_2_0
 
 \subsubsection{Additional TBuf Time-series Root Attributes}
 \label{sec:additional root group attributes}
@@ -438,6 +438,7 @@ specific to a \textbf{TBuf Time-series data file}.
     \hline
     %\verb|NOF_STATIONS| & \verb|unsigned| &  The number of station groups
     %available in the file.\\
+    \verb|GROUPTYPE| & string & 'Root' & LOFAR Group Type \\
     \verb|ANTENNA_FIELD_{AAKKK}_{XBAX}| & Group & Antenna field group collecting the data
     from an individual LOFAR station; It consists of the station name with 2
     characters (upper case) and three digits, followed by the antenna field name (LBA, HBA, HBA0, HBA1.\\
@@ -517,7 +518,7 @@ The type of trigger is given by the keyword \verb|TRIGGER_TYPE| and \verb|TRIGGE
     \verb|`Unknown'| & Unknown/unrecognised reason for data return. \\
     \verb|`CosmicRay'| & Trigger to capture a cosmic ray. \verb|TRIGGER_SUBTYPE|  = 'LORA' when triggered from the LORA particle detector.\\
     \verb|`Lightning'| & Triggered in order to capture a lightning strike. \verb|TRIGGER_SUBTYPE| = 'blitzortung' or 'magnetic loop' \\
-    \verb|`Manual'| & Manually triggered. \verb|TRIGGER_SUBTYPE| = 'User Portal' or 'test script'\\
+    \verb|`manual'| & Manually triggered. \verb|TRIGGER_SUBTYPE| = 'userportal' or 'testscript'\\
    \hline
   \end{tabular}
   \caption{Values of TRIGGER\_TYPE.}
@@ -566,10 +567,10 @@ result in a set of antenna field groups -- which can either be distributed as in
     \small {\texttt{ANTENNA\_FIELD\_POSITION\_UNIT}}  & Attr & \verb|string| & "m" & DDD v1.0.0 & Physical units associated with the numerical values for the station position. \\
     \small {\texttt{ANTENNA\_FIELD\_POSITION\_FRAME}} & Attr & \verb|string| & "ITRF" & DDD v1.0.0 & Identifier for the reference frame within which the station position is provided. \\
     \small {\texttt{ANTENNA\_FIELD\_POSITION\_EPOCH}} & Attr & \verb|string| & "2026.5" & DDD v1.0.0 & Epoch of the reference position frame. \\
-    \small {\texttt{CLOCK\_SOURCE}} & Attr & \verb|string| & White Rabbit &  DDD v1.0.0& The origin of the clock.  "White Rabbit" (synchronised clock) or "GPS". \\
+    \small {\texttt{CLOCK\_SOURCE}} & Attr & \verb|string| & WhiteRabbit &  DDD v1.0.0& The origin of the clock.  "WhiteRabbit" (synchronised clock) or "GPS". \\
     \small {\texttt{SAMPLE\_FREQUENCY}} & \verb|double| & Attr & 200 & DDD v1.0.0 & Sample frequency in MHz of the RCU boards. \\
     \small {\texttt{SAMPLE\_FREQUENCY\_UNIT}} & \verb|string| & Attr & MHz & DDD v1.0.0 & Physical units of the sample frequency. \\
-    \small {\texttt{DIPOLE\_\{SSSSS\_TTTAAP\}\}}} & Dataset & \verb|array<short,1>| & \texttt{DIPOLE\_CS001LBA25Y} & DDD v1.0.0 & Dataset containing the actual raw samples read out from the transient buffer; the name of the dataset is constructed from the \small \textit{\texttt{STATION\_NAME}} (SSSSS), \verb|ANTENNA_TYPE| (TTT) (LBA, HBA or NNF (NenuFar)), \verb|ANTENNA_ID| (AA) and \verb|POLATIZATION| (P) (X or Y). \\
+    \small {\texttt{DIPOLE\_\{SSSSS\_TTTAAP\}\}}} & Dataset & \verb|array<short,1>| & \texttt{DIPOLE\_CS001LBA25Y} & DDD v1.0.0 & Dataset containing the actual raw samples read out from the transient buffer; the name of the dataset is constructed from the \small \texttt{STATION\_NAME} (SSSSS), \verb|ANTENNA_TYPE| (TTT) (LBA, HBA or NNF (NenuFar)), \verb|ANTENNA_ID| (AA) and \verb|POLATIZATION| (P) (X or Y). \\
      \hline
   \end{tabular}
   \caption[Fields in the antenna field data group (\texttt{AntennaFieldGroup}).]{
@@ -832,7 +833,7 @@ Currently, no AncillaryData is collected, but this may change in the future.
         \item stations
         \item subArrayPointings - \textit{should be removed. Transient Buffers do not require subArrayPointings}
     \end{itemize}
-    \item Observations - what is the difference between Observation and Observations here?
+    \item Observations - what is the difference between Observation and Observations here? We currently use Observation.
     \begin{itemize}
         \item ancillary
         \item parset
@@ -1039,6 +1040,7 @@ enhancements to reflect new insights and address noted short-comings.
   \tablelasttail{\hline}
   %% Table contents
   \begin{supertabular}{lllp{9.5cm}}
+    0.05.00 & 2026-10-07 & 4.1, 4.2 &  Updated Common LOFAR attributes to version 2.0. This removed all \texttt{*PID} and \texttt{PROJECT\_PI} keywords. Moved GROUPTYPE of Root to specific attributes for this DDD. Removed \texttt{R<part>} from filename. \\
     0.04.00 & 2026-10-06 & all &  Updated document for LOFAR2.0. \texttt{AntennaFieldGroup} as replacement of the old \texttt{StationGroup}. \texttt{DIPOLE\_CALIBRATION} is captured in metadata again, rather than its own group. After approval of common attributes we can make it version 1.0. \\
     0.01.00 & 2025-06-13 & all   & Changes for LOFAR2.0 compared to LOFAR ICD: Removed Subband Groups. Introduced \texttt{AntennaFieldGroup}. Added keywords related to Tile beamformer. Renamed antenna IDs and adjusted appropriate ID keywords. Refined trigger group.   Moved \texttt{DIPOLE\_CALIBRATION} values to a separate group where calibration table can be stored. Adjusted document format to DDD template, including the common metadata group. Moved \texttt{ANTENNA\_SET} and \texttt{FILTER} to new \texttt{AntennaFieldGroup} \\
  \end{supertabular}
